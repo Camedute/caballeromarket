@@ -1,7 +1,8 @@
 import React from "react";
+import './styles/Login.css'
 function Loginup(){
     return(
-        <h2>Este es el componente del Login</h2>
+        <h2 className="Login">Este es el componente del Login</h2>
 
     );
 }

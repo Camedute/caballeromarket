@@ -1,8 +1,8 @@
 import React from "react";
-
+import './styles/Cart.css'
 function CartShopping(){
     return(
-        <h3>Este es el carrito de compras</h3>
+        <h3 className="Cart">Este es el carrito de compras</h3>
     );
 }
 

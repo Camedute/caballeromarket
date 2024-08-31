@@ -1,10 +1,11 @@
 import React from "react";
 import Loginup from './login';
 import CartShopping from "./cart";
+import './styles/Home.css';
 function Home(){
     return(
         <>
-        <h1>Este es el componente home</h1>
+        <h1 className="Home">Este es el componente home</h1>
 
         <Loginup></Loginup>
 
