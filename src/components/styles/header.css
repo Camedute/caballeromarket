@@ -1,7 +1,6 @@
 .Header{
-    background-color: aqua;
     position:fixed;
     width: 100%;
-    text-align: center;
+    text-align: right;
     top: 0;
 }
