@@ -2,7 +2,6 @@ import React from "react";
 import Loginup from './login';
 import CartShopping from "./cart";
 import Header from "./header";
-import NavBar from "./navBar";
 import Footer from "./footer";
 import './styles/Home.css';
 function Home(){
