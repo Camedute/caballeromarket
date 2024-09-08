@@ -5,7 +5,7 @@ function Header(){
     return(
         <>
         <header className="Header">
-            <button>
+            <button className="Inicio">
                 <p>Inicio</p>
             </button>
 
@@ -27,6 +27,8 @@ function Header(){
             
         </header>
         </>
+
     );
 }
+
 export default Header
