@@ -1,7 +1,8 @@
 .Footer{
-    background-color: rgb(200, 253, 115);
+    background-color: #293150;
     position:fixed;
     width: 100%;
     text-align: center;
     bottom: 0;
+    color: white;
 }
