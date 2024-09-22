@@ -6,5 +6,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    background-color: rgb(17, 201, 130);
+    background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b2927607-1180-4447-a845-c33afa68d8d5/dcyj5kf-728d6d77-2989-4e40-9ac7-6645dda3e2e1.png/v1/fill/w_959,h_833/knight_s_helmet_1_by_konstantingee_dcyj5kf-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDM0MSIsInBhdGgiOiJcL2ZcL2IyOTI3NjA3LTExODAtNDQ0Ny1hODQ1LWMzM2FmYTY4ZDhkNVwvZGN5ajVrZi03MjhkNmQ3Ny0yOTg5LTRlNDAtOWFjNy02NjQ1ZGRhM2UyZTEucG5nIiwid2lkdGgiOiI8PTUwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.Xa1c_u8LibCHSysS4SiyZmXSzH6Af5P6cjOh9g2-e8Y");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    
 }
 
