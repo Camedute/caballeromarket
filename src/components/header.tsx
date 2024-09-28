@@ -6,7 +6,7 @@ const Header = () => {
 
     return (
         <header className="navbar">
-            <div className="nav_logo">Logo</div>
+            <div className="nav_logo">Caballero Market</div>
             <div className={`nav_item ${isOpen ? "open" : ""}`}>
                 <a href="#">INICIO</a>
                 <a href="#">CATEGORIAS</a>
