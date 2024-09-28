@@ -25,7 +25,7 @@ function Categorias() {
 
     return (
         <>
-            <Header />
+            <Header/>
             <br /><br /><br /><br />
             <div className="categorias-container">
                 <h1>Categorías de Productos</h1>

@@ -9,24 +9,18 @@ const Header = () => {
         <header className="navbar">
             <div className="nav_logo">Caballero Market</div>
             <div className={`nav_item ${isOpen ? "open" : ""}`}>
-                <Link to="/home">
-                    <a>INICIO</a>
-                </Link>
-                <Link to="/Categorias">
-                    <a>CATEGORIAS</a>
-                </Link>
-                <Link to="/Locales">
-                    <a>LOCALES</a>
-                </Link>
-                <Link to="/Perfil">
-                    <a>PERFIL</a>
-                </Link>
-                <Link to="/Carrito">
-                    <a>CARRITO</a>
-                </Link>
-                <Link to="/"><a>LogOut</a></Link>
+                <Link to="/home">INICIO</Link>
+                <Link to="/Categorias">CATEGORIAS</Link>
+                <Link to="/Locales">LOCALES</Link>
+                <Link to="/Perfil">PERFIL</Link>
+                <Link to="/Carrito">CARRITO</Link>
+                <Link to="/">LogOut</Link>
             </div>
-            <div className={`nav_toggle ${isOpen ? "open" : ""}`} onClick={() => setIsOpen(!isOpen)}>
+            
+            <div className={`nav_toggle ${isOpen ? "open" : ""}`} onClick={() => {
+                setIsOpen(!isOpen);
+                setTimeout(() => console.log(!isOpen), 0); // Verifica el nuevo estado después de actualizar
+            }}>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -36,5 +30,7 @@ const Header = () => {
 };
 
 export default Header;
+
+
 
 
