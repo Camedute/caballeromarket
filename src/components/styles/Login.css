@@ -1,16 +1,69 @@
+/* Estilos para el formulario de login */
 .Login {
-    width: 50%;
-    height: 50%;
+    width: 400px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background-color: rgb(17, 201, 130);
-    background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b2927607-1180-4447-a845-c33afa68d8d5/dcyj5kf-728d6d77-2989-4e40-9ac7-6645dda3e2e1.png/v1/fill/w_959,h_833/knight_s_helmet_1_by_konstantingee_dcyj5kf-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDM0MSIsInBhdGgiOiJcL2ZcL2IyOTI3NjA3LTExODAtNDQ0Ny1hODQ1LWMzM2FmYTY4ZDhkNVwvZGN5ajVrZi03MjhkNmQ3Ny0yOTg5LTRlNDAtOWFjNy02NjQ1ZGRhM2UyZTEucG5nIiwid2lkdGgiOiI8PTUwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.Xa1c_u8LibCHSysS4SiyZmXSzH6Af5P6cjOh9g2-e8Y");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    
 }
 
+.Login h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.role-selector {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.role-selector label {
+    font-size: 1rem;
+    color: #333;
+}
+
+.btn {
+    width: 90%;
+    padding: 10px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}

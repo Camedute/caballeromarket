@@ -9,7 +9,7 @@ const Header = () => {
         <header className="navbar">
             <div className="nav_logo">Logo</div>
             <div className={`nav_item ${isOpen ? "open" : ""}`}>
-                <Link to="/">
+                <Link to="/home">
                     <a>INICIO</a>
                 </Link>
                 <Link to="/Categorias">

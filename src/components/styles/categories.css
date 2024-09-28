@@ -1,0 +1,52 @@
+/* Categorias.css */
+
+.categorias-container {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.categorias-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.categorias-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.categoria-item {
+    margin: 15px 0;
+}
+
+.categoria-item h2 {
+    font-size: 1.8rem;
+    color: #007BFF;
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.categoria-item h2:hover {
+    color: #0056b3;
+    background-color: #e9f5ff;
+    transform: scale(1.05);
+    border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+    .categorias-container h1 {
+        font-size: 2rem;
+    }
+
+    .categoria-item h2 {
+        font-size: 1.5rem;
+    }
+}
