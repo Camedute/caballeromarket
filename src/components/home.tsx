@@ -1,5 +1,4 @@
 import React from "react";
-import Loginup from './login';
 import Header from "./header";
 import Footer from "./footer";
 import './styles/Home.css';
@@ -7,11 +6,13 @@ import NavBar from "./navBar";
 function Home(){
     return(
         <>
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 055fc316dbd890fe1c484be2d471d48ee392572e
         <body>
             <Header></Header>
-            <h1 className="Home">Este es el componente casa</h1>
-
-            <Loginup></Loginup>
+            
             <Footer></Footer>
         </body>
         </>

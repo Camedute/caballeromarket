@@ -13,6 +13,7 @@ const NavBar = () => {
                 <a href="#">LOCALES</a>
                 <a href="#">PERFIL</a>
                 <a href="#">CARRITOS</a>
+                <a href="">LogOut</a>
             </div>
             <div className={`nav_toggle ${isOpen ? "open" : ""}`} onClick={() => setIsOpen(!isOpen)}>
                 <span></span>
