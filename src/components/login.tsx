@@ -58,6 +58,15 @@ function Loginup() {
         }
     };
 
+    useEffect(() => {
+        // Agregar la clase de fondo solo cuando estás en la página de login
+        document.body.classList.add("login-background");
+        return () => {
+            // Quitar la clase de fondo cuando sales de la página de login
+            document.body.classList.remove("login-background");
+        };
+    }, []);
+
     return (
         <div className="Login">
             <h2>CaballeroMarket</h2>

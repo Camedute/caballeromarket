@@ -1,3 +1,32 @@
+/* Estilos para el cuerpo con fondo borroso y tinte azul solo en la página de login */
+body.login-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta a la imagen */
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px); /* Efecto de desenfoque */
+    z-index: -2; /* Poner la imagen detrás del contenido */
+}
+
+body.login-background::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 123, 255, 0.5); /* Capa azul semitransparente */
+    z-index: -1; /* Poner el filtro de color sobre la imagen */
+}
+
+
+
+
 /* Estilos para el formulario de login */
 .Login {
     width: 400px;

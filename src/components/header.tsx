@@ -26,7 +26,7 @@ const Header: React.FC = () => {
           onKeyDown={(e) => handleSearch(e)} // Captura Enter
           
         />
-        <button onClick={(e) => handleSearch(e)}>Buscar</button> {/* Botón de buscar */}
+        <button className="BuscarBoton" onClick={(e) => handleSearch(e)}>Buscar</button> {/* Botón de buscar */}
         
         <Link to="/home">INICIO</Link>
         <Link to="/Categorias">CATEGORIAS</Link>
