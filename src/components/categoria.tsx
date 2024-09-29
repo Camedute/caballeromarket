@@ -32,12 +32,13 @@ function Categorias() {
                 <div className="categorias-list">
                     {categorias.map((categoria, index) => (
                         <div key={index} className="categoria-item">
-                            <h2 onClick={() => handleCategoryClick(categoria.id)}>
-                                {categoria.nombre}
-                            </h2>
-                        </div>
-                    ))}
+                            <button onClick={() => handleCategoryClick    (categoria.id)}>
+                            {categoria.nombre}
+                        </button>
                 </div>
+                 ))}
+                </div>
+
             </div>
         </>
     );
