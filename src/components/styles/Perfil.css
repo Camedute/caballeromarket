@@ -1,0 +1,64 @@
+/* Estilos previos */
+.perfil-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Imagen circular */
+  .perfil-imagen img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  /* Estilos de datos */
+  .perfil-datos {
+    flex: 1;
+  }
+  
+  .perfil-dato {
+    margin-bottom: 10px;
+  }
+  
+  .perfil-dato label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .perfil-dato input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Centrado de la tarjeta */
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Altura completa de la ventana */
+  }
+  

@@ -8,6 +8,7 @@ import Locales from "./components/local";
 import Perfil from "./components/perfil";
 import Carrito from "./components/cart";
 import Loginup from "./components/login";
+import BuscarProducto from "./components/buscarProducto";
 
 function App(){
   return (
@@ -17,8 +18,9 @@ function App(){
        <Route path="home" element={<Home />} />
        <Route path="categorias" element={<Categorias />} />
        <Route path="locales" element={<Locales />} />
-       <Route path="Perfil" element={<Perfil />} />
+       <Route path="Perfil" element={<Perfil nombre={""} email={""} telefono={""} imagenUrl={""} />} />
        <Route path="Carrito" element={<Carrito />} />
+       <Route path="/buscar/:query" element={<BuscarProducto />} /> {/* Ruta para mostrar resultados */}
       </Routes>
     </BrowserRouter>
   );
