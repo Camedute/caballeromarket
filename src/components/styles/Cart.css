@@ -1,3 +1,87 @@
-.Cart{
-    color: chocolate;
-}
+/* Estilos para el carrito de compras */
+.carrito-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .productos,
+  .carrito {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .producto-card,
+  .carrito-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .producto-card p,
+  .carrito-item p {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .btn-agregar {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-agregar:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-eliminar {
+    background-color: #f44336;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-eliminar:hover {
+    background-color: #d32f2f;
+  }
+  
+  .cantidad-input {
+    width: 50px;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .total {
+    font-size: 20px;
+    margin-top: 20px;
+    text-align: right;
+  }
+  

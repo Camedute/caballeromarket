@@ -5,6 +5,7 @@ const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     
     return (
+        
         <div className="navbar">
             <div className="nav_logo">CaballeroMarket</div>
             <div className={`nav_item ${isOpen ? "open" : ""}`}>

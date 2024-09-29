@@ -10,7 +10,9 @@ const Header: React.FC = () => {
   // Función que maneja la búsqueda
   const handleSearch = (e: KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>) => {
     if ((e as KeyboardEvent).key === "Enter" || e.type === "click") {
-      navigate(`/buscar/${searchQuery}`); // Redirige a la página de resultados
+      if (searchQuery.trim()) { // Solo ejecuta la búsqueda si hay contenido
+        navigate(`/buscar/${searchQuery}`); // Redirige a la página de resultados
+      }
     }
   };
 
@@ -24,16 +26,21 @@ const Header: React.FC = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)} // Guardamos el valor del input
           onKeyDown={(e) => handleSearch(e)} // Captura Enter
-          
         />
-        <button className="BuscarBoton" onClick={(e) => handleSearch(e)}>Buscar</button> {/* Botón de buscar */}
-        
-        <Link to="/home">INICIO</Link>
-        <Link to="/Categorias">CATEGORIAS</Link>
-        <Link to="/Locales">LOCALES</Link>
-        <Link to="/Perfil">PERFIL</Link>
-        <Link to="/Carrito">CARRITO</Link>
-        <Link to="/">LogOut</Link>
+        <button
+          className="BuscarBoton"
+          onClick={(e) => handleSearch(e)}
+          disabled={!searchQuery.trim()} // Deshabilita el botón si el campo está vacío
+        >
+          Buscar
+        </button>
+
+        <Link to="/home"><button>Inicio</button></Link>
+        <Link to="/Categorias"><button>Categorias</button></Link>
+        <Link to="/Locales"><button>Locales</button></Link>
+        <Link to="/Perfil"><button>Perfil</button></Link>
+        <Link to="/Carrito"><button>Carrito de compras</button></Link>
+        <Link to="/"><button>Cerrar Sesión</button></Link>
       </div>
 
       <div

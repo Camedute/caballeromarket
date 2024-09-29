@@ -1,0 +1,50 @@
+/* Mapa.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9; /* Color de fondo general */
+  }
+  
+  .container {
+    max-width: 1200px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centrar el contenedor */
+    padding: 20px; /* Espaciado interno */
+  }
+  
+  .header {
+    text-align: center; /* Centrar el texto */
+    margin-bottom: 20px; /* Espaciado inferior */
+  }
+  
+  #map {
+    width: 100%; /* Ancho completo */
+    height: 400px; /* Altura del mapa */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra del mapa */
+  }
+  
+  .marker {
+    background-color: #ff5733; /* Color de fondo del marcador */
+    border-radius: 50%; /* Bordes redondeados */
+    width: 12px; /* Ancho del marcador */
+    height: 12px; /* Altura del marcador */
+    border: 2px solid white; /* Borde blanco */
+  }
+  
+  /* Estilos de botones */
+  .button {
+    background-color: #007bff; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 10px 20px; /* Espaciado interno */
+    cursor: pointer; /* Cambiar cursor al pasar por encima */
+    transition: background-color 0.3s; /* Transición suave */
+  }
+  
+  .button:hover {
+    background-color: #0056b3; /* Color del botón al pasar el ratón */
+  }
+  
