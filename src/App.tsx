@@ -18,7 +18,7 @@ function App(){
        <Route path="home" element={<Home />} />
        <Route path="categorias" element={<Categorias />} />
        <Route path="locales" element={<Locales />} />
-       <Route path="Perfil" element={<Perfil nombre={""} email={""} telefono={""} imagenUrl={""} />} />
+       <Route path="Perfil" element={<Perfil  />} />
        <Route path="Carrito" element={<Carrito />} />
        <Route path="/buscar/:query" element={<BuscarProducto />} /> {/* Ruta para mostrar resultados */}
       </Routes>

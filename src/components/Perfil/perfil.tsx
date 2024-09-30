@@ -1,23 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './Perfil.css';
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
 
-interface PerfilProps {
+interface UserData {
   nombre: string;
   email: string;
+  Rol: string;
   telefono: string;
   imagenUrl: string;
 }
 
-const Perfil: React.FC<PerfilProps> = ({ nombre, email, telefono, imagenUrl }) => {
+const Perfil: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [formData, setFormData] = useState({
-    nombre,
-    email,
-    telefono,
-    imagenUrl,
+  const [formData, setFormData] = useState<UserData>({
+    nombre: "",
+    email: "",
+    Rol: "",
+    telefono: "",
+    imagenUrl: "https://via.placeholder.com/150" // Imagen por defecto
   });
+
+  // Obtener los datos del usuario desde localStorage
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      const { username, role } = JSON.parse(storedUserData);
+
+      // Simular datos de ejemplo en base al nombre de usuario
+      setFormData({
+        nombre: username,
+        email: `${username.toLowerCase()}@example.com`, // Simular email
+        telefono: "123456789", // Simular teléfono,
+        Rol: role,
+        imagenUrl: "https://via.placeholder.com/150" // Placeholder para la imagen de perfil
+      });
+    }
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -68,6 +87,19 @@ const Perfil: React.FC<PerfilProps> = ({ nombre, email, telefono, imagenUrl }) =
                 />
               ) : (
                 <p>{formData.email}</p>
+              )}
+            </div>
+            <div className="perfil-dato">
+              <label>Rol:</label>
+              {isEditing ? (
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.Rol}
+                  onChange={handleInputChange}
+                />
+              ) : (
+                <p>{formData.Rol}</p>
               )}
             </div>
 
