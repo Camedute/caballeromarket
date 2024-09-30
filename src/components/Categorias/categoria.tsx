@@ -8,16 +8,16 @@ function Categorias() {
     const navigate = useNavigate();
 
     const categorias = [
-        { nombre: "Alimentos básicos", id: "basico" },
-        { nombre: "Lácteos y sus derivados", id: "lacteos" },
-        { nombre: "Carnes y embutidos", id: "carnes_Embutidos" },
-        { nombre: "Bebidas", id: "bebidas" },
-        { nombre: "Dulces", id: "dulces" },
-        { nombre: "Panadería", id: "pan" },
-        { nombre: "Productos de limpieza", id: "limpieza" },
-        { nombre: "Cuidado personal", id: "personal" },
-        { nombre: "Frutas y verduras", id: "frutas_Verduras" },
-        { nombre: "Cigarrillos y otros", id: "otros" }
+        { nombre: "🧻Productos de primera necesidad", id: "basico" },
+        { nombre: "🥛Lácteos", id: "lacteos" },
+        { nombre: "🥩Carnes", id: "carnes_Embutidos" },
+        { nombre: "🥤Bebidas", id: "bebidas" },
+        { nombre: "🍬Dulces", id: "dulces" },
+        { nombre: "🥖Panadería", id: "pan" },
+        { nombre: "🧹Productos de limpieza", id: "limpieza" },
+        { nombre: "🪥Cuidado personal", id: "personal" },
+        { nombre: "🍎Frutas y verduras", id: "frutas_Verduras" },
+        { nombre: "🚬Cigarrillos y otros", id: "otros" }
     ];
 
     const handleCategoryClick = (id: string) => {
