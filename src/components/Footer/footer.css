@@ -1,0 +1,88 @@
+/* Footer General */
+.footer {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+    position: relative; /* Cambiado a relativo para asegurar el posicionamiento */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+.footer_content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footer_section {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer_section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.footer_section p, .footer_section ul, .footer_bottom p {
+    font-size: 0.9rem;
+}
+
+.footer_section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer_section ul li {
+    margin-bottom: 0.5rem;
+}
+
+.footer_section ul li a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer_section ul li a:hover {
+    color: #cce7ff;
+}
+
+/* Footer Bottom */
+.footer_bottom {
+    text-align: center;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1rem;
+    font-size: 0.8rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .footer_content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer_section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Estilos para el contenedor principal */
+html, body {
+    height: 100%; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Asegura que la altura mínima sea del 100% de la ventana */
+}
+
+.content {
+    flex: 1; /* Permite que el contenido ocupe todo el espacio disponible */
+}

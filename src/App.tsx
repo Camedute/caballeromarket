@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Home from "./components/home";
-import Categorias from "./components/categoria";
-import Locales from "./components/local";
-import Perfil from "./components/perfil";
-import Carrito from "./components/cart";
-import Loginup from "./components/login";
-import BuscarProducto from "./components/buscarProducto";
+import Home from "./components/Home/home";
+import Categorias from "./components/Categorias/categoria";
+import Locales from "./components/Local/local";
+import Perfil from "./components/Perfil/perfil";
+import Carrito from "./components/Carrito/cart";
+import Loginup from "./components/Login/login";
+import BuscarProducto from "./components/BuscarProducto/buscarProducto";
 
 function App(){
   return (

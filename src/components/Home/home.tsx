@@ -1,8 +1,8 @@
 import React from "react";
-import Header from "./header";
-import Footer from "./footer";
-import './styles/Home.css';
-import NavBar from "./navBar";
+import Header from "../Header/header";
+import Footer from "../Footer/footer";
+import './Home.css';
+import Navbar from "../Navbar/navBar";
 function Home(){
     return(
         <>

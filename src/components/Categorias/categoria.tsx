@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "./header";
-import './styles/categories.css'
+import Header from "../Header/header";
+import './categories.css';
+import Footer from "../Footer/footer";
 
 function Categorias() {
     const navigate = useNavigate();
@@ -40,6 +41,7 @@ function Categorias() {
                 </div>
 
             </div>
+            <Footer />
         </>
     );
 }

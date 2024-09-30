@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import './styles/Perfil.css';
-import Header from "./header"; // Estilos personalizados
+import './Perfil.css';
+import Header from "../Header/header";
+import Footer from "../Footer/footer";
 
 interface PerfilProps {
   nombre: string;
@@ -92,6 +93,7 @@ const Perfil: React.FC<PerfilProps> = ({ nombre, email, telefono, imagenUrl }) =
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
