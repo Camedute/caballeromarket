@@ -54,19 +54,19 @@
 }
 
 .categoria-item:nth-child(odd) button {
-    background-color: #28a745;
+    background-color: #00c6ff;
 }
 
 .categoria-item:nth-child(odd) button:hover {
-    background-color: #218838;
+    background-color: #00c6ff;
 }
 
 .categoria-item:nth-child(even) button {
-    background-color: #ffc107;
+    background-color: #3552f8;
 }
 
 .categoria-item:nth-child(even) button:hover {
-    background-color: #e0a800;
+    background-color: #3552f8;
 }
 
 @media (max-width: 768px) {
