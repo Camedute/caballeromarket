@@ -24,6 +24,26 @@
   justify-content: center;
 }
 
+.btn-generar-qr {
+  padding: 12px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-top: 20px;
+}
+
+.btn-generar-qr:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+
 .producto-card,
 .carrito-item {
   background-color: #ffffff;

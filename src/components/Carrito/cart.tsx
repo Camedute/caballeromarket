@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Para la navegación
 import './Cart.css';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
@@ -61,6 +62,8 @@ const Carrito: React.FC = () => {
     return carrito.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
   };
 
+  const navigate = useNavigate(); // Hook para redirigir
+
   return (
     <>
       <Header />
@@ -101,6 +104,11 @@ const Carrito: React.FC = () => {
         </div>
 
         <h3 className="total">Total: ${calcularTotal()}</h3>
+        
+        {/* Botón para generar QR */}
+        <button className="btn-generar-qr" onClick={() => navigate('/QR')}>
+          Generar QR
+        </button>
       </div>
       <Footer />
     </>

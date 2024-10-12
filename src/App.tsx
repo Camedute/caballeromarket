@@ -9,6 +9,7 @@ import Perfil from "./components/Perfil/perfil";
 import Carrito from "./components/Carrito/cart";
 import Loginup from "./components/Login/login";
 import BuscarProducto from "./components/BuscarProducto/buscarProducto";
+import QR from "./components/GenerarQR/QR";
 
 function App(){
   return (
@@ -20,7 +21,9 @@ function App(){
        <Route path="locales" element={<Locales />} />
        <Route path="Perfil" element={<Perfil  />} />
        <Route path="Carrito" element={<Carrito />} />
-       <Route path="/buscar/:query" element={<BuscarProducto />} /> {/* Ruta para mostrar resultados */}
+       <Route path="/buscar/:query" element={<BuscarProducto />} />
+       <Route path="/QR" element={<QR />} />
+        {/* Ruta para mostrar resultados */}
       </Routes>
     </BrowserRouter>
   );
