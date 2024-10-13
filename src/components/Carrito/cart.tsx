@@ -1,112 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Para la navegación
+import db from '../../firebase/firestore'; // Asegúrate de que la ruta sea correcta
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import './Cart.css';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
+import { Spinner } from 'react-bootstrap'; // Importa el spinner de React Bootstrap
 
 interface Producto {
-  id: number;
+  id: string; // ID de Firestore
   nombre: string;
   precio: number;
   cantidad: number;
+  idCliente: string; // Agregamos idCliente para poder usarlo más adelante
+  realizado: boolean; // Agregamos el campo realizado
+}
+
+interface Cliente {
+  id: string; // ID de Firestore
+  nombreUsuario: string; // Nombre del cliente
 }
 
 const Carrito: React.FC = () => {
-  const [carrito, setCarrito] = useState<Producto[]>(() => {
-    const storedCart = localStorage.getItem('carrito');
-    return storedCart ? JSON.parse(storedCart) : [];
-  });
-
-  const productosDisponibles: Producto[] = [
-    { id: 1, nombre: "Producto A", precio: 50, cantidad: 1 },
-    { id: 2, nombre: "Producto B", precio: 30, cantidad: 1 },
-    { id: 3, nombre: "Producto C", precio: 20, cantidad: 1 },
-  ];
+  const [pedidos, setPedidos] = useState<Producto[]>([]); // Estado para los pedidos de Firestore
+  const [clientes, setClientes] = useState<{ [key: string]: string }>({}); // Mapa para los nombres de clientes
+  const [loading, setLoading] = useState(true); // Estado para el loading
+  const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-  }, [carrito]);
+    const fetchPedidos = async () => {
+      const pedidosCollection = collection(db, 'Pedidos'); // Colección de pedidos en Firestore
+      const pedidosSnapshot = await getDocs(pedidosCollection);
+      const pedidosList: Producto[] = [];
 
-  const agregarAlCarrito = (producto: Producto) => {
-    const productoExistente = carrito.find((item) => item.id === producto.id);
-    if (productoExistente) {
-      setCarrito(
-        carrito.map((item) =>
-          item.id === producto.id
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
-        )
-      );
-    } else {
-      setCarrito([...carrito, producto]);
+      for (const doc of pedidosSnapshot.docs) {
+        const pedidoData = doc.data();
+        const pedido = {
+          id: doc.id,
+          idCliente: pedidoData.idCliente, // Asegúrate de incluir idCliente aquí
+          realizado: pedidoData.realizado // Incluimos el campo realizado
+        } as Producto;
+
+        pedidosList.push(pedido);
+      }
+
+      setPedidos(pedidosList);
+      fetchClientes(pedidosList); // Llamamos a la función para obtener los nombres de los clientes
+    };
+
+    fetchPedidos().finally(() => setLoading(false)); // Set loading a false después de que se haya terminado de cargar
+  }, []);
+
+  const fetchClientes = async (pedidosList: Producto[]) => {
+    const clientesMap: { [key: string]: string } = {}; // Mapa para almacenar los nombres de los clientes
+
+    for (const pedido of pedidosList) {
+      const clienteRef = doc(db, 'Clientes', pedido.idCliente); // Referencia al cliente usando el idCliente
+      const clienteSnap = await getDoc(clienteRef);
+
+      if (clienteSnap.exists()) {
+        const clienteData = clienteSnap.data();
+        clientesMap[pedido.idCliente] = clienteData.nombreUsuario as string; // Almacenamos el nombre del cliente en el mapa
+      }
     }
-  };
 
-  const eliminarDelCarrito = (id: number) => {
-    setCarrito(carrito.filter((producto) => producto.id !== id));
+    setClientes(clientesMap); // Establecemos el estado con los nombres de los clientes
   };
-
-  const actualizarCantidad = (id: number, nuevaCantidad: number) => {
-    setCarrito(
-      carrito.map((producto) =>
-        producto.id === id
-          ? { ...producto, cantidad: nuevaCantidad }
-          : producto
-      )
-    );
-  };
-
-  const calcularTotal = () => {
-    return carrito.reduce((total, producto) => total + producto.precio * producto.cantidad, 0);
-  };
-
-  const navigate = useNavigate(); // Hook para redirigir
 
   return (
     <>
       <Header />
       <div className="carrito-container">
-        <h2 className="title">Productos Disponibles</h2>
-        <div className="productos">
-          {productosDisponibles.map((producto) => (
-            <div className="producto-card" key={producto.id}>
-              <p>{producto.nombre} - <strong>${producto.precio}</strong></p>
-              <button className="btn-agregar" onClick={() => agregarAlCarrito(producto)}>
-                Añadir a Pedidos
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="title">Productos Seleccionados</h2>
+        <h2 className="title">Pedidos Consultados</h2>
         <div className="carrito">
-          {carrito.length === 0 ? (
-            <p>No hay productos en los pedidos.</p>
+          {loading ? ( // Mostrar el spinner mientras se carga
+            <Spinner animation="border" variant="primary" />
+          ) : pedidos.length === 0 ? (
+            <p>No hay pedidos disponibles.</p>
           ) : (
-            carrito.map((producto) => (
-              <div className="carrito-item" key={producto.id}>
-                <p>{producto.nombre} - ${producto.precio} x {producto.cantidad}</p>
-                <input
-                  type="number"
-                  min="1"
-                  className="cantidad-input"
-                  value={producto.cantidad}
-                  onChange={(e) => actualizarCantidad(producto.id, parseInt(e.target.value))}
-                />
-                <button className="btn-eliminar" onClick={() => eliminarDelCarrito(producto.id)}>
-                  Eliminar
+            pedidos.map((pedido) => (
+              <div 
+                className={`carrito-item ${pedido.realizado ? 'realizado' : 'no-realizado'}`} // Aplica la clase según el estado
+                key={pedido.id}
+              >
+                <p>Pedido de: {clientes[pedido.idCliente] || 'Cargando nombre...'}</p> {/* Muestra el nombre del cliente */}
+                <button 
+                  className="btn-generar-qr" 
+                  onClick={() => navigate(`/QR/${pedido.id}`)} 
+                  disabled={pedido.realizado} // Deshabilita el botón si realizado es true
+                >
+                  {pedido.realizado ? 'Pedido ya completado' : 'Generar QR'} {/* Cambia el texto del botón */}
                 </button>
               </div>
             ))
           )}
         </div>
-
-        <h3 className="total">Total del Pedido: ${calcularTotal()}</h3>
-        
-        {/* Botón para generar QR */}
-        <button className="btn-generar-qr" onClick={() => navigate('/QR')}>
-          Generar QR para Pedido
-        </button>
       </div>
       <Footer />
     </>

@@ -32,7 +32,7 @@ const Inventario: React.FC = () => {
     <>
       <Header />
       <div className="inventario-container">
-        <h2 className="title">Inventario de Productos</h2>
+        <h2 className="title">Inventario de Productos(WIK)</h2>
         <div className="productos">
           {productos.map((producto) => (
             <div className="producto-card" key={producto.id}>

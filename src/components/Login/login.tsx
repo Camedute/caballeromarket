@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth'; // Importar autenticación de Firebase
+import { auth } from '../firebase/firestore';    // Asegúrate de que la ruta al auth de Firebase esté correcta
 import './Login.css';
-import { useNavigate } from "react-router-dom";
 
 const Loginup: React.FC = () => {
-    const [username, setUsername] = useState<string>("");  // Nombre de usuario
-    const [password, setPassword] = useState<string>("");  // Contraseña
-    const [error, setError] = useState<string>("");        // Mensaje de error
-    const [role, setRole] = useState<string>("cliente");   // Rol del usuario: cliente/admin
+    const [email, setEmail] = useState<string>('');        // Correo electrónico
+    const [password, setPassword] = useState<string>('');  // Contraseña
+    const [error, setError] = useState<string>('');        // Mensaje de error
+    const [loading, setLoading] = useState<boolean>(false); // Estado de carga
     const navigate = useNavigate();
 
     // Manejo del cambio de los campos de entrada
@@ -14,34 +16,40 @@ const Loginup: React.FC = () => {
         setter(e.target.value);
     };
 
-    // Función de manejo de login
-    const handleLogin = () => {
-        if (username === "" || password === "") {
-            setError("Por favor, complete todos los campos.");
-        } else {
-            setError("");
-            
-            // Guardar el usuario en localStorage
-            const userData = {
-                username: username,
-                role: role
-            };
-            localStorage.setItem("userData", JSON.stringify(userData)); // Guardar datos de usuario
-
-            // Redirigir según el rol
-            if (role === "cliente") {
-                navigate("/home");  // Redirigir a la página de cliente
-            } else {
-                navigate("/admin");  // Redirigir a la página de admin
-            }
+    // Función de manejo de login con Firebase Authentication
+    const handleLogin = async () => {
+        if (email === '' || password === '') {
+            setError('Por favor, complete todos los campos.');
+            return;
         }
+
+        setLoading(true);
+        setError('');
+
+        try {
+            // Autenticar al usuario con Firebase Authentication
+            await signInWithEmailAndPassword(auth, email, password);
+
+            // Redirigir a la página principal
+            navigate('/home');
+        } catch (err) {
+            console.error('Error en el login:', err);
+            setError('Correo o contraseña incorrectos.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Navegación al registro
+    const handleRegister = () => {
+        navigate('/register'); // Redirigir a la página de registro
     };
 
     // Cambiar el fondo del body cuando el componente está activo
     useEffect(() => {
-        document.body.classList.add("login-background");
+        document.body.classList.add('login-background');
         return () => {
-            document.body.classList.remove("login-background");
+            document.body.classList.remove('login-background');
         };
     }, []);
 
@@ -49,31 +57,15 @@ const Loginup: React.FC = () => {
         <div className="Login">
             <h2>CaballeroMarket</h2>
 
-            {/* Selector de roles: Cliente o Admin */}
-            <div className="role-tabs">
-                <button
-                    className={`tab ${role === "cliente" ? "active" : ""}`}
-                    onClick={() => setRole("cliente")}
-                >
-                    Cliente
-                </button>
-                <button
-                    className={`tab ${role === "admin" ? "active" : ""}`}
-                    onClick={() => setRole("admin")}
-                >
-                    Admin de Negocio
-                </button>
-            </div>
-
-            {/* Campo de entrada para el nombre de usuario */}
+            {/* Campo de entrada para el correo electrónico */}
             <input
-                type="text"
+                type="email"
                 className="form-control"
-                placeholder="Usuario"
-                value={username}
-                onChange={(e) => handleInputChange(e, setUsername)}
-                name="username"
-                aria-label="Nombre de usuario"
+                placeholder="Correo Electrónico"
+                value={email}
+                onChange={(e) => handleInputChange(e, setEmail)}
+                name="email"
+                aria-label="Correo Electrónico"
             />
 
             {/* Campo de entrada para la contraseña */}
@@ -87,11 +79,23 @@ const Loginup: React.FC = () => {
                 aria-label="Contraseña"
             />
 
-            {/* Mostrar mensaje de error si hay campos vacíos */}
+            {/* Mostrar mensaje de error si hay algún problema */}
             {error && <p className="error-message">{error}</p>}
 
-            {/* Botón de inicio de sesión */}
-            <button className="btn" onClick={handleLogin}>Acceder</button>
+            {/* Mostrar spinner si está cargando */}
+            {loading ? (
+                <div className="loading">Cargando...</div>
+            ) : (
+                <div>
+                    <button className="btn" onClick={handleLogin}>
+                        Acceder
+                    </button>
+                    {/* Botón para registrarse */}
+                    <button className="btn register-btn" onClick={handleRegister}>
+                        Registrarse
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
