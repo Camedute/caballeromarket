@@ -78,7 +78,7 @@ const Carrito: React.FC = () => {
           ))}
         </div>
 
-        <h2 className="title">Pedidos Seleccionados</h2>
+        <h2 className="title">Productos Seleccionados</h2>
         <div className="carrito">
           {carrito.length === 0 ? (
             <p>No hay productos en los pedidos.</p>
