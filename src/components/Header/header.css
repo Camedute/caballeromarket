@@ -23,11 +23,21 @@
   gap: 1rem;
 }
 
+/* Contenedor de la barra de búsqueda */
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Para ocupar el máximo espacio disponible */
+}
+
+
 .search_input {
   padding: 0.5rem;
   border: none;
   border-radius: 5px;
-  width: 200px;
+  width: 300px;
+  margin-right: 10px;
 }
 
 .search_button {

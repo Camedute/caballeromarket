@@ -10,6 +10,7 @@ import Carrito from "./components/Carrito/cart";
 import Loginup from "./components/Login/login";
 import BuscarProducto from "./components/BuscarProducto/buscarProducto";
 import QR from "./components/GenerarQR/QR";
+import Inventario from "./components/Inventario/Inventario";
 
 function App(){
   return (
@@ -23,6 +24,7 @@ function App(){
        <Route path="Carrito" element={<Carrito />} />
        <Route path="/buscar/:query" element={<BuscarProducto />} />
        <Route path="/QR" element={<QR />} />
+       <Route path="/Inventario" element={<Inventario />}></Route>
         {/* Ruta para mostrar resultados */}
       </Routes>
     </BrowserRouter>

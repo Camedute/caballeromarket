@@ -13,7 +13,6 @@ interface Producto {
 
 const Carrito: React.FC = () => {
   const [carrito, setCarrito] = useState<Producto[]>(() => {
-    // Recuperar el carrito desde localStorage
     const storedCart = localStorage.getItem('carrito');
     return storedCart ? JSON.parse(storedCart) : [];
   });
@@ -25,7 +24,6 @@ const Carrito: React.FC = () => {
   ];
 
   useEffect(() => {
-    // Guardar el carrito en localStorage cada vez que se actualiza
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
 
@@ -74,16 +72,16 @@ const Carrito: React.FC = () => {
             <div className="producto-card" key={producto.id}>
               <p>{producto.nombre} - <strong>${producto.precio}</strong></p>
               <button className="btn-agregar" onClick={() => agregarAlCarrito(producto)}>
-                Agregar al carrito
+                Añadir a Pedidos
               </button>
             </div>
           ))}
         </div>
 
-        <h2 className="title">Carrito de Compras</h2>
+        <h2 className="title">Pedidos Seleccionados</h2>
         <div className="carrito">
           {carrito.length === 0 ? (
-            <p>El carrito está vacío.</p>
+            <p>No hay productos en los pedidos.</p>
           ) : (
             carrito.map((producto) => (
               <div className="carrito-item" key={producto.id}>
@@ -103,11 +101,11 @@ const Carrito: React.FC = () => {
           )}
         </div>
 
-        <h3 className="total">Total: ${calcularTotal()}</h3>
+        <h3 className="total">Total del Pedido: ${calcularTotal()}</h3>
         
         {/* Botón para generar QR */}
         <button className="btn-generar-qr" onClick={() => navigate('/QR')}>
-          Generar QR
+          Generar QR para Pedido
         </button>
       </div>
       <Footer />

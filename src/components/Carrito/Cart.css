@@ -16,12 +16,39 @@
   text-align: center;
 }
 
-.productos,
+/* Separación de las secciones */
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 40px; /* Añadido para más espacio entre las secciones */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
 .carrito {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  padding: 20px;
+  background-color: #fff; /* Fondo diferente para los pedidos */
+  border-radius: 10px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Sombra para efecto de caja */
+  margin-top: 30px; /* Espacio entre los productos y pedidos */
+}
+
+/* Opcional: agregar bordes y espaciado adicional para resaltar más las secciones */
+.carrito-container .title {
+  margin-bottom: 10px;
+}
+
+.productos,
+.carrito {
+  border: 1px solid #ccc;
 }
 
 .btn-generar-qr {
@@ -43,7 +70,7 @@
   transform: scale(1.05);
 }
 
-
+/* Cambios en la estructura de los productos */
 .producto-card,
 .carrito-item {
   background-color: #ffffff;
@@ -63,6 +90,16 @@
 .carrito-item:hover {
   transform: translateY(-5px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Diferencia visual entre producto y pedido */
+.producto-card {
+  background-color: #ffffff;
+  border: 2px solid #3498db; /* Bordes azules para productos disponibles */
+}
+
+.carrito-item {
+  background-color:#fff58a; /* Color suave para diferenciar los pedidos */
 }
 
 .producto-card p,
@@ -121,4 +158,9 @@
   text-align: right;
   font-weight: bold;
   color: #1d3557;
+}
+
+/* Espaciado extra para la sección de total */
+.carrito-container .total {
+  margin-top: 40px;
 }

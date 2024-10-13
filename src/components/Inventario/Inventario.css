@@ -1,0 +1,65 @@
+.inventario-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 25px;
+  background-color: #f0f8ff;
+  border-radius: 12px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1.5px;
+}
+
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.producto-card {
+  background-color: #ffffff;
+  border: 2px solid #3498db;
+  border-radius: 12px;
+  padding: 20px;
+  width: 220px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.producto-card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 15px;
+}
+
+.cantidad-input {
+  width: 70px;
+  padding: 8px;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  text-align: center;
+  background-color: #e8f6ff;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.cantidad-input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(52, 152, 219, 0.5);
+}

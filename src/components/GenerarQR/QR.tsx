@@ -10,7 +10,7 @@ function QR() {
     <>
       <Header />
       <div className="qr-container">
-        <h2 className="title">Generar Código QR</h2>
+        <h2 className="title">Codigo QR de tu pedido</h2>
 
         <div className="qr-code-wrapper">
           <QRCode
@@ -23,7 +23,7 @@ function QR() {
         </div>
 
         <p className="qr-description">
-          Escanea el código QR para acceder al contenido.
+          Escanea el código QR para pagar tu pedido.
         </p>
       </div>
       <Footer />

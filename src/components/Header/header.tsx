@@ -19,25 +19,27 @@ const Header: React.FC = () => {
     <header className="navbar">
       <div className="nav_logo">Caballero Market</div>
       <div className={`nav_items ${isOpen ? "open" : ""}`}>
-        <input
-          id="buscarProducto"
-          className="search_input"
-          placeholder="Buscar productos..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => handleSearch(e)}
-        />
-        <button
-          className="search_button"
-          onClick={(e) => handleSearch(e)}
-          disabled={!searchQuery.trim()}
-        >
-          Buscar
+        <div className="search_container">
+          <input
+            id="buscarProducto"
+            className="search_input"
+            placeholder="Buscar productos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => handleSearch(e)}
+          />
+          <button
+            className="search_button"
+            onClick={(e) => handleSearch(e)}
+            disabled={!searchQuery.trim()}
+          >
+            Buscar
         </button>
+        </div>
         <nav className="nav_links">
           <Link to="/home">Inicio</Link>
-          <Link to="/Categorias">Categorías</Link>
-          <Link to="/Locales">Locales</Link>
+          {/* <Link to="/Categorias">Categorías</Link>*/}
+          <Link to="/Inventario">Inventarios</Link> 
           <Link to="/Perfil">Perfil</Link>
           <Link to="/Carrito">Carrito</Link>
           <Link to="/">Cerrar Sesión</Link>
