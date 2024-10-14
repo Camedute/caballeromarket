@@ -10,7 +10,7 @@ import Perfil from "./components/Perfil/perfil";
 import Carrito from "./components/Carrito/cart";
 import Loginup from "./components/Login/login";
 import BuscarProducto from "./components/BuscarProducto/buscarProducto";
-import QR from "./components/GenerarQR/QR";
+import QR from "./components/GenerarQR/QR"; // Asegúrate de que la ruta sea correcta
 import Inventario from "./components/Inventario/Inventario";
 import Register from "./components/Register/register";
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <Route path="perfil" element={<Perfil />} />
         <Route path="carrito" element={<Carrito />} />
         <Route path="/buscar/:query" element={<BuscarProducto />} />
-        <Route path="/QR/:id" element={<QR />} /> {/* Cambiado para incluir el id */}
+        <Route path="/QR/:id" element={<QR />} /> {/* Ajuste aquí */}
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/register" element={<Register />} />
       </Routes>
