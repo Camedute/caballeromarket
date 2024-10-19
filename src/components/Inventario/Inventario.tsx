@@ -3,13 +3,13 @@ import Header from '../Header/header';
 import Footer from '../Footer/footer';
 import './Inventario.css';
 import db from '../../firebase/firestore';
-import { collection, getDocs, doc, addDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 interface Producto {
   id: string;
   nombreProducto: string;
   precioProducto: number;
-  idDueno: string;
+  idDueno: string; // Cambiar a string
 }
 
 const Inventario: React.FC = () => {
@@ -27,7 +27,7 @@ const Inventario: React.FC = () => {
         id: doc.id,
         nombreProducto: doc.data().nombreProducto,
         precioProducto: doc.data().precioProducto,
-        idDueno: doc.data().idDueno,
+        idDueno: doc.data().idDueno || '', // Asegúrate de que idDueno tenga un valor por defecto
       }));
 
       setProductos(productosList);
@@ -41,14 +41,21 @@ const Inventario: React.FC = () => {
   const agregarProducto = async () => {
     if (productoActual) {
       try {
+        const productoRef = doc(db, 'Inventario', productoActual.id);
         const nuevoProducto = {
           nombreProducto: productoActual.nombreProducto,
           precioProducto: productoActual.precioProducto,
-          idDueno: productoActual.idDueno,
+          idDueno: productoActual.idDueno || '', // Asegúrate de que idDueno tenga un valor por defecto
         };
 
-        const docRef = await addDoc(collection(db, 'Inventario'), nuevoProducto);
-        setProductos([...productos, { ...nuevoProducto, id: docRef.id }]);
+        const docSnapshot = await getDoc(productoRef);
+        const productosExistentes = docSnapshot.data()?.productos || [];
+        
+        await updateDoc(productoRef, {
+          productos: [...productosExistentes, nuevoProducto],
+        });
+
+        setProductos([...productos, { ...nuevoProducto, id: productoActual.id }]);
         cerrarModal();
       } catch (error) {
         console.error('Error al agregar producto:', error);
@@ -61,18 +68,24 @@ const Inventario: React.FC = () => {
     if (productoActual) {
       try {
         const productoRef = doc(db, 'Inventario', productoActual.id);
-        await updateDoc(productoRef, {
-          nombreProducto: productoActual.nombreProducto,
-          precioProducto: productoActual.precioProducto,
-          idDueno: productoActual.idDueno,
-        });
+        const docSnapshot = await getDoc(productoRef);
+        const productosActuales = docSnapshot.data()?.productos || [];
 
-        setProductos(
-          productos.map((producto) =>
-            producto.id === productoActual.id ? productoActual : producto
-          )
-        );
-        cerrarModal();
+        const index = productosActuales.findIndex((p: Producto) => p.id === productoActual.id);
+
+        if (index !== -1) {
+          productosActuales[index] = {
+            ...productosActuales[index],
+            nombreProducto: productoActual.nombreProducto,
+            precioProducto: productoActual.precioProducto,
+            idDueno: productoActual.idDueno,
+          };
+
+          await updateDoc(productoRef, { productos: productosActuales });
+
+          setProductos(productos.map((producto) => (producto.id === productoActual.id ? productoActual : producto)));
+          cerrarModal();
+        }
       } catch (error) {
         console.error('Error al actualizar producto:', error);
       }
@@ -82,7 +95,13 @@ const Inventario: React.FC = () => {
   // Función para eliminar un producto
   const eliminarProducto = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'Inventario', id));
+      const productoRef = doc(db, 'Inventario', id);
+      const docSnapshot = await getDoc(productoRef);
+      const productosActuales = docSnapshot.data()?.productos || [];
+
+      const nuevosProductos = productosActuales.filter((producto: Producto) => producto.id !== id);
+
+      await updateDoc(productoRef, { productos: nuevosProductos });
       setProductos(productos.filter((producto) => producto.id !== id));
     } catch (error) {
       console.error('Error al eliminar producto:', error);
@@ -166,7 +185,6 @@ const Inventario: React.FC = () => {
           </button>
         </div>
 
-        {/* Modal para agregar o editar */}
         {(modoEdicion || modoAgregar) && productoActual && (
           <div className="modal">
             <div className="modal-content">

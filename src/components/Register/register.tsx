@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { collection, addDoc } from 'firebase/firestore';
+import {  doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Importar autenticación de Firebase
 import db from '../../firebase/firestore'; // Asegúrate de que la ruta a Firestore esté correcta
 import { auth } from '../firebase/firestore';   // Asegúrate de que la ruta al auth de Firebase esté correcta
@@ -37,9 +37,9 @@ const Register: React.FC = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Guardar los datos adicionales en la colección "Duenos"
-            const duenosRef = collection(db, 'Duenos');
-            await addDoc(duenosRef, {
+            // Crear documento en la colección "Duenos" usando el uid
+            const duenosRef = doc(db, 'Duenos', user.uid); // Crear una referencia al documento
+            await setDoc(duenosRef, { // Usar setDoc para crear el documento
                 uid: user.uid,  // UID del usuario autenticado
                 nombreUsuario: nombreUsuario,
                 telefono: telefono,
@@ -47,6 +47,11 @@ const Register: React.FC = () => {
                 direccion: direccion,
                 email: email
             });
+            const inventarioRef = doc(db,'Inventario', user.uid);
+            await setDoc(inventarioRef,{
+                idDueno: user.uid
+            })
+            ;
 
             // Redirigir al usuario a la página de inicio de sesión
             navigate('/');

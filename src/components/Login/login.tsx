@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth'; // Importar autenticación de Firebase
-import { auth } from '../firebase/firestore';    // Asegúrate de que la ruta al auth de Firebase esté correcta
+import { auth } from '../firebase/firestore'; // Asegúrate de que la ruta al auth de Firebase esté correcta
 import './Login.css';
 
 const Loginup: React.FC = () => {
@@ -28,7 +28,17 @@ const Loginup: React.FC = () => {
 
         try {
             // Autenticar al usuario con Firebase Authentication
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Guardar solo el uid en localStorage
+            localStorage.setItem('user', JSON.stringify({
+                uid: user.uid,
+            }));
+
+            // Aquí puedes agregar la lógica para buscar el UID en Firestore
+            console.log("UID de Authentication:", user.uid); // Muestra el UID de Authentication en consola
+            // Aquí puedes agregar la lógica para verificar si el usuario existe en Firestore
 
             // Redirigir a la página principal
             navigate('/home');
