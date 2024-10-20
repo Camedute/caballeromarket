@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
 import './Inventario.css';
-import db from '../../firebase/firestore';
-import { collection, getDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase/firestore'; // Importar Firestore y auth desde tu configuración
+import { onAuthStateChanged } from 'firebase/auth'; // Para obtener el uid del usuario autenticado
 
 interface Producto {
   id: string;
   nombreProducto: string;
   precioProducto: number;
-  idDueno: string; // Cambiar a string
+  idDueno: string; // Este será el uid del usuario
 }
 
 const Inventario: React.FC = () => {
@@ -18,44 +19,60 @@ const Inventario: React.FC = () => {
   const [productoActual, setProductoActual] = useState<Producto | null>(null);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [modoAgregar, setModoAgregar] = useState(false);
+  const [uid, setUid] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Escuchar el estado de autenticación
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUid(user.uid); // Asignar el uid cuando el usuario esté autenticado
+      } else {
+        setUid(null); // No hay usuario autenticado
+      }
+    });
+
+    return () => unsubscribe(); // Limpiar el listener al desmontar el componente
+  }, []);
 
   useEffect(() => {
     const fetchProductos = async () => {
-      const productosCollection = collection(db, 'Inventario');
-      const productosSnapshot = await getDocs(productosCollection);
-      const productosList: Producto[] = productosSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        nombreProducto: doc.data().nombreProducto,
-        precioProducto: doc.data().precioProducto,
-        idDueno: doc.data().idDueno || '', // Asegúrate de que idDueno tenga un valor por defecto
-      }));
-
-      setProductos(productosList);
+      if (uid) {
+        const usuarioRef = doc(db, 'Inventario', uid);
+        const docSnapshot = await getDoc(usuarioRef);
+        if (docSnapshot.exists()) {
+          const productosData = docSnapshot.data().productos || [];
+          setProductos(productosData);
+        }
+      }
       setLoading(false);
     };
 
     fetchProductos();
-  }, []);
+  }, [uid]);
 
   // Función para agregar un producto nuevo
   const agregarProducto = async () => {
-    if (productoActual) {
+    if (productoActual && uid) {
       try {
-        const productoRef = doc(db, 'Inventario', productoActual.id);
+        const usuarioRef = doc(db, 'Inventario', uid);
         const nuevoProducto = {
+          id: productoActual.id || Date.now().toString(), // Generar un id temporal si no existe.
           nombreProducto: productoActual.nombreProducto,
           precioProducto: productoActual.precioProducto,
-          idDueno: productoActual.idDueno || '', // Asegúrate de que idDueno tenga un valor por defecto
+          idDueno: uid, // Asignar el uid del usuario como dueño.
         };
 
-        const docSnapshot = await getDoc(productoRef);
-        const productosExistentes = docSnapshot.data()?.productos || [];
-        
-        await updateDoc(productoRef, {
-          productos: [...productosExistentes, nuevoProducto],
-        });
+        // Obtener los productos actuales del documento
+        const docSnapshot = await getDoc(usuarioRef);
+        const productosExistentes = docSnapshot.exists() ? docSnapshot.data()?.productos || [] : [];
 
-        setProductos([...productos, { ...nuevoProducto, id: productoActual.id }]);
+        // Actualizar el array de productos
+        await setDoc(usuarioRef, {
+          productos: [...productosExistentes, nuevoProducto],
+        }, { merge: true });
+
+        // Actualizar el estado local
+        setProductos([...productos, nuevoProducto]);
         cerrarModal();
       } catch (error) {
         console.error('Error al agregar producto:', error);
@@ -63,12 +80,12 @@ const Inventario: React.FC = () => {
     }
   };
 
-  // Función para actualizar un producto existente
+  // Función para editar un producto existente
   const editarProducto = async () => {
-    if (productoActual) {
+    if (productoActual && uid) {
       try {
-        const productoRef = doc(db, 'Inventario', productoActual.id);
-        const docSnapshot = await getDoc(productoRef);
+        const usuarioRef = doc(db, 'Inventario', uid);
+        const docSnapshot = await getDoc(usuarioRef);
         const productosActuales = docSnapshot.data()?.productos || [];
 
         const index = productosActuales.findIndex((p: Producto) => p.id === productoActual.id);
@@ -78,10 +95,9 @@ const Inventario: React.FC = () => {
             ...productosActuales[index],
             nombreProducto: productoActual.nombreProducto,
             precioProducto: productoActual.precioProducto,
-            idDueno: productoActual.idDueno,
           };
 
-          await updateDoc(productoRef, { productos: productosActuales });
+          await updateDoc(usuarioRef, { productos: productosActuales });
 
           setProductos(productos.map((producto) => (producto.id === productoActual.id ? productoActual : producto)));
           cerrarModal();
@@ -95,19 +111,22 @@ const Inventario: React.FC = () => {
   // Función para eliminar un producto
   const eliminarProducto = async (id: string) => {
     try {
-      const productoRef = doc(db, 'Inventario', id);
-      const docSnapshot = await getDoc(productoRef);
-      const productosActuales = docSnapshot.data()?.productos || [];
+      if (uid) {
+        const usuarioRef = doc(db, 'Inventario', uid);
+        const docSnapshot = await getDoc(usuarioRef);
+        const productosActuales = docSnapshot.data()?.productos || [];
 
-      const nuevosProductos = productosActuales.filter((producto: Producto) => producto.id !== id);
+        const nuevosProductos = productosActuales.filter((producto: Producto) => producto.id !== id);
 
-      await updateDoc(productoRef, { productos: nuevosProductos });
-      setProductos(productos.filter((producto) => producto.id !== id));
+        await updateDoc(usuarioRef, { productos: nuevosProductos });
+        setProductos(productos.filter((producto) => producto.id !== id));
+      }
     } catch (error) {
       console.error('Error al eliminar producto:', error);
     }
   };
 
+  // Funciones para manejar el modal
   const abrirModalEdicion = (producto: Producto) => {
     setProductoActual(producto);
     setModoEdicion(true);
@@ -118,7 +137,7 @@ const Inventario: React.FC = () => {
       id: '',
       nombreProducto: '',
       precioProducto: 0,
-      idDueno: '', // Aquí deberías incluir el dueño correspondiente
+      idDueno: '', // Se asignará automáticamente el uid del usuario
     });
     setModoAgregar(true);
   };
