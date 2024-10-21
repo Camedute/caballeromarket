@@ -2,40 +2,48 @@ import React from "react";
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
 import './Home.css';
+import { Link } from "react-router-dom";
 
-function Home() {
+const Home: React.FC = () => {
     return (
         <>
             <Header />
-            <main className="home-container">
-                <section className="hero">
-                    <div className="hero-content">
-                        <h1>Bienvenido a Caballero Market</h1>
-                        <p>Buscamos ayudarte con tus compras.</p>
-                        <button className="cta-button">Comienza!</button>
+            <main className="dashboard-container">
+                <section className="dashboard-header">
+                    <h1>Panel de Control del Dueño</h1>
+                    <p>Administra tu tienda y revisa la actividad reciente.</p>
+                </section>
+
+                <section className="dashboard-overview">
+                    <div className="overview-item">
+                        <h2>Total de Productos</h2>
+                        <p>25 productos</p>
+                    </div>
+                    <div className="overview-item">
+                        <h2>Pedidos Recientes</h2>
+                        <p>5 pedidos pendientes</p>
+                    </div>
+                    <div className="overview-item">
+                        <h2>Ventas del Mes</h2>
+                        <p>$2,500.00</p>
                     </div>
                 </section>
-                <section className="features">
-                    <h2>Nuestras Caracteristicas</h2>
-                    <div className="feature-list">
-                        <div className="feature-item">
-                            <h3>Eficaces</h3>
-                            <p>Buscamos ayudarte con tu compras de la mejor forma posible.</p>
-                        </div>
-                        <div className="feature-item">
-                            <h3>Seguridad</h3>
-                            <p>Mantenemos tus datos con la mayor privacidad posible.</p>
-                        </div>
-                        <div className="feature-item">
-                            <h3>Sencillez</h3>
-                            <p>Te aseguramos que tu estancia en la pagina sera lo mas sencillo de enteder.</p>
-                        </div>
+
+                <section className="dashboard-actions">
+                    <h2>Acciones Rápidas</h2>
+                    <div className="actions-list">
+                        <Link to = {"/Inventario"}>
+                        <button className="action-button">Agregar Producto</button></Link>
+                        <Link to = {"/carrito"}>
+                        <button className="action-button">Ver Pedidos</button></Link>
+                        <Link to = {"/Perfil"}>
+                        <button className="action-button">Editar Perfil</button></Link>
                     </div>
                 </section>
             </main>
             <Footer />
         </>
     );
-}
+};
 
 export default Home;

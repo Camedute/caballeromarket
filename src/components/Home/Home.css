@@ -1,39 +1,47 @@
-.home-container {
+.dashboard-container {
     background-color: #f8f8f8;
     font-family: 'Arial', sans-serif;
     padding: 20px;
 }
 
-.hero {
-    background-image: url('/src/Imagenes/knight.png'); /* Ruta absoluta */  
-    background-size: cover;
-    background-position: center;
-    height: 60vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+.dashboard-header {
     text-align: center;
-}
-
-.hero-content {
-    background: rgba(0, 0, 0, 0.5);
     padding: 20px;
-    border-radius: 10px;
-}
-
-h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-}
-
-.cta-button {
     background-color: #007bff;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.dashboard-overview {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.overview-item {
+    background-color: #00c6ff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.dashboard-actions {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.actions-list {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.action-button {
+    background-color: #28a745;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -43,56 +51,6 @@ p {
     transition: background-color 0.3s ease;
 }
 
-.cta-button:hover {
-    background-color: #0056b3;
-}
-
-.features {
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.features h2 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.feature-list {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 30px;
-}
-
-.feature-item {
-    background-color: #00c6ff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 30%;
-    text-align: center;
-    color: white;
-}
-
-.features h2 {
-    font-size: 2.0rem; 
-    margin-bottom: 20px;
-    color: black; 
-    font-weight: bold; 
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
-    border-bottom: 4px solid black; 
-    display: inline-block; 
-    padding-bottom: 10px;
-}
-
-
-.feature-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.feature-item p {
-    font-size: 1rem;
-    color: white;
+.action-button:hover {
+    background-color: #218838;
 }
