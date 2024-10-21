@@ -4,6 +4,7 @@ import Header from "../Header/header";
 import Footer from "../Footer/footer";
 import db from '../../firebase/firestore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 interface UserData {
   nombreUsuario: string;
@@ -22,17 +23,17 @@ const Perfil: React.FC = () => {
     telefono: "",
     nombreLocal: "",
     direccion: "",
-    imagenUrl: "https://via.placeholder.com/150" // Imagen por defecto
+    imagenUrl: "https://via.placeholder.com/150" 
   });
 
   const [isDueno, setIsDueno] = useState<boolean>(false);
   const [uid, setUid] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
       const { uid } = JSON.parse(storedUserData);
-
       if (uid) {
         setUid(uid);
         fetchUserData(uid);
@@ -46,14 +47,10 @@ const Perfil: React.FC = () => {
 
   const fetchUserData = async (uid: string) => {
     try {
-      console.log("UID del login:", uid); // Muestra el UID del login
-
-      // Primero intentamos obtener datos del dueño
       const duenoRef = doc(db, 'Duenos', uid);
       const duenoSnap = await getDoc(duenoRef);
       if (duenoSnap.exists()) {
         const duenoData = duenoSnap.data();
-        console.log("UID de Firebase (dueño):", uid); // Muestra el UID de Firebase
         setIsDueno(true);
         setFormData({
           nombreUsuario: duenoData.nombreUsuario,
@@ -61,21 +58,19 @@ const Perfil: React.FC = () => {
           telefono: duenoData.telefono,
           nombreLocal: duenoData.nombreLocal,
           direccion: duenoData.direccion,
-          imagenUrl: "https://via.placeholder.com/150"
+          imagenUrl: duenoData.imagenUrl || "https://via.placeholder.com/150"
         });
         return; // Salimos si encontramos datos de dueño
       }
 
-      // Si no existe, buscamos datos del cliente
       const clienteRef = doc(db, 'Clientes', uid);
       const clienteSnap = await getDoc(clienteRef);
       if (clienteSnap.exists()) {
         const clienteData = clienteSnap.data();
-        console.log("UID de Firebase (cliente):", uid); // Muestra el UID de Firebase
         setFormData({
           nombreUsuario: clienteData.nombreUsuario,
           correoUsuario: clienteData.correoUsuario,
-          imagenUrl: "https://via.placeholder.com/150"
+          imagenUrl: clienteData.imagenUrl || "https://via.placeholder.com/150"
         });
       } else {
         console.error("Documento de cliente no encontrado");
@@ -90,31 +85,47 @@ const Perfil: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const storage = getStorage();
+    const storageRef = ref(storage, `profileImages/${uid}/${file.name}`);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  };
+
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
 
   const handleSaveClick = async () => {
     setIsEditing(false);
+    let imageUrl = formData.imagenUrl;
 
     try {
+      if (selectedImage) {
+        imageUrl = await uploadImage(selectedImage);
+      }
+
       if (isDueno) {
         const duenoRef = doc(db, 'Duenos', uid);
         await updateDoc(duenoRef, {
-          nombreUsuario: formData.nombreUsuario,
+          ...formData,
           email: formData.correoUsuario,
-          telefono: formData.telefono,
-          nombreLocal: formData.nombreLocal,
-          direccion: formData.direccion,
+          imagenUrl: imageUrl,
         });
       } else {
         const clienteRef = doc(db, 'Clientes', uid);
         await updateDoc(clienteRef, {
-          nombreUsuario: formData.nombreUsuario,
-          correoUsuario: formData.correoUsuario,
+          ...formData,
+          imagenUrl: imageUrl,
         });
       }
-      console.log("Datos guardados:", formData);
+      console.log("Datos guardados:", { ...formData, imageUrl });
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
     }
@@ -127,6 +138,9 @@ const Perfil: React.FC = () => {
         <div className="perfil-container">
           <div className="perfil-imagen">
             <img src={formData.imagenUrl} alt="Perfil" />
+            {isEditing && (
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+            )}
           </div>
           <div className="perfil-datos">
             <div className="perfil-dato">

@@ -1,7 +1,7 @@
 .qr-container {
   max-width: 900px;
-  margin: 50px auto; /* Separación entre header y footer */
-  padding: 40px; /* Aumenta el padding para dar más espacio */
+  margin: 50px auto;
+  padding: 40px;
   background-color: #f0f4f7;
   border-radius: 12px;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
@@ -16,13 +16,49 @@
   font-weight: bold;
 }
 
+.qr-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+  border: 2px solid #1d3557;
+  border-radius: 12px;
+  padding: 20px;
+  background-color: #ffffff; /* Fondo blanco para el card */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .qr-code-wrapper {
   display: inline-block;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
-  border: 4px solid #1d3557; /* Borde alrededor del QR */
+  border: 4px solid #1d3557;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-info-table {
+  margin-left: 30px;
+  text-align: left;
+}
+
+.qr-info-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.qr-info-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #dcdcdc; /* Línea debajo de las filas */
+}
+
+.qr-info-table td strong {
+  color: #1d3557; /* Color de los títulos de las filas */
+}
+
+.qr-info-table ul {
+  padding-left: 20px; /* Espacio a la izquierda de la lista */
 }
 
 .qr-description {
@@ -31,12 +67,18 @@
   margin-top: 30px;
 }
 
-.qr-code canvas {
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
-}
-
 @media (max-width: 768px) {
   .qr-container {
-    padding: 20px; /* Reducir padding en pantallas pequeñas */
+    padding: 20px;
+  }
+
+  .qr-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .qr-info-table {
+    margin-left: 0;
+    margin-top: 20px;
   }
 }

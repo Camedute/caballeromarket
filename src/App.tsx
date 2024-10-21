@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// Importa tus componentes
+// Importa componentes
 import Home from "./components/Home/home";
 import Categorias from "./components/Categorias/categoria";
 import Locales from "./components/Local/local";
@@ -10,9 +10,10 @@ import Perfil from "./components/Perfil/perfil";
 import Carrito from "./components/Carrito/cart";
 import Loginup from "./components/Login/login";
 import BuscarProducto from "./components/BuscarProducto/buscarProducto";
-import QR from "./components/GenerarQR/QR"; // Asegúrate de que la ruta sea correcta
+import QR from "./components/GenerarQR/QR";
 import Inventario from "./components/Inventario/Inventario";
 import Register from "./components/Register/register";
+import ResetPassword from "./components/resetPassword/resetPassword";
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
         <Route path="/QR/:id" element={<QR />} /> {/* Ajuste aquí */}
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );

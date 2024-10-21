@@ -35,12 +35,6 @@ const Loginup: React.FC = () => {
             localStorage.setItem('user', JSON.stringify({
                 uid: user.uid,
             }));
-
-            // Aquí puedes agregar la lógica para buscar el UID en Firestore
-            console.log("UID de Authentication:", user.uid); // Muestra el UID de Authentication en consola
-            // Aquí puedes agregar la lógica para verificar si el usuario existe en Firestore
-
-            // Redirigir a la página principal
             navigate('/home');
         } catch (err) {
             console.error('Error en el login:', err);
@@ -55,6 +49,11 @@ const Loginup: React.FC = () => {
         navigate('/register'); // Redirigir a la página de registro
     };
 
+    // Navegación al restablecimiento de contraseña
+    const handleResetPassword = () => {
+        navigate('/reset-password'); // Redirigir a la página de restablecimiento de contraseña
+    };
+
     // Cambiar el fondo del body cuando el componente está activo
     useEffect(() => {
         document.body.classList.add('login-background');
@@ -66,12 +65,10 @@ const Loginup: React.FC = () => {
     return (
         <div className="Login">
             <h2>CaballeroMarket</h2>
-
-            {/* Campo de entrada para el correo electrónico */}
             <input
                 type="email"
                 className="form-control"
-                placeholder="Correo Electrónico"
+                placeholder="Correo Electrónico✉️"
                 value={email}
                 onChange={(e) => handleInputChange(e, setEmail)}
                 name="email"
@@ -82,30 +79,34 @@ const Loginup: React.FC = () => {
             <input
                 type="password"
                 className="form-control"
-                placeholder="Contraseña"
+                placeholder="Contraseña🙊"
                 value={password}
                 onChange={(e) => handleInputChange(e, setPassword)}
                 name="password"
                 aria-label="Contraseña"
             />
+            
+            {/* Enlace para restablecer la contraseña */}
+            <h6>¿No te acuerdas de la contraseña?</h6>
+            <button className="button-link" onClick={handleResetPassword}>
+                Restablecer aquí!
+            </button>
 
             {/* Mostrar mensaje de error si hay algún problema */}
             {error && <p className="error-message">{error}</p>}
 
-            {/* Mostrar spinner si está cargando */}
-            {loading ? (
-                <div className="loading">Cargando...</div>
-            ) : (
-                <div>
-                    <button className="btn" onClick={handleLogin}>
-                        Acceder
-                    </button>
-                    {/* Botón para registrarse */}
-                    <button className="btn register-btn" onClick={handleRegister}>
-                        Registrarse
-                    </button>
-                </div>
-            )}
+            <div>
+                <button className="button-57" role="button" onClick={handleLogin}>
+                    <span className="text">🚪</span>
+                    <span>Ingresar</span>
+                </button>
+
+                {/* Botón para registrarse */}
+                <button className="button-57" role="button" onClick={handleRegister}>
+                    <span className="text">✍️</span>
+                    <span>Registrarse</span>
+                </button>
+            </div>
         </div>
     );
 };

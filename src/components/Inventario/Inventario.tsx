@@ -3,14 +3,16 @@ import Header from '../Header/header';
 import Footer from '../Footer/footer';
 import './Inventario.css';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase/firestore'; // Importar Firestore y auth desde tu configuración
+import { auth, db, storage } from '../firebase/firestore'; // Importar Firestore, auth y storage desde tu configuración
 import { onAuthStateChanged } from 'firebase/auth'; // Para obtener el uid del usuario autenticado
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // Importar Firebase Storage
 
 interface Producto {
   id: string;
   nombreProducto: string;
   precioProducto: number;
   idDueno: string; // Este será el uid del usuario
+  imagen?: string; // Añadir campo para la imagen
 }
 
 const Inventario: React.FC = () => {
@@ -20,18 +22,19 @@ const Inventario: React.FC = () => {
   const [modoEdicion, setModoEdicion] = useState(false);
   const [modoAgregar, setModoAgregar] = useState(false);
   const [uid, setUid] = useState<string | null>(null);
+  const [imagenProducto, setImagenProducto] = useState<File | null>(null);
+  const [imagenURL, setImagenURL] = useState<string | null>(null);
 
   useEffect(() => {
-    // Escuchar el estado de autenticación
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUid(user.uid); // Asignar el uid cuando el usuario esté autenticado
+        setUid(user.uid);
       } else {
-        setUid(null); // No hay usuario autenticado
+        setUid(null);
       }
     });
 
-    return () => unsubscribe(); // Limpiar el listener al desmontar el componente
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -50,28 +53,38 @@ const Inventario: React.FC = () => {
     fetchProductos();
   }, [uid]);
 
-  // Función para agregar un producto nuevo
+  const uploadImage = async (file: File) => {
+    const storageRef = ref(storage, `productos/${uid}/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    return url; // Retornar el URL de la imagen
+  };
+
   const agregarProducto = async () => {
     if (productoActual && uid) {
       try {
+        // Subir la imagen si se seleccionó
+        let urlImagen: string | undefined;
+        if (imagenProducto) {
+          urlImagen = await uploadImage(imagenProducto);
+        }
+
         const usuarioRef = doc(db, 'Inventario', uid);
         const nuevoProducto = {
-          id: productoActual.id || Date.now().toString(), // Generar un id temporal si no existe.
+          id: productoActual.id || Date.now().toString(),
           nombreProducto: productoActual.nombreProducto,
           precioProducto: productoActual.precioProducto,
-          idDueno: uid, // Asignar el uid del usuario como dueño.
+          idDueno: uid,
+          imagen: urlImagen, // Añadir URL de la imagen
         };
 
-        // Obtener los productos actuales del documento
         const docSnapshot = await getDoc(usuarioRef);
         const productosExistentes = docSnapshot.exists() ? docSnapshot.data()?.productos || [] : [];
 
-        // Actualizar el array de productos
         await setDoc(usuarioRef, {
           productos: [...productosExistentes, nuevoProducto],
         }, { merge: true });
 
-        // Actualizar el estado local
         setProductos([...productos, nuevoProducto]);
         cerrarModal();
       } catch (error) {
@@ -80,7 +93,6 @@ const Inventario: React.FC = () => {
     }
   };
 
-  // Función para editar un producto existente
   const editarProducto = async () => {
     if (productoActual && uid) {
       try {
@@ -91,10 +103,17 @@ const Inventario: React.FC = () => {
         const index = productosActuales.findIndex((p: Producto) => p.id === productoActual.id);
 
         if (index !== -1) {
+          // Subir la nueva imagen si se seleccionó
+          let urlImagen: string | undefined;
+          if (imagenProducto) {
+            urlImagen = await uploadImage(imagenProducto);
+          }
+
           productosActuales[index] = {
             ...productosActuales[index],
             nombreProducto: productoActual.nombreProducto,
             precioProducto: productoActual.precioProducto,
+            imagen: urlImagen || productosActuales[index].imagen, // Mantener la imagen anterior si no se subió una nueva
           };
 
           await updateDoc(usuarioRef, { productos: productosActuales });
@@ -108,7 +127,6 @@ const Inventario: React.FC = () => {
     }
   };
 
-  // Función para eliminar un producto
   const eliminarProducto = async (id: string) => {
     try {
       if (uid) {
@@ -126,7 +144,6 @@ const Inventario: React.FC = () => {
     }
   };
 
-  // Funciones para manejar el modal
   const abrirModalEdicion = (producto: Producto) => {
     setProductoActual(producto);
     setModoEdicion(true);
@@ -137,7 +154,7 @@ const Inventario: React.FC = () => {
       id: '',
       nombreProducto: '',
       precioProducto: 0,
-      idDueno: '', // Se asignará automáticamente el uid del usuario
+      idDueno: '',
     });
     setModoAgregar(true);
   };
@@ -146,6 +163,8 @@ const Inventario: React.FC = () => {
     setModoEdicion(false);
     setModoAgregar(false);
     setProductoActual(null);
+    setImagenProducto(null); // Limpiar la imagen al cerrar el modal
+    setImagenURL(null); // Limpiar la URL de la imagen
   };
 
   const actualizarProducto = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +184,12 @@ const Inventario: React.FC = () => {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImagenProducto(e.target.files[0]);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -178,6 +203,7 @@ const Inventario: React.FC = () => {
               <div className="producto-card" key={producto.id}>
                 <p>{producto.nombreProducto}</p>
                 <p>Precio: {producto.precioProducto}</p>
+                {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
                 <button
                   className="btn editar"
                   title="Modificar Producto"
@@ -222,10 +248,11 @@ const Inventario: React.FC = () => {
                 value={productoActual.precioProducto}
                 onChange={actualizarProducto}
               />
+              <input type="file" accept="image/*" onChange={handleImageChange} />
               <button onClick={guardarCambios}>
-                {modoAgregar ? 'Agregar' : 'Guardar cambios'}
+                {modoAgregar ? 'Agregar' : 'Guardar Cambios'}
               </button>
-              <button onClick={cerrarModal}>Cancelar</button>
+              <button onClick={cerrarModal}>Cerrar</button>
             </div>
           </div>
         )}
