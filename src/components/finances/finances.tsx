@@ -112,7 +112,7 @@ const Finances: React.FC = () => {
         {/* Contenido principal */}
         <main className="main-content">
           <div className="stats-overview">
-            <h2>{selectedCategory} - {selectedCategory === "General" ? "Ganancia vs Costo" : "Datos"}</h2>
+            <h2>{selectedCategory}</h2>
             <div className="stats-graph">
               {renderCategoryData()}
             </div>
