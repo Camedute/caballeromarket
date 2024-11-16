@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import './Perfil.css';
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
+import { useNavigate } from 'react-router-dom';
 import db from '../../firebase/firestore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -13,6 +14,8 @@ interface UserData {
   nombreLocal?: string;
   direccion?: string;
   imagenUrl: string;
+  biografia?: string;
+  estadisticas?: { productosVendidos?: number; comprasRealizadas?: number };
 }
 
 const Perfil: React.FC = () => {
@@ -23,12 +26,13 @@ const Perfil: React.FC = () => {
     telefono: "",
     nombreLocal: "",
     direccion: "",
-    imagenUrl: "https://via.placeholder.com/150" 
+    imagenUrl: "https://via.placeholder.com/150",
+    biografia: "",
+    estadisticas: { productosVendidos: 0, comprasRealizadas: 0 }
   });
-
   const [isDueno, setIsDueno] = useState<boolean>(false);
   const [uid, setUid] = useState<string>("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("user");
@@ -58,9 +62,11 @@ const Perfil: React.FC = () => {
           telefono: duenoData.telefono,
           nombreLocal: duenoData.nombreLocal,
           direccion: duenoData.direccion,
-          imagenUrl: duenoData.imagenUrl || "https://via.placeholder.com/150"
+          imagenUrl: duenoData.imagenUrl || "https://via.placeholder.com/150",
+          biografia: duenoData.biografia || "",
+          estadisticas: { productosVendidos: duenoData.productosVendidos || 0 }
         });
-        return; // Salimos si encontramos datos de dueño
+        return;
       }
 
       const clienteRef = doc(db, 'Clientes', uid);
@@ -70,7 +76,9 @@ const Perfil: React.FC = () => {
         setFormData({
           nombreUsuario: clienteData.nombreUsuario,
           correoUsuario: clienteData.correoUsuario,
-          imagenUrl: clienteData.imagenUrl || "https://via.placeholder.com/150"
+          imagenUrl: clienteData.imagenUrl || "https://via.placeholder.com/150",
+          biografia: clienteData.biografia || "",
+          estadisticas: { comprasRealizadas: clienteData.comprasRealizadas || 0 }
         });
       } else {
         console.error("Documento de cliente no encontrado");
@@ -85,50 +93,29 @@ const Perfil: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedImage(e.target.files[0]);
-    }
-  };
-
-  const uploadImage = async (file: File): Promise<string> => {
-    const storage = getStorage();
-    const storageRef = ref(storage, `profileImages/${uid}/${file.name}`);
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
+  const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleEditClick = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(true);
   };
 
   const handleSaveClick = async () => {
     setIsEditing(false);
-    let imageUrl = formData.imagenUrl;
-
     try {
-      if (selectedImage) {
-        imageUrl = await uploadImage(selectedImage);
-      }
-
-      if (isDueno) {
-        const duenoRef = doc(db, 'Duenos', uid);
-        await updateDoc(duenoRef, {
-          ...formData,
-          email: formData.correoUsuario,
-          imagenUrl: imageUrl,
-        });
-      } else {
-        const clienteRef = doc(db, 'Clientes', uid);
-        await updateDoc(clienteRef, {
-          ...formData,
-          imagenUrl: imageUrl,
-        });
-      }
-      console.log("Datos guardados:", { ...formData, imageUrl });
+      const userRef = isDueno ? doc(db, 'Duenos', uid) : doc(db, 'Clientes', uid);
+      await updateDoc(userRef, { ...formData });
+      console.log("Datos guardados:", formData);
     } catch (error) {
       console.error("Error al actualizar los datos:", error);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate('/');  // Redirige al inicio o login
   };
 
   return (
@@ -139,7 +126,7 @@ const Perfil: React.FC = () => {
           <div className="perfil-imagen">
             <img src={formData.imagenUrl} alt="Perfil" />
             {isEditing && (
-              <input type="file" accept="image/*" onChange={handleImageChange} />
+              <input type="file" accept="image/*" onChange={handleInputChange} />
             )}
           </div>
           <div className="perfil-datos">
@@ -171,57 +158,47 @@ const Perfil: React.FC = () => {
               )}
             </div>
 
-            {isDueno && (
-              <>
-                <div className="perfil-dato">
-                  <label>Teléfono:</label>
-                  {isEditing ? (
-                    <input
-                      type="tel"
-                      name="telefono"
-                      value={formData.telefono}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p>{formData.telefono}</p>
-                  )}
-                </div>
+            <div className="perfil-dato">
+              <label>Biografía:</label>
+              {isEditing ? (
+                <textarea
+                  name="biografia"
+                  value={formData.biografia || ""}
+                  onChange={handleTextAreaChange}
+                />
+              ) : (
+                <p>{formData.biografia || "Sin biografía disponible"}</p>
+              )}
+            </div>
 
-                <div className="perfil-dato">
-                  <label>Nombre del Local:</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="nombreLocal"
-                      value={formData.nombreLocal}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p>{formData.nombreLocal}</p>
-                  )}
+            {/* Sección de estadísticas o datos adicionales */}
+            {isDueno ? (
+              <div className="perfil-estadisticas">
+                <h3>Estadísticas del Negocio</h3>
+                <div className="estadistica-item">
+                  <span>Productos Vendidos:</span>
+                  <p>{formData.estadisticas?.productosVendidos || 0}</p>
                 </div>
-
-                <div className="perfil-dato">
-                  <label>Dirección:</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      name="direccion"
-                      value={formData.direccion}
-                      onChange={handleInputChange}
-                    />
-                  ) : (
-                    <p>{formData.direccion}</p>
-                  )}
+              </div>
+            ) : (
+              <div className="perfil-estadisticas">
+                <h3>Historial de Compras</h3>
+                <div className="estadistica-item">
+                  <span>Cantidad de pedidos completados:</span>
+                  <p>{formData.estadisticas?.comprasRealizadas || 0}</p>
                 </div>
-              </>
+              </div>
             )}
 
+            {/* Botón Editar / Guardar */}
             {isEditing ? (
               <button className="btn" onClick={handleSaveClick}>Guardar</button>
             ) : (
               <button className="btn" onClick={handleEditClick}>Editar</button>
             )}
+
+            {/* Botón para cerrar sesión */}
+            <button className="cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</button>
           </div>
         </div>
       </div>

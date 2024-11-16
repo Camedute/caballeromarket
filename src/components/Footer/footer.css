@@ -2,9 +2,9 @@
 .footer {
     background: linear-gradient(45deg, #00c6ff, #0072ff);
     color: white;
-    padding: 2rem;
+    padding: 3rem 2rem;
     font-family: 'Arial', sans-serif;
-    position: relative; /* Cambiado a relativo para asegurar el posicionamiento */
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -15,20 +15,24 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 2rem;
+    align-items: flex-start; /* Alinea a la parte superior de las secciones */
 }
 
 .footer_section {
     flex: 1;
-    min-width: 200px;
+    min-width: 250px;
+    margin-bottom: 1.5rem;
 }
 
 .footer_section h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .footer_section p, .footer_section ul, .footer_bottom p {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .footer_section ul {
@@ -43,11 +47,24 @@
 .footer_section ul li a {
     color: white;
     text-decoration: none;
-    transition: color 0.3s ease;
+    font-weight: 500;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .footer_section ul li a:hover {
     color: #cce7ff;
+    transform: scale(1.05);
+}
+
+/* Ajuste específico para "Síguenos" */
+.footer_section.social {
+    align-self: flex-start; /* Alinea la sección a la parte superior */
+    text-align: right; /* Alinea el contenido de "Síguenos" a la derecha */
+}
+
+/* Ajuste específico para "Enlaces Rápidos" */
+.footer_section.links {
+    text-align: center; /* Centra el contenido de los enlaces rápidos */
 }
 
 /* Footer Bottom */
@@ -56,7 +73,8 @@
     margin-top: 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding-top: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* Responsivo */
@@ -69,20 +87,4 @@
     .footer_section {
         margin-bottom: 1.5rem;
     }
-}
-
-/* Estilos para el contenedor principal */
-html, body {
-    height: 100%; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
-    margin: 0;
-}
-
-.main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Asegura que la altura mínima sea del 100% de la ventana */
-}
-
-.content {
-    flex: 1; /* Permite que el contenido ocupe todo el espacio disponible */
 }

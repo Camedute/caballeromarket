@@ -1,92 +1,135 @@
+/* Contenedor principal donde se aplicará la imagen de fondo */
 .dashboard-container {
-    background-color: #f8f8f8;
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    z-index: 1; /* Asegura que el contenido quede encima */
 }
 
+/* La imagen de fondo con el difuminado celeste */
+.dashboard-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen */
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px); /* Aplica el difuminado */
+    z-index: -1; /* Coloca la imagen detrás del contenido */
+}
+
+/* Capa celeste sobre la imagen */
+.dashboard-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(173, 216, 230, 0.5); /* Celeste claro con opacidad */
+    z-index: -1; /* Asegura que quede encima de la imagen pero detrás del contenido */
+}
+
+/* Header con fondo más oscuro para destacar el texto */
 .dashboard-header {
     text-align: center;
-    padding: 20px;
-    background-color: #007bff;
+    padding: 30px;
+    background-color: #007bff;  /* Azul más oscuro */
     color: white;
-    border-radius: 10px;
-    margin-bottom: 30px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1; /* Asegura que el header esté encima de la imagen */
+}
+
+.dashboard-header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dashboard-header p {
+    font-size: 1.1rem;
+    font-weight: 400;
 }
 
 .dashboard-overview {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1; /* Asegura que el contenido esté encima de la imagen */
 }
 
 .overview-item {
-    background-color: #00c6ff;
-    padding: 20px;
-    border-radius: 8px;
+    background-color: #007bff;  /* Azul original */
+    padding: 25px;
+    border-radius: 15px;
     text-align: center;
     color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 30%;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 32%;
 }
 
-.dashboard-actions {
-    text-align: center;
-    margin-top: 40px;
+.overview-item h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
 }
 
-.actions-list {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
+.overview-item p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
 }
 
 .action-button {
-    bottom: 10px;
-    position:relative;
-    background-color: #28a745;
+    background-color: #34d399;  /* Verde brillante */
     color: white;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1.1rem;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .action-button:hover {
-    background-color: #218838;
+    background-color: #10b981; /* Verde oscuro en hover */
+    transform: scale(1.05); /* Efecto de agrandamiento suave */
 }
 
 .productos-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    justify-content: center; /* Centrar los productos */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Grid adaptable */
+    gap: 20px;
+    margin-top: 20px;
 }
 
 .producto-box {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    background-color: #ffffff;
-    width: calc(33.33% - 16px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .producto-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); /* Sombra animada */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .producto-box h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
     color: #333;
 }
 
 .producto-box p {
-    font-size: 14px;
+    font-size: 1rem;
     color: #666;
 }

@@ -18,7 +18,6 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
     const [formDataProductos, setFormDataProducto] = useState<Productos[]>([]);
     const [error, setError] = useState<string>("");
-    const [cantidadPedidos, setCantidadPedidos] = useState<number>(0);
 
     useEffect(() => {
         const user = localStorage.getItem('user');
@@ -33,7 +32,6 @@ const Home: React.FC = () => {
 
         if (uid) {
             extraerDataProductos(uid);
-            contarPedidos();
         }
     }, [navigate]);
 
@@ -63,16 +61,6 @@ const Home: React.FC = () => {
             console.error("Error al extraer datos de productos:", error);
             setError("Error al cargar los datos.");
         }
-    }
-
-    const contarPedidos = async () => {
-        try {
-            const pedidosSnapshot = await getDocs(collection(db, 'Pedidos'));
-            setCantidadPedidos(pedidosSnapshot.size);
-        } catch (error) {
-            console.error("Error al contar pedidos:", error);
-            setError("Error al contar los pedidos.");
-        }
     };
 
     return (
@@ -100,13 +88,13 @@ const Home: React.FC = () => {
                     </div>
                     <div className="overview-item">
                         <h2>Pedidos Recientes</h2>
-                        <p>{cantidadPedidos} pedidos pendientes</p>
+                        <p>{formDataProductos.length} productos en total</p>
                         <Link to={"/carrito"}>
                             <button className="action-button">Ver Pedidos</button>
                         </Link>
                     </div>
                     <div className="overview-item">
-                        <h2>Ventas del Mes (por crear componente)</h2>
+                        <h2>Ventas del Mes</h2>
                         <p>$2,500.00</p>
                         <Link to={"/Finances"}>
                             <button className="action-button">Ver tus finanzas</button>

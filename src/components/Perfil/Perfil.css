@@ -1,90 +1,168 @@
-/* Estilos para el contenedor del perfil */
+/* Estilos generales */
 .perfil-container {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 30px;
   padding: 30px;
   border-radius: 15px;
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
   background-color: #ffffff;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  position: relative; /* Permite posicionar elementos dentro */
 }
 
-.perfil-container:hover {
-  transform: translateY(-5px); /* Efecto hover sutil */
+.perfil-imagen {
+  position: relative;
+  display: inline-block;
 }
 
-/* Imagen de perfil circular */
 .perfil-imagen img {
-  width: 160px;
-  height: 160px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid #007bff; /* Borde azul */
+  border: 3px solid #007bff;
   transition: box-shadow 0.3s ease;
 }
 
-.perfil-imagen img:hover {
-  box-shadow: 0px 4px 20px rgba(0, 123, 255, 0.4); /* Sombra en hover */
+/* Ocultar el input de archivo inicialmente */
+.perfil-imagen input[type="file"] {
+  display: none;
+  margin-top: 10px; /* Espacio debajo de la imagen */
 }
 
-/* Estilos de los datos del perfil */
+/* Mostrar el input solo cuando se edita la imagen */
+.perfil-imagen.editando input[type="file"] {
+  display: block;
+}
+
 .perfil-datos {
   flex: 1;
 }
 
 .perfil-dato {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   font-size: 16px;
 }
 
 .perfil-dato label {
   font-weight: bold;
-  margin-right: 15px;
   color: #333;
 }
 
-.perfil-dato input {
-  padding: 8px;
+.perfil-dato input,
+.perfil-dato textarea {
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 100%;
-  font-size: 15px;
-  box-sizing: border-box;
+  font-size: 16px;
   background-color: #f9f9f9;
 }
 
-.perfil-dato input:focus {
+.perfil-dato textarea {
+  height: 100px;
+  resize: none;
+}
+
+.perfil-dato input:focus,
+.perfil-dato textarea:focus {
   border-color: #007bff;
   outline: none;
   background-color: #fff;
 }
 
-/* Botones de acción */
-.btn {
-  padding: 12px 20px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+/* Estilos del Historial de compras */
+.perfil-estadisticas {
+  margin-top: 30px;
+  background-color: #f4f6f8;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-estadisticas h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.perfil-estadisticas ul {
+  list-style: none;
+  padding: 0;
+}
+
+.perfil-estadisticas li {
   font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.2s;
+  color: #555;
+}
+
+.perfil-estadisticas li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+/* Botones Editar y Cerrar sesión */
+.botones-container {
+  display: flex;
+  gap: 20px; /* Espacio entre los botones */
+  margin-top: 20px;
+  position: relative;
+}
+
+.btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px; /* Tamaño más grande */
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex: 1; /* Los botones se distribuyen en el contenedor */
 }
 
 .btn:hover {
   background-color: #0056b3;
-  transform: translateY(-3px); /* Efecto hover para botón */
 }
 
-/* Centrado del contenedor principal */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  background-color: #f4f6f8; /* Fondo general */
-  height: 100vh;
+.cerrar-sesion {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Tamaño más pequeño */
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute; /* Posiciona el botón de forma absoluta */
+  top: 20px; /* Espacio desde la parte superior */
+  right: 20px; /* Espacio desde la derecha */
+  transition: all 0.3s ease; /* Transición suave para los efectos */
+}
+
+.cerrar-sesion:hover {
+  background-color: #c82333; /* Cambio de color al pasar el mouse */
+  transform: scale(1.1); /* Aumenta el tamaño del botón */
+}
+
+.cerrar-sesion:active {
+  background-color: #bd2130; /* Un color más oscuro cuando el botón está presionado */
+  transform: scale(1); /* Asegura que no se mantenga el tamaño aumentado al presionar */
+}
+
+/* Posicionamiento y comportamiento de los botones en diferentes tamaños de pantalla */
+@media (max-width: 600px) {
+  .botones-container {
+    flex-direction: column; /* Los botones se apilan en pantallas pequeñas */
+    gap: 10px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .cerrar-sesion {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }

@@ -1,13 +1,45 @@
+/* Contenedor principal del inventario */
+
 .inventario-container {
+  position: relative;
+  z-index: 2;
   max-width: 1000px;
   margin: 0 auto;
   padding: 25px;
-  background-color: #f0f8ff;
+  background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease-in-out;
 }
 
+/* Fondo difuminado celeste */
+.inventario-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de tu imagen */
+  background-size: 100% auto; /* Ajusta la imagen al ancho */
+  background-position: center;
+  filter: blur(8px); /* Difumina la imagen */
+  z-index: -1; /* Coloca la imagen detrás del contenido */
+}
+
+/* Capa de color celeste sobre la imagen */
+.inventario-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(173, 216, 230, 0.6); /* Celeste claro con opacidad */
+  z-index: -1; /* Asegura que el color esté encima de la imagen, pero detrás del contenido */
+}
+
+/* Estilos del título */
 .title {
   font-size: 28px;
   margin-bottom: 25px;
@@ -17,6 +49,7 @@
   letter-spacing: 1.5px;
 }
 
+/* Estilo para los productos */
 .productos {
   display: flex;
   flex-wrap: wrap;
@@ -47,17 +80,7 @@
   margin-bottom: 15px;
 }
 
-.cantidad-input {
-  width: 70px;
-  padding: 8px;
-  border: 1px solid #bdc3c7;
-  border-radius: 6px;
-  text-align: center;
-  background-color: #e8f6ff;
-  color: #2c3e50;
-  font-weight: bold;
-}
-
+/* Botones */
 .btn {
   padding: 8px;
   border-radius: 50%;
@@ -74,6 +97,7 @@
   transform: scale(1.1);
 }
 
+/* Modal para agregar y editar productos */
 .modal {
   position: fixed;
   top: 0;
