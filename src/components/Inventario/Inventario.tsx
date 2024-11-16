@@ -56,15 +56,14 @@ const Inventario: React.FC = () => {
 
   const agregarProducto = async () => {
     if (productoActual && uid) {
-      // Validar que los campos estén completos y que haya una imagen seleccionada
       if (!productoActual.nombreProducto || !productoActual.precioProducto || productoActual.cantidadProducto === undefined || !imagenProducto) {
         window.alert('Por favor, asegúrate de que todos los campos estén completos y que se haya seleccionado una imagen para el producto.');
         return;
       }
-  
+
       try {
         const urlImagen = await uploadImage(imagenProducto);
-  
+
         const usuarioRef = doc(db, 'Inventario', uid);
         const nuevoProducto = {
           id: productoActual.id || Date.now().toString(),
@@ -74,12 +73,12 @@ const Inventario: React.FC = () => {
           idDueno: uid,
           imagen: urlImagen,
         };
-  
+
         const docSnapshot = await getDoc(usuarioRef);
         const productosExistentes = docSnapshot.exists() ? docSnapshot.data()?.productos || [] : [];
-  
+
         await setDoc(usuarioRef, { productos: [...productosExistentes, nuevoProducto] }, { merge: true });
-  
+
         setProductos([...productos, nuevoProducto]);
         cerrarModal();
       } catch (error) {
@@ -87,7 +86,6 @@ const Inventario: React.FC = () => {
       }
     }
   };
-  
 
   const editarProducto = async () => {
     if (productoActual && uid) {
@@ -200,10 +198,10 @@ const Inventario: React.FC = () => {
               </div>
             ))
           )}
-          <button className="btn agregar" title="Agregar Producto" onClick={abrirModalAgregar}>
-            Agregar un producto
-          </button>
         </div>
+        <button className="btn agregar" title="Agregar Producto" onClick={abrirModalAgregar}>
+          Agregar un producto
+        </button>
 
         {(modoEdicion || modoAgregar) && productoActual && (
           <div className="modal">

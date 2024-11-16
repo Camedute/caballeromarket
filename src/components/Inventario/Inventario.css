@@ -1,5 +1,4 @@
 /* Contenedor principal del inventario */
-
 .inventario-container {
   position: relative;
   z-index: 2;
@@ -24,37 +23,25 @@
   background-size: 100% auto; /* Ajusta la imagen al ancho */
   background-position: center;
   filter: blur(8px); /* Difumina la imagen */
-  z-index: -1; /* Coloca la imagen detrás del contenido */
+  z-index: -1;
 }
 
-/* Capa de color celeste sobre la imagen */
-.inventario-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(173, 216, 230, 0.6); /* Celeste claro con opacidad */
-  z-index: -1; /* Asegura que el color esté encima de la imagen, pero detrás del contenido */
-}
-
-/* Estilos del título */
+/* Título */
 .title {
-  font-size: 28px;
-  margin-bottom: 25px;
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 30px;
   color: #2c3e50;
   font-weight: bold;
-  text-align: center;
-  letter-spacing: 1.5px;
 }
 
-/* Estilo para los productos */
+/* Tarjetas de los productos */
 .productos {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .producto-card {
@@ -80,74 +67,67 @@
   margin-bottom: 15px;
 }
 
-/* Botones */
-.btn {
-  padding: 8px;
-  border-radius: 50%;
+/* Botón de agregar producto */
+.btn.agregar {
+  font-size: 14px; /* Hacemos el botón más pequeño */
+  padding: 8px 16px; /* Reducimos el padding */
+  background-color: #3498db;
+  color: white;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
-  font-size: 24px;
   transition: all 0.3s ease;
-  margin: 10px 5px;
-  background-color: transparent;
+  display: block; /* Aseguramos que el botón sea un bloque */
+  margin: 20px auto 0; /* Colocamos el botón centrado debajo */
 }
 
-.btn:hover {
-  background-color: #ecf0f1;
-  transform: scale(1.1);
+.btn.agregar:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
 }
 
-/* Modal para agregar y editar productos */
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  z-index: 3;
 }
 
 .modal-content {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
-  text-align: center;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  width: 100%;
+  width: 400px;
 }
 
-.modal-content h3 {
-  margin-bottom: 20px;
-  color: #2c3e50;
-}
-
-.modal-content input {
+input[type="text"],
+input[type="number"],
+input[type="file"] {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  border: 1px solid #bdc3c7;
+  box-sizing: border-box;
 }
 
-.modal-content input:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.modal-content button {
-  margin: 10px;
+button {
   padding: 10px 20px;
   background-color: #3498db;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.modal-content button:hover {
+button:hover {
   background-color: #2980b9;
 }
