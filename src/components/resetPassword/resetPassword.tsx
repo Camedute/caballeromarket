@@ -5,17 +5,15 @@ import { useNavigate } from 'react-router-dom';
 import './resetPassword.css';
 
 const ResetPassword: React.FC = () => {
-    const [email, setEmail] = useState<string>('');       // Correo electrónico
-    const [error, setError] = useState<string>('');       // Mensaje de error
-    const [success, setSuccess] = useState<string>('');    // Mensaje de éxito
+    const [email, setEmail] = useState<string>('');       
+    const [error, setError] = useState<string>('');       
+    const [success, setSuccess] = useState<string>('');    
     const navigate = useNavigate();
 
-    // Manejo del cambio del campo de entrada
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
     };
 
-    // Función para manejar el envío del correo de restablecimiento
     const handleResetPassword = async () => {
         if (email === '') {
             setError('Por favor, ingresa tu correo electrónico.');
@@ -34,7 +32,6 @@ const ResetPassword: React.FC = () => {
         }
     };
 
-    // Navegación de vuelta a la página de inicio de sesión
     const handleBackToLogin = () => {
         navigate('/');
     };
@@ -51,11 +48,9 @@ const ResetPassword: React.FC = () => {
                 name="email"
                 aria-label="Correo Electrónico"
             />
-
-                <button className="button-57" role="button" onClick={handleResetPassword}>
-                    <span className="text">📨</span>
-                    <span>restablecer contraseña</span>
-                </button>
+            <button className="button-57" onClick={handleResetPassword}>
+                Restablecer Contraseña
+            </button>
 
             {/* Mostrar mensajes de error o éxito */}
             {error && <p className="error-message">{error}</p>}

@@ -83,22 +83,6 @@ const Home: React.FC = () => {
                     <h1>Panel de Control</h1>
                     <p>Administra tu Pyme y revisa la actividad reciente.</p>
                 </section>
-
-                <section className="dashboard-actions">
-                    <h2>Acciones Rápidas</h2>
-                    <div className="actions-list">
-                        <Link to={"/Inventario"}>
-                            <button className="action-button">Ver mis productos</button>
-                        </Link>
-                        <Link to={"/carrito"}>
-                            <button className="action-button">Ver Pedidos</button>
-                        </Link>
-                        <Link to={"/Perfil"}>
-                            <button className="action-button">Editar Perfil</button>
-                        </Link>
-                    </div>
-                    <br />
-                </section>
                 <section className="dashboard-overview">
                     <div className="overview-item">
                         <h2>Tus productos</h2>
@@ -110,14 +94,23 @@ const Home: React.FC = () => {
                                 </div>
                             ))}
                         </div>
+                        <Link to={"/Inventario"}>
+                            <button className="action-button">Ver mis productos</button>
+                        </Link>
                     </div>
                     <div className="overview-item">
                         <h2>Pedidos Recientes</h2>
                         <p>{cantidadPedidos} pedidos pendientes</p>
+                        <Link to={"/carrito"}>
+                            <button className="action-button">Ver Pedidos</button>
+                        </Link>
                     </div>
                     <div className="overview-item">
                         <h2>Ventas del Mes (por crear componente)</h2>
                         <p>$2,500.00</p>
+                        <Link to={"/Finances"}>
+                            <button className="action-button">Ver tus finanzas</button>
+                        </Link>
                     </div>
                 </section>
             </main>

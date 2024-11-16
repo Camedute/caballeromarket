@@ -41,6 +41,8 @@
 }
 
 .action-button {
+    bottom: 10px;
+    position:relative;
     background-color: #28a745;
     color: white;
     padding: 10px 20px;

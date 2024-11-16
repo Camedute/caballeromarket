@@ -87,9 +87,8 @@ const Loginup: React.FC = () => {
             />
             
             {/* Enlace para restablecer la contraseña */}
-            <h6>¿No te acuerdas de la contraseña?</h6>
             <button className="button-link" onClick={handleResetPassword}>
-                Restablecer aquí!
+            ¿No te acuerdas de la contraseña? Restablecer aquí!
             </button>
 
             {/* Mostrar mensaje de error si hay algún problema */}

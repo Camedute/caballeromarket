@@ -14,6 +14,7 @@ import QR from "./components/GenerarQR/QR";
 import Inventario from "./components/Inventario/Inventario";
 import Register from "./components/Register/register";
 import ResetPassword from "./components/resetPassword/resetPassword";
+import Finances from "./components/finances/finances";
 
 const App: React.FC = () => {
   return (
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <Route path="/inventario" element={<Inventario />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/finances" element={<Finances />} />
       </Routes>
     </BrowserRouter>
   );
