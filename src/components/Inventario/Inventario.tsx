@@ -12,8 +12,12 @@ interface Producto {
   nombreProducto: string;
   precioProducto: number;
   cantidadProducto: number;
+  Categoria: string;
+  fechaElaboracion: Date;
+  fechaCaducidad: Date;
   idDueno: string;
   imagen?: string;
+  costo: number;
 }
 
 const Inventario: React.FC = () => {
@@ -24,6 +28,7 @@ const Inventario: React.FC = () => {
   const [modoAgregar, setModoAgregar] = useState(false);
   const [uid, setUid] = useState<string | null>(null);
   const [imagenProducto, setImagenProducto] = useState<File | null>(null);
+  const [costoTotal, setCostoTotal] = useState<number>(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -33,14 +38,23 @@ const Inventario: React.FC = () => {
     return () => unsubscribe();
   }, []);
 
+  // Obtener productos del inventario y costo total de ventas
   useEffect(() => {
     const fetchProductos = async () => {
       if (uid) {
         const usuarioRef = doc(db, 'Inventario', uid);
+        const ventasRef = doc(db, 'Ventas', uid);
+
         const docSnapshot = await getDoc(usuarioRef);
+        const ventasSnapshot = await getDoc(ventasRef);
+
         if (docSnapshot.exists()) {
           const productosData = docSnapshot.data().productos || [];
           setProductos(productosData);
+        }
+
+        if (ventasSnapshot.exists()) {
+          setCostoTotal(ventasSnapshot.data().costoTotal || 0);
         }
       }
       setLoading(false);
@@ -56,8 +70,16 @@ const Inventario: React.FC = () => {
 
   const agregarProducto = async () => {
     if (productoActual && uid) {
-      if (!productoActual.nombreProducto || !productoActual.precioProducto || productoActual.cantidadProducto === undefined || !imagenProducto) {
-        window.alert('Por favor, asegúrate de que todos los campos estén completos y que se haya seleccionado una imagen para el producto.');
+      if (
+        !productoActual.nombreProducto ||
+        !productoActual.precioProducto ||
+        productoActual.cantidadProducto === undefined ||
+        !imagenProducto ||
+        !productoActual.fechaElaboracion ||
+        !productoActual.fechaCaducidad ||
+        productoActual.costo === undefined
+      ) {
+        window.alert('Por favor, completa todos los campos.');
         return;
       }
 
@@ -65,20 +87,35 @@ const Inventario: React.FC = () => {
         const urlImagen = await uploadImage(imagenProducto);
 
         const usuarioRef = doc(db, 'Inventario', uid);
+        const ventasRef = doc(db, 'Ventas', uid);
+
         const nuevoProducto = {
           id: productoActual.id || Date.now().toString(),
           nombreProducto: productoActual.nombreProducto,
           precioProducto: productoActual.precioProducto,
           cantidadProducto: productoActual.cantidadProducto,
+          Categoria: productoActual.Categoria,
+          fechaElaboracion: productoActual.fechaElaboracion,
+          fechaCaducidad: productoActual.fechaCaducidad,
           idDueno: uid,
           imagen: urlImagen,
+          costo: productoActual.costo,
         };
 
         const docSnapshot = await getDoc(usuarioRef);
         const productosExistentes = docSnapshot.exists() ? docSnapshot.data()?.productos || [] : [];
 
+        // Actualizar inventario
         await setDoc(usuarioRef, { productos: [...productosExistentes, nuevoProducto] }, { merge: true });
 
+        // Actualizar costo total en la colección Ventas
+        const ventasSnapshot = await getDoc(ventasRef);
+        const costoActual = ventasSnapshot.exists() ? ventasSnapshot.data()?.costoTotal || 0 : 0;
+        const nuevoCostoTotal = costoActual + productoActual.costo;
+
+        await setDoc(ventasRef, { costoTotal: nuevoCostoTotal }, { merge: true });
+
+        setCostoTotal(nuevoCostoTotal);
         setProductos([...productos, nuevoProducto]);
         cerrarModal();
       } catch (error) {
@@ -87,56 +124,14 @@ const Inventario: React.FC = () => {
     }
   };
 
-  const editarProducto = async () => {
-    if (productoActual && uid) {
-      try {
-        const usuarioRef = doc(db, 'Inventario', uid);
-        const docSnapshot = await getDoc(usuarioRef);
-        const productosActuales = docSnapshot.data()?.productos || [];
-
-        const index = productosActuales.findIndex((p: Producto) => p.id === productoActual.id);
-        if (index !== -1) {
-          let urlImagen;
-          if (imagenProducto) urlImagen = await uploadImage(imagenProducto);
-
-          productosActuales[index] = {
-            ...productosActuales[index],
-            nombreProducto: productoActual.nombreProducto,
-            precioProducto: productoActual.precioProducto,
-            imagen: urlImagen || productosActuales[index].imagen,
-          };
-
-          await updateDoc(usuarioRef, { productos: productosActuales });
-
-          setProductos(productos.map((producto) => (producto.id === productoActual.id ? productoActual : producto)));
-          cerrarModal();
-        }
-      } catch (error) {
-        console.error('Error al actualizar producto:', error);
-      }
+  const actualizarProducto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (productoActual) {
+      const { name, value } = e.target;
+      setProductoActual({
+        ...productoActual,
+        [name]: name.includes('fecha') ? new Date(value) : value === '' ? '' : Number(value) || value,
+      });
     }
-  };
-
-  const eliminarProducto = async (id: string) => {
-    try {
-      if (uid) {
-        const usuarioRef = doc(db, 'Inventario', uid);
-        const docSnapshot = await getDoc(usuarioRef);
-        const productosActuales = docSnapshot.data()?.productos || [];
-
-        const nuevosProductos = productosActuales.filter((producto: Producto) => producto.id !== id);
-
-        await updateDoc(usuarioRef, { productos: nuevosProductos });
-        setProductos(productos.filter((producto) => producto.id !== id));
-      }
-    } catch (error) {
-      console.error('Error al eliminar producto:', error);
-    }
-  };
-
-  const abrirModalEdicion = (producto: Producto) => {
-    setProductoActual(producto);
-    setModoEdicion(true);
   };
 
   const abrirModalAgregar = () => {
@@ -145,7 +140,11 @@ const Inventario: React.FC = () => {
       nombreProducto: '',
       precioProducto: 0,
       cantidadProducto: 0,
+      Categoria: '',
+      fechaElaboracion: new Date(),
+      fechaCaducidad: new Date(),
       idDueno: '',
+      costo: 0,
     });
     setModoAgregar(true);
   };
@@ -157,20 +156,6 @@ const Inventario: React.FC = () => {
     setImagenProducto(null);
   };
 
-  const actualizarProducto = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (productoActual) {
-      setProductoActual({
-        ...productoActual,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
-  const guardarCambios = () => {
-    if (modoAgregar) agregarProducto();
-    else if (modoEdicion) editarProducto();
-  };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) setImagenProducto(e.target.files[0]);
   };
@@ -179,41 +164,36 @@ const Inventario: React.FC = () => {
     <>
       <Header />
       <div className="inventario-container">
-        <h2 className="title">Productos</h2>
-        <div className="productos">
-          {loading ? (
-            <p>Cargando productos...</p>
-          ) : (
-            productos.map((producto) => (
-              <div className="producto-card" key={producto.id}>
-                <p>{producto.nombreProducto}</p>
-                <p>Precio: {producto.precioProducto}</p>
-                {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
-                <button className="btn editar" title="Modificar Producto" onClick={() => abrirModalEdicion(producto)}>
-                  ✏️ Editar
-                </button>
-                <button className="btn eliminar" title="Eliminar Producto" onClick={() => eliminarProducto(producto.id)}>
-                  🗑️ Borrar
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-        <button className="btn agregar" title="Agregar Producto" onClick={abrirModalAgregar}>
-          Agregar un producto
-        </button>
-
-        {(modoEdicion || modoAgregar) && productoActual && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>{modoAgregar ? 'Agregar Producto' : 'Editar Producto'}</h3>
-              <input type="text" name="nombreProducto" placeholder="Nombre del producto" value={productoActual.nombreProducto} onChange={actualizarProducto} />
-              <input type="number" name="precioProducto" placeholder="Precio del producto" value={productoActual.precioProducto} onChange={actualizarProducto} />
-              <input type="number" name="cantidadProducto" placeholder="Cantidad del producto" value={productoActual.cantidadProducto} onChange={actualizarProducto} />
-              <input type="file" accept="image/*" onChange={handleImageChange} />
-              <button onClick={guardarCambios}>{modoAgregar ? 'Agregar' : 'Guardar Cambios'}</button>
-              <button onClick={cerrarModal}>Cerrar</button>
+        <h2>Inventario de Productos</h2>
+        <p>Costo total acumulado de Ventas: ${costoTotal}</p>
+        {loading ? (
+          <p>Cargando productos...</p>
+        ) : (
+          productos.map((producto) => (
+            <div key={producto.id} className="producto-card">
+              <p>{producto.nombreProducto}</p>
+              <p>Precio: ${producto.precioProducto}</p>
+              <p>Cantidad: {producto.cantidadProducto}</p>
+              <p>Categoría: {producto.Categoria}</p>
+              <p>Costo: ${producto.costo}</p>
+              {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
             </div>
+          ))
+        )}
+        <button onClick={abrirModalAgregar}>Agregar Producto</button>
+        {modoAgregar && productoActual && (
+          <div className="modal">
+            <h3>Agregar Producto</h3>
+            <input type="text" name="nombreProducto" placeholder="Nombre" onChange={actualizarProducto} />
+            <input type="number" name="precioProducto" placeholder="Precio" onChange={actualizarProducto} />
+            <input type="number" name="cantidadProducto" placeholder="Cantidad" onChange={actualizarProducto} />
+            <input type="text" name="Categoria" placeholder="Categoría" onChange={actualizarProducto} />
+            <input type="date" name="fechaElaboracion" onChange={actualizarProducto} />
+            <input type="date" name="fechaCaducidad" onChange={actualizarProducto} />
+            <input type="number" name="costo" placeholder="Costo" onChange={actualizarProducto} />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <button onClick={agregarProducto}>Agregar</button>
+            <button onClick={cerrarModal}>Cerrar</button>
           </div>
         )}
       </div>

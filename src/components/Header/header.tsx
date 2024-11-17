@@ -22,7 +22,8 @@ const Header: React.FC = () => {
         
         <nav className="nav_links">
           <Link to="/home">Inicio</Link>
-          <Link to="/Inventario">Inventarios</Link> 
+          <Link to="/Inventario">Inventarios</Link>
+          <Link to="/finances">Finanzas</Link>
           <Link to="/Perfil">Perfil</Link>
           <Link to="/Carrito">Pedidos</Link>
           <Link to="/">Cerrar Sesión</Link>
