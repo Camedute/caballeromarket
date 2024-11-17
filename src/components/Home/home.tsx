@@ -21,7 +21,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         const user = localStorage.getItem('user');
-        
+        console.log(user);
         if (!user) {
             console.warn("Usuario no autenticado. Redirigiendo al login.");
             navigate('/');

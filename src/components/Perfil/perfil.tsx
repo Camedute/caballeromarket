@@ -113,6 +113,39 @@ const Perfil: React.FC = () => {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+  
+    try {
+      // Configurar Firebase Storage
+      const storage = getStorage();
+      const storageRef = ref(storage, `perfiles/${uid}`);
+  
+      // Subir la imagen a Firebase Storage
+      await uploadBytes(storageRef, file);
+  
+      // Obtener la URL de descarga de la imagen
+      const downloadURL = await getDownloadURL(storageRef);
+  
+      // Actualizar la URL de la imagen en Firestore
+      const userRef = isDueno ? doc(db, 'Duenos', uid) : doc(db, 'Clientes', uid);
+      await updateDoc(userRef, { imagenUrl: downloadURL });
+  
+      // Actualizar el estado local para reflejar el cambio
+      setFormData((prevData) => ({
+        ...prevData,
+        imagenUrl: downloadURL,
+      }));
+  
+      console.log("Imagen subida y URL actualizada:", downloadURL);
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  };
+  
+
+
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate('/');  // Redirige al inicio o login
@@ -123,12 +156,22 @@ const Perfil: React.FC = () => {
       <Header />
       <div className="container">
         <div className="perfil-container">
-          <div className="perfil-imagen">
-            <img src={formData.imagenUrl} alt="Perfil" />
-            {isEditing && (
-              <input type="file" accept="image/*" onChange={handleInputChange} />
-            )}
-          </div>
+        <div className="perfil-imagen">
+                <img src={formData.imagenUrl} alt="Perfil" />
+                {isEditing && (
+                  <label htmlFor="imageUpload" className="btn">
+                    Subir Imagen
+                    <input
+                      id="imageUpload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                )}
+              </div>
+
           <div className="perfil-datos">
             <div className="perfil-dato">
               <label>Nombre:</label>

@@ -131,3 +131,74 @@ button {
 button:hover {
   background-color: #2980b9;
 }
+
+
+.inventario-container {
+  padding: 20px;
+}
+
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;  /* Reducido el espacio entre las tarjetas */
+}
+
+.producto-card {
+  border: 1px solid #ccc;
+  padding: 8px;  /* Menor espacio dentro de la tarjeta */
+  width: 160px;  /* Tamaño más pequeño para las tarjetas */
+  text-align: center;
+  font-size: 14px;  /* Fuente más pequeña */
+  box-sizing: border-box;
+}
+
+.producto-card img {
+  max-width: 80%;  /* Reducir el tamaño de la imagen */
+  height: auto;
+  margin-bottom: 8px;  /* Menos espacio debajo de la imagen */
+}
+
+.producto-card button {
+  margin-top: 5px;
+  font-size: 12px;  /* Fuente más pequeña en los botones */
+  padding: 5px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 280px;  /* Ajustado el tamaño del modal */
+  text-align: center;
+  border-radius: 10px;
+}
+
+.modal-content input {
+  width: 100%;
+  margin: 8px 0;  /* Menor espacio entre los campos */
+  padding: 6px;  /* Menor tamaño de los inputs */
+}
+
+.btn.agregar {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;  /* Ajustar el tamaño del botón */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn.agregar:hover {
+  background-color: #0056b3;
+}

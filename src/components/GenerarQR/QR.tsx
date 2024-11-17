@@ -15,6 +15,14 @@ interface pedidoData {
   idCliente: string;
 }
 
+interface ProductoPedido {
+  id: string;
+  nombreProducto: string;
+  cantidad: number;
+}
+
+
+
 function QR() {
   const { id } = useParams<{ id: string }>();
   const [formDataPedido, setFormDataPedido] = useState<pedidoData>({
@@ -39,8 +47,15 @@ function QR() {
         const pedidoData = pedidoSnap.data();
         const fechaPedido = (pedidoData.fecha as Timestamp).toDate().toLocaleString();
         const listaProductos = Object.entries(pedidoData.listaPedidos).map(
-          ([producto, cantidad]) => `${producto}: ${cantidad}`
+          ([idProducto, datosProducto]) => {
+            const producto = datosProducto as ProductoPedido; // Cast explícito
+            const nombreProducto = producto.nombreProducto || "Producto desconocido";
+            const cantidad = producto.cantidad || 0;
+            return `${nombreProducto}: ${cantidad} unidades`;
+          }
         );
+        
+        
 
         setFormDataPedido({
           listaProductos,
@@ -68,7 +83,7 @@ function QR() {
       console.log(error);
     }
   };
-
+  console.log(formDataPedido);
   return (
     <>
       <Header />

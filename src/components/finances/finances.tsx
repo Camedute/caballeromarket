@@ -1,17 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pie, Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 import "./finances.css";
 import Footer from "../Footer/footer";
 import Header from "../Header/header";
+import { db } from "../firebase/firestore";
+import { doc, getDoc } from "@firebase/firestore";
 
+// Registramos los elementos de Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
+interface general{
+ganancia: number;
+costo: number;
+};
+
+
 const Finances: React.FC = () => {
+  // Definir el estado dentro del componente
+  const [uid, setUid] = useState<string>(""); // Definición de 'uid' y su setter
+  const [formDataGeneral, setFormDataGeneral] = useState<general>({
+    ganancia: 0,
+    costo: 0,
+  });
   const [selectedCategory, setSelectedCategory] = useState<string>("General");
 
+  // Manejo de 'useEffect' correctamente dentro del componente
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("user");
+    if (storedUserData) {
+      const { uid } = JSON.parse(storedUserData);
+      if (uid) {
+        setUid(uid);
+        fetchData(uid);
+      } else {
+        console.error("UID no está definido");
+      }
+    } else {
+      console.error("No se encontró información del usuario en localStorage");
+    }
+  }, []); // Asegúrate de que el hook 'useEffect' esté correctamente utilizado
+
+  // Función para obtener datos de Firestore
+  const fetchData = async (uid: string) => {
+    try {
+      const dataRef = doc(db, 'Ventas', uid);
+      const dataSnap = await getDoc(dataRef);
+
+      if (dataSnap.exists()) {
+        const data = dataSnap.data();
+        setFormDataGeneral({
+          ganancia: data.gananciaTotal,
+          costo: data.costoTotal,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Datos ficticios para las categorías
   const data: Record<string, number[]> = {
-    General: [30, 70],
+    General: [formDataGeneral.ganancia, formDataGeneral.costo],
     Productos: [100, 50, 20, 60, 90, 30, 10, 40, 80, 70],
     Categorías: [40, 25, 35, 70, 60, 80, 10, 50, 30, 90],
     Gastos: [60, 30, 10, 20, 50, 30, 40, 10],
@@ -19,17 +69,19 @@ const Finances: React.FC = () => {
     Pedidos: [8, 5, 9, 4],
   };
 
+  // Configuración del gráfico general
   const chartDataGeneral = {
     labels: ["Ganancia", "Costo"],
     datasets: [
       {
         data: data[selectedCategory],
-        backgroundColor: ["#36a2eb", "#ffcd56"],
-        hoverBackgroundColor: ["#36a2eb", "#ffcd56"],
+        backgroundColor: ["#36eb5d", "#36a2eb"],
+        hoverBackgroundColor: ["#36eb5d", "#36a2eb"],
       },
     ],
   };
 
+  // Configuración del gráfico de barras
   const chartDataBar = {
     labels: Array.from({ length: 10 }, (_, i) => `Elemento ${i + 1}`),
     datasets: [
@@ -43,6 +95,7 @@ const Finances: React.FC = () => {
     ],
   };
 
+  // Función para renderizar los datos de acuerdo a la categoría seleccionada
   const renderCategoryData = () => {
     if (selectedCategory === "General") {
       return <Pie data={chartDataGeneral} options={{ responsive: true, maintainAspectRatio: false }} />;
@@ -94,7 +147,6 @@ const Finances: React.FC = () => {
     <div className="finances-container">
       <Header />
       <div className="finances-dashboard">
-        {/* Menú lateral */}
         <aside className="sidebar">
           <ul className="menu-list">
             {["General", "Productos", "Categorías", "Gastos", "Boletas/Facturas", "Pedidos"].map((category) => (
@@ -109,7 +161,6 @@ const Finances: React.FC = () => {
           </ul>
         </aside>
 
-        {/* Contenido principal */}
         <main className="main-content">
           <div className="stats-overview">
             <h2>{selectedCategory}</h2>

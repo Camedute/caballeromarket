@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Para la navegación
 import db from '../../firebase/firestore'; // Asegúrate de que la ruta sea correcta
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { auth } from '../firebase/firestore';
 import './Cart.css';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
 import { Spinner } from 'react-bootstrap'; // Importa el spinner de React Bootstrap
+import { onAuthStateChanged } from 'firebase/auth';
 
 interface Producto {
   id: string; // ID de Firestore
@@ -25,6 +27,7 @@ const Carrito: React.FC = () => {
   const [pedidos, setPedidos] = useState<Producto[]>([]); // Estado para los pedidos de Firestore
   const [clientes, setClientes] = useState<{ [key: string]: string }>({}); // Mapa para los nombres de clientes
   const [loading, setLoading] = useState(true); // Estado para el loading
+  const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate(); // Hook para redirigir
 
   useEffect(() => {
@@ -49,6 +52,12 @@ const Carrito: React.FC = () => {
     };
 
     fetchPedidos().finally(() => setLoading(false)); // Set loading a false después de que se haya terminado de cargar
+    
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) setUid(user.uid);
+      else setUid(null);
+    });
+    return () => unsubscribe();
   }, []);
 
   const fetchClientes = async (pedidosList: Producto[]) => {
