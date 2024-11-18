@@ -1,11 +1,13 @@
 /* Contenedor para el gráfico General */
 .stats-graph canvas {
-  max-width: 600px; /* Limitar el ancho máximo */
-  max-height: 400px; /* Limitar la altura máxima */
-  width: 100% !important; /* Asegura que se ajuste al contenedor */
-  height: auto !important; /* Ajusta la altura proporcionalmente */
+  width: 100%;
+  max-width: 1000px; /* Aumentar el tamaño máximo */
+  height: auto !important; /* Mantener la proporción */
+  margin: 0 auto; /* Centrar el gráfico */
+  display: block; /* Asegura que el gráfico sea un bloque */
 }
 
+/* Diseño de la página */
 .finances-container {
   display: flex;
   flex-direction: column;
@@ -71,9 +73,8 @@
   border-collapse: collapse;
 }
 
-.excel-style-table th,
-.excel-style-table td {
-  padding: 8px;
+.excel-style-table th, .excel-style-table td {
+  padding: 10px;
   text-align: center;
   border: 1px solid #ddd;
 }
@@ -116,15 +117,10 @@ button:hover {
 }
 
 .upload-button {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px 20px;
   background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
-}
-
-.upload-button:hover {
-  background-color: #218838;
 }

@@ -10,22 +10,19 @@ import { doc, getDoc } from "@firebase/firestore";
 // Registramos los elementos de Chart.js
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-interface general{
-ganancia: number;
-costo: number;
-};
-
+interface general {
+  ganancia: number;
+  costo: number;
+}
 
 const Finances: React.FC = () => {
-  // Definir el estado dentro del componente
-  const [uid, setUid] = useState<string>(""); // Definición de 'uid' y su setter
+  const [uid, setUid] = useState<string>("");
   const [formDataGeneral, setFormDataGeneral] = useState<general>({
     ganancia: 0,
     costo: 0,
   });
   const [selectedCategory, setSelectedCategory] = useState<string>("General");
 
-  // Manejo de 'useEffect' correctamente dentro del componente
   useEffect(() => {
     const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
@@ -39,14 +36,12 @@ const Finances: React.FC = () => {
     } else {
       console.error("No se encontró información del usuario en localStorage");
     }
-  }, []); // Asegúrate de que el hook 'useEffect' esté correctamente utilizado
+  }, []);
 
-  // Función para obtener datos de Firestore
   const fetchData = async (uid: string) => {
     try {
       const dataRef = doc(db, 'Ventas', uid);
       const dataSnap = await getDoc(dataRef);
-
       if (dataSnap.exists()) {
         const data = dataSnap.data();
         setFormDataGeneral({
@@ -59,7 +54,6 @@ const Finances: React.FC = () => {
     }
   };
 
-  // Datos ficticios para las categorías
   const data: Record<string, number[]> = {
     General: [formDataGeneral.ganancia, formDataGeneral.costo],
     Productos: [100, 50, 20, 60, 90, 30, 10, 40, 80, 70],
@@ -69,7 +63,7 @@ const Finances: React.FC = () => {
     Pedidos: [8, 5, 9, 4],
   };
 
-  // Configuración del gráfico general
+  // Configuración del gráfico General
   const chartDataGeneral = {
     labels: ["Ganancia", "Costo"],
     datasets: [
@@ -79,6 +73,16 @@ const Finances: React.FC = () => {
         hoverBackgroundColor: ["#36eb5d", "#36a2eb"],
       },
     ],
+  };
+
+  const chartOptionsGeneral = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+    },
   };
 
   // Configuración del gráfico de barras
@@ -95,12 +99,21 @@ const Finances: React.FC = () => {
     ],
   };
 
-  // Función para renderizar los datos de acuerdo a la categoría seleccionada
+  const chartOptionsBar = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+    },
+  };
+
   const renderCategoryData = () => {
     if (selectedCategory === "General") {
-      return <Pie data={chartDataGeneral} options={{ responsive: true, maintainAspectRatio: false }} />;
+      return <Pie data={chartDataGeneral} options={chartOptionsGeneral} />;
     } else if (selectedCategory === "Productos" || selectedCategory === "Categorías") {
-      return <Bar data={chartDataBar} />;
+      return <Bar data={chartDataBar} options={chartOptionsBar} />;
     } else if (selectedCategory === "Gastos") {
       return (
         <div className="excel-style-table">
