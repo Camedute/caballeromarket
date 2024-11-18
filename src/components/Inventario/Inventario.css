@@ -40,8 +40,8 @@
 
 /* El contenedor de los productos del inventario */
 .productos {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid; /* Usamos grid en lugar de flex para un diseño más controlado */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Asegura que las tarjetas se distribuyan bien */
   gap: 30px;
   justify-content: center;
   margin-bottom: 20px;
@@ -49,25 +49,21 @@
   background-color: rgba(255, 255, 255, 0.6); /* Fondo translúcido */
   border-radius: 15px; /* Bordes redondeados */
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-  overflow: visible; /* Asegura que el contenido no se corte */
 }
 
-/* Ajuste en el tamaño de las tarjetas de productos */
+/* Tarjetas de los productos */
 .producto-card {
-  background-color: #ffffff;
-  border: 3px solid #3498db;
-  border-radius: 16px;
+  background-color: #ffffff; /* Fondo blanco para las tarjetas */
+  border: 3px solid #3498db; /* Borde más marcado */
+  border-radius: 16px;  /* Bordes redondeados */
   padding: 20px;
-  width: 300px;  /* Tamaño más grande para las tarjetas */
-  min-height: 350px; /* Cambiado a min-height para flexibilidad */
   text-align: center;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column; /* Ordena los elementos de forma vertical */
-  justify-content: space-between; /* Espaciado entre los elementos */
-  overflow: visible; /* Permite el contenido a salir del contenedor si es necesario */
+  font-size: 16px; /* Fuente mayor */
+  display: flex; /* Alinea el contenido verticalmente */
+  flex-direction: column; /* Apila los elementos de la tarjeta verticalmente */
+  justify-content: space-between; /* Asegura que los elementos tengan espacio entre ellos */
 }
 
 .producto-card:hover {
@@ -75,11 +71,19 @@
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Efecto de elevación */
 }
 
-/* Contenedor para los datos de cada producto */
-.producto-card .datos {
-  overflow-y: auto; /* Permite el scroll vertical si el contenido es demasiado largo */
-  flex-grow: 1; /* Permite que el área de los datos ocupe el espacio disponible */
-  padding-bottom: 10px; /* Espacio adicional en la parte inferior */
+.producto-card p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 15px;
+  text-align: left; /* Alineamos el texto hacia la izquierda para una mejor lectura */
+}
+
+/* Ajustes para la imagen del producto */
+.producto-card img {
+  max-width: 100%;  /* Asegura que la imagen no desborde la tarjeta */
+  height: auto;
+  border-radius: 10px;  /* Bordes suaves para las imágenes */
 }
 
 /* Estilo de los botones de producto */
@@ -87,7 +91,7 @@
   background-color: #3498db;
   color: white;
   font-size: 16px;
-  padding: 12px 20px;
+  padding: 12px 20px; /* Botones más grandes */
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -99,4 +103,89 @@
 .producto-card button:hover {
   background-color: #2980b9;
   transform: scale(1.05);
+}
+
+/* Botón de agregar producto (ajustado para ser más pequeño) */
+.btn.agregar {
+  font-size: 16px; /* Tamaño de fuente mayor */
+  padding: 8px 20px; /* Botón más pequeño */
+  background-color: #3498db;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block; /* Aseguramos que el botón sea un bloque */
+  margin: 30px auto 0; /* Colocamos el botón centrado debajo */
+}
+
+.btn.agregar:hover {
+  background-color: #2980b9;
+  transform: scale(1.05);
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Estilo para los formularios dentro del modal */
+.modal-content input {
+  width: 100%;
+  margin: 8px 0;  /* Menor espacio entre los campos */
+  padding: 6px;  /* Menor tamaño de los inputs */
+}
+
+.btn.agregar {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;  /* Ajustar el tamaño del botón */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn.agregar:hover {
+  background-color: #0056b3;
 }
