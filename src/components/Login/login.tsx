@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth'; // Importar autenticación de Firebase
-import { auth } from '../firebase/firestore'; // Asegúrate de que la ruta al auth de Firebase esté correcta
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/firestore';
 import './Login.css';
 
 const Loginup: React.FC = () => {
-    const [email, setEmail] = useState<string>('');        // Correo electrónico
-    const [password, setPassword] = useState<string>('');  // Contraseña
-    const [error, setError] = useState<string>('');        // Mensaje de error
-    const [loading, setLoading] = useState<boolean>(false); // Estado de carga
+    const [email, setEmail] = useState<string>('');        
+    const [password, setPassword] = useState<string>('');  
+    const [error, setError] = useState<string>('');        
+    const [loading, setLoading] = useState<boolean>(false); 
     const navigate = useNavigate();
 
     // Manejo del cambio de los campos de entrada
@@ -16,7 +16,6 @@ const Loginup: React.FC = () => {
         setter(e.target.value);
     };
 
-    // Función de manejo de login con Firebase Authentication
     const handleLogin = async () => {
         if (email === '' || password === '') {
             setError('Por favor, complete todos los campos.');
@@ -27,11 +26,8 @@ const Loginup: React.FC = () => {
         setError('');
 
         try {
-            // Autenticar al usuario con Firebase Authentication
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
-            // Guardar solo el uid en localStorage
             localStorage.setItem('user', JSON.stringify({
                 uid: user.uid,
             }));
@@ -44,17 +40,14 @@ const Loginup: React.FC = () => {
         }
     };
 
-    // Navegación al registro
     const handleRegister = () => {
-        navigate('/register'); // Redirigir a la página de registro
+        navigate('/register');
     };
 
-    // Navegación al restablecimiento de contraseña
     const handleResetPassword = () => {
-        navigate('/reset-password'); // Redirigir a la página de restablecimiento de contraseña
+        navigate('/reset-password');
     };
 
-    // Cambiar el fondo del body cuando el componente está activo
     useEffect(() => {
         document.body.classList.add('login-background');
         return () => {
@@ -74,8 +67,6 @@ const Loginup: React.FC = () => {
                 name="email"
                 aria-label="Correo Electrónico"
             />
-
-            {/* Campo de entrada para la contraseña */}
             <input
                 type="password"
                 className="form-control"
@@ -85,22 +76,15 @@ const Loginup: React.FC = () => {
                 name="password"
                 aria-label="Contraseña"
             />
-            
-            {/* Enlace para restablecer la contraseña */}
             <button className="button-link" onClick={handleResetPassword}>
-            ¿No te acuerdas de la contraseña? Restablecer aquí!
+                ¿No te acuerdas de la contraseña? Restablecer aquí!
             </button>
-
-            {/* Mostrar mensaje de error si hay algún problema */}
             {error && <p className="error-message">{error}</p>}
-
             <div>
                 <button className="button-57" role="button" onClick={handleLogin}>
                     <span className="text">🚪</span>
                     <span>Ingresar</span>
                 </button>
-
-                {/* Botón para registrarse */}
                 <button className="button-57" role="button" onClick={handleRegister}>
                     <span className="text">✍️</span>
                     <span>Registrarse</span>

@@ -1,4 +1,8 @@
 /* Fondo para la página de login */
+body.login-background {
+    position: relative; /* Asegura que los pseudoelementos se posicionen correctamente */
+}
+
 body.login-background::before {
     content: "";
     position: absolute;
@@ -6,11 +10,12 @@ body.login-background::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../Imagenes/Negocio.jpg');
+    background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta corregida */
     background-size: cover;
     background-position: center;
     filter: blur(8px);
-    z-index: -2;
+    opacity: 0.6;
+    z-index: -2; /* Asegura que el fondo esté por debajo de los demás elementos */
 }
 
 body.login-background::after {
@@ -20,8 +25,8 @@ body.login-background::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 123, 255, 0.5);
-    z-index: -1;
+    background-color: rgba(173, 216, 230, 0.5); /* Capa degradada azul/celeste */
+    z-index: -1; /* Asegura que el fondo de color no tape otros elementos */
 }
 
 /* Estilos del formulario de login */
@@ -30,13 +35,13 @@ body.login-background::after {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco translúcido */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    z-index: 1;
+    z-index: 1; /* Asegura que el formulario esté por encima del fondo */
 }
 
 .Login h2 {
@@ -61,83 +66,7 @@ body.login-background::after {
     outline: none;
 }
 
-/* Tabs para selección de rol */
-.role-tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.tab {
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: #e0e0e0;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.tab:hover {
-    background-color: #d0d0d0;
-    transform: scale(1.05);
-}
-
-.tab.active {
-    background-color: #007bff;
-    color: #fff;
-}
-
-/* Botón de login mejorado */
-.btn {
-    width: 90%;
-    padding: 12px;
-    font-size: 1.2rem;
-    border-radius: 25px;
-    border: 2px solid #007bff;
-    background-color: transparent;
-    color: #007bff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn:hover {
-    background-color: #007bff;
-    color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-}
-
-/* Botón de registro */
-.register-btn {
-    background-color: #28a745;
-    border: 2px solid #28a745;
-    margin-top: 15px;
-}
-
-.register-btn:hover {
-    background-color: #218838;
-    border-color: #218838;
-}
-
-/* Mensaje de error */
-.error-message {
-    color: red;
-    font-size: 0.9rem;
-    margin-top: 10px;
-}
-
-/* Spinner de carga */
-.loading {
-    font-size: 1.2rem;
-    color: #007bff;
-    font-weight: bold;
-}
-
+/* Botones */
 .button-57 {
     position: relative;
     overflow: hidden;
@@ -147,7 +76,7 @@ body.login-background::after {
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    line-height: 18px; /* Mantener o ajustar según sea necesario */
+    line-height: 18px;
     padding: 20px 25px;
     text-decoration: none;
     cursor: pointer;
@@ -160,26 +89,25 @@ body.login-background::after {
 .button-57 span:first-child {
     position: relative;
     transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
-    z-index: 10; /* Mantener el ícono visible */
+    z-index: 10;
 }
 
 .button-57 span:last-child {
-    color: white; /* Color del texto */
-    display: block; /* Asegurarse de que ocupe espacio */
-    position: absolute; /* Posición absoluta para superponer */
-    top: 100%; /* Centrar verticalmente */
-    left: 50%; /* Centrar horizontalmente */
-    transform: translate(-50%, -50%); /* Ajustar para centrar */
-    opacity: 0; /* Inicialmente oculto */
-    transition: opacity 300ms ease, transform 300ms ease; /* Transiciones suaves */
-    line-height: normal; /* Cambiar a normal para mejor alineación */
+    color: white;
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 300ms ease, transform 300ms ease;
 }
 
 .button-57:hover span:last-child {
-    opacity: 1; /* Mostrar texto al pasar el cursor */
-    transform: translate(-50%, -150%); /* Mover el texto hacia arriba al aparecer */
+    opacity: 1;
+    transform: translate(-50%, -150%);
 }
 
 .button-57:hover span:first-child {
-    opacity: 0; /* Ocultar ícono al pasar el cursor */
+    opacity: 0;
 }

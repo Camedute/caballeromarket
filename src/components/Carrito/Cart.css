@@ -53,7 +53,7 @@
   gap: 20px;
   justify-content: center;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.6); /* Fondo blanco más translúcido */
   border-radius: 15px;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
@@ -61,7 +61,7 @@
 
 /* Estilo de cada item de pedido */
 .carrito-item {
-  background-color: #fff58a;
+  background-color: rgba(255, 255, 138, 0.7); /* Fondo amarillo claro translúcido */
   padding: 20px;
   border-radius: 10px;
   width: 100%;
@@ -86,11 +86,11 @@
 
 /* Diferencia visual entre pedido realizado y no realizado */
 .carrito-item.realizado {
-  background-color: rgba(144, 238, 144, 0.5); /* Color verde claro semi-transparente para pedidos realizados */
+  background-color: rgba(144, 238, 144, 0.7); /* Fondo verde claro translúcido */
 }
 
 .carrito-item.no-realizado {
-  background-color: rgba(255, 255, 102, 0.5); /* Color amarillo claro semi-transparente para pedidos no realizados */
+  background-color: rgba(255, 255, 102, 0.7); /* Fondo amarillo claro translúcido */
 }
 
 /* Estilo de los botones */

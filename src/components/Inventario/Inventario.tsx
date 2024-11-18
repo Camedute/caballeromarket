@@ -240,12 +240,10 @@ const Inventario: React.FC = () => {
                             <input type="date" name="fechaCaducidad" value={productoActual.fechaCaducidad instanceof Date ? productoActual.fechaCaducidad.toISOString().split('T')[0] : ''} onChange={actualizarProducto} />
                             <input type="number" name="costo" placeholder="Costo" value={productoActual.costo} onChange={actualizarProducto} />
                             <input type="file" onChange={handleImageChange} />
-                            <div>
-                                <button onClick={cerrarModal}>Cerrar</button>
-                                <button onClick={modoAgregar ? agregarProducto : editarProducto}>
-                                    {modoAgregar ? 'Agregar Producto' : 'Editar Producto'}
-                                </button>
-                            </div>
+                            <button onClick={modoAgregar ? agregarProducto : editarProducto}>
+                                {modoAgregar ? 'Agregar Producto' : 'Editar Producto'}
+                            </button>
+                            <button onClick={cerrarModal}>Cerrar</button>
                         </div>
                     </div>
                 )}
