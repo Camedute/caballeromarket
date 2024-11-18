@@ -219,8 +219,8 @@ const Inventario: React.FC = () => {
                                 <p>Categoría: {producto.Categoria}</p>
                                 <p>Costo: ${producto.costo}</p>
                                 {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
-                                <button onClick={() => abrirModalEditar(producto)}>Editar</button>
-                                <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                                <button onClick={() => abrirModalEditar(producto)}>Editar épicamente</button>
+                                <button onClick={() => eliminarProducto(producto.id)}>Eliminar épicamente</button>
                             </div>
                         ))}
                     </div>
