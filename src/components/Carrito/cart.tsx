@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import db from '../../firebase/firestore'; 
+import {db, auth} from '../firebase/firestore'; 
 import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
-import { auth } from '../firebase/firestore';
 import './Cart.css';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';

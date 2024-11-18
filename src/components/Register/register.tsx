@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth'; 
-import db from '../../firebase/firestore'; 
+import {db} from '../firebase/firestore'; 
 import { auth } from '../firebase/firestore';   
 import './register.css';
 

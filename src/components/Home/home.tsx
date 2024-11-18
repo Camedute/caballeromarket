@@ -3,7 +3,7 @@ import Header from "../Header/header";
 import Footer from "../Footer/footer";
 import './Home.css';
 import { Link, useNavigate } from "react-router-dom";
-import db from '../../firebase/firestore';
+import {db} from '../firebase/firestore';
 import { doc, getDoc } from 'firebase/firestore';
 
 interface Productos {

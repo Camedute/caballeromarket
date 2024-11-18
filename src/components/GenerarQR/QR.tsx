@@ -5,7 +5,7 @@ import Header from '../Header/header';
 import Footer from '../Footer/footer';
 import { useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import db from '../../firebase/firestore';
+import {db} from '../firebase/firestore';
 import { Timestamp } from 'firebase/firestore';
 
 interface pedidoData {

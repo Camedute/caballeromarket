@@ -3,7 +3,7 @@ import './Perfil.css';
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
 import { useNavigate } from 'react-router-dom';
-import db from '../../firebase/firestore';
+import {db}from '../firebase/firestore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
