@@ -1,160 +1,127 @@
+/* Contenedor principal con imagen de fondo y capa degradada */
 .carrito-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 25px;
-  background-color: #f0f4f7;
-  border-radius: 12px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease-in-out;
+  position: relative;
+  font-family: 'Poppins', sans-serif; /* Fuente más llamativa y estética */
+  padding: 30px;
+  margin: 0;
+  z-index: 1;
+  min-height: 100vh; /* Asegura que el contenedor ocupe toda la altura */
 }
 
+/* La imagen de fondo difuminada */
+.carrito-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Fija la imagen al fondo */
+  filter: blur(8px);
+  opacity: 0.6;
+  z-index: -2;
+}
+
+/* Capa con degradado azul/celeste */
+.carrito-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(173, 216, 230, 0.5), rgba(0, 123, 255, 0.5));
+  z-index: -1;
+}
+
+/* Título de la página */
 .title {
-  font-size: 28px;
-  margin-bottom: 25px;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #1d3557;
-  font-weight: bold;
   text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Separación de las secciones */
-.productos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 40px; /* Añadido para más espacio entre las secciones */
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
-}
-
+/* Estilo de los pedidos */
 .carrito {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
   padding: 20px;
-  background-color: #fff; /* Fondo diferente para los pedidos */
-  border-radius: 10px;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Sombra para efecto de caja */
-  margin-top: 30px; /* Espacio entre los productos y pedidos */
-}
-
-/* Opcional: agregar bordes y espaciado adicional para resaltar más las secciones */
-.carrito-container .title {
-  margin-bottom: 10px;
-}
-
-.productos,
-.carrito {
-  border: 1px solid #ccc;
-}
-
-.btn-generar-qr {
-  padding: 12px;
-  background-color: #3498db;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  transition: background-color 0.3s, transform 0.3s;
-  margin-top: 20px;
-}
-
-.btn-generar-qr:hover {
-  background-color: #2980b9;
-  transform: scale(1.05);
-}
-
-/* Cambios en la estructura de los productos */
-.producto-card,
-.carrito-item {
   background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+/* Estilo de cada item de pedido */
+.carrito-item {
+  background-color: #fff58a;
   padding: 20px;
+  border-radius: 10px;
   width: 100%;
   max-width: 320px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
 }
 
-.producto-card:hover,
 .carrito-item:hover {
   transform: translateY(-5px);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Diferencia visual entre producto y pedido */
-.producto-card {
-  background-color: #ffffff;
-  border: 2px solid #3498db; /* Bordes azules para productos disponibles */
-}
-
-.carrito-item {
-  background-color:#fff58a; /* Color suave para diferenciar los pedidos */
-}
-
-.producto-card p,
+/* Cambios en el estilo de los elementos dentro del pedido */
 .carrito-item p {
-  margin: 0 0 12px;
-  font-size: 18px;
-  color: #34495e;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
   font-weight: 500;
+  color: #34495e;
 }
 
-.btn-agregar,
-.btn-eliminar {
+/* Diferencia visual entre pedido realizado y no realizado */
+.carrito-item.realizado {
+  background-color: rgba(144, 238, 144, 0.5); /* Color verde claro semi-transparente para pedidos realizados */
+}
+
+.carrito-item.no-realizado {
+  background-color: rgba(255, 255, 102, 0.5); /* Color amarillo claro semi-transparente para pedidos no realizados */
+}
+
+/* Estilo de los botones */
+.btn-generar-qr {
   padding: 12px;
+  background-color: #68C3A3; /* Verde suave */
+  color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-size: 1.2rem;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 20px;
 }
 
-.btn-agregar {
-  background-color: #2ecc71;
-  color: #fff;
+.btn-generar-qr:hover {
+  background-color: #5AB092; /* Verde más oscuro en hover */
+  transform: scale(1.05); /* Animación en hover */
 }
 
-.btn-agregar:hover {
-  background-color: #27ae60;
-  transform: scale(1.05);
+/* Estilo para el cargador/spinner */
+.spinner-border {
+  margin: 0 auto;
+  display: block;
 }
 
-.btn-eliminar {
-  background-color: #e74c3c;
-  color: #fff;
-  margin-top: 10px;
-}
-
-.btn-eliminar:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
-}
-
-.cantidad-input {
-  width: 60px;
-  padding: 8px;
-  margin-top: 8px;
-  border: 1px solid #bdc3c7;
-  border-radius: 6px;
-  text-align: center;
-}
-
+/* Estilo de la sección de total */
 .total {
   font-size: 22px;
-  margin-top: 30px;
+  margin-top: 40px;
   text-align: right;
   font-weight: bold;
   color: #1d3557;
@@ -163,17 +130,4 @@
 /* Espaciado extra para la sección de total */
 .carrito-container .total {
   margin-top: 40px;
-}
-
-
-.carrito-item {
-  background-color: #fff58a; /* Color suave para diferenciar los pedidos */
-}
-
-.carrito-item.realizado {
-  background-color: rgba(144, 238, 144, 0.5); /* Color verde claro semi transparente para pedidos realizados */
-}
-
-.carrito-item.no-realizado {
-  background-color: rgba(255, 255, 102, 0.5); /* Color amarillo claro semi transparente para pedidos no realizados */
 }
