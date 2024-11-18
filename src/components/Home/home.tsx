@@ -4,7 +4,7 @@ import Footer from "../Footer/footer";
 import './Home.css';
 import { Link, useNavigate } from "react-router-dom";
 import db from '../../firebase/firestore';
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 
 interface Productos {
     id: string;
@@ -17,11 +17,12 @@ interface Productos {
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [formDataProductos, setFormDataProducto] = useState<Productos[]>([]);
+    const [ventasDelMes, setVentasDelMes] = useState<number>(2500); // Ejemplo de ventas
+    const [clientesRecientes, setClientesRecientes] = useState<number>(45); // Ejemplo de clientes recientes
     const [error, setError] = useState<string>("");
 
     useEffect(() => {
         const user = localStorage.getItem('user');
-        console.log(user);
         if (!user) {
             console.warn("Usuario no autenticado. Redirigiendo al login.");
             navigate('/');
@@ -29,7 +30,6 @@ const Home: React.FC = () => {
         }
 
         const { uid } = JSON.parse(user);
-
         if (uid) {
             extraerDataProductos(uid);
         }
@@ -86,6 +86,7 @@ const Home: React.FC = () => {
                             <button className="action-button">Ver mis productos</button>
                         </Link>
                     </div>
+
                     <div className="overview-item">
                         <h2>Pedidos Recientes</h2>
                         <p>{formDataProductos.length} productos en total</p>
@@ -93,11 +94,20 @@ const Home: React.FC = () => {
                             <button className="action-button">Ver Pedidos</button>
                         </Link>
                     </div>
+
                     <div className="overview-item">
                         <h2>Ventas del Mes</h2>
-                        <p>$2,500.00</p>
+                        <p>${ventasDelMes.toFixed(2)}</p>
                         <Link to={"/Finances"}>
                             <button className="action-button">Ver tus finanzas</button>
+                        </Link>
+                    </div>
+
+                    <div className="overview-item">
+                        <h2>Clientes Recientes</h2>
+                        <p>{clientesRecientes} nuevos clientes</p>
+                        <Link to={"/Clientes"}>
+                            <button className="action-button">Ver Clientes</button>
                         </Link>
                     </div>
                 </section>
