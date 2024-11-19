@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import {db, auth} from '../firebase/firestore'; 
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc, where, query } from 'firebase/firestore';
 import './Cart.css';
 import Header from '../Header/header';
 import Footer from '../Footer/footer';
@@ -9,11 +9,12 @@ import { Spinner } from 'react-bootstrap';
 import { onAuthStateChanged } from 'firebase/auth';
 
 interface Producto {
-  id: string; 
+  id: string;
   nombre: string;
   precio: number;
   cantidad: number;
   idCliente: string;
+  idDueno: string;
   realizado: boolean;
 }
 
@@ -23,57 +24,70 @@ interface Cliente {
 }
 
 const Carrito: React.FC = () => {
-  const [pedidos, setPedidos] = useState<Producto[]>([]); 
+  const [pedidos, setPedidos] = useState<Producto[]>([]);
   const [clientes, setClientes] = useState<{ [key: string]: string }>({});
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
   const [uid, setUid] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPedidos = async () => {
-      const pedidosCollection = collection(db, 'Pedidos'); 
-      const pedidosSnapshot = await getDocs(pedidosCollection);
-      const pedidosList: Producto[] = [];
+      setLoading(true);
+      try {
+        const pedidosCollection = collection(db, 'Pedidos');
+        const pedidosSnapshot = await getDocs(pedidosCollection);
 
-      for (const doc of pedidosSnapshot.docs) {
-        const pedidoData = doc.data();
-        const pedido = {
-          id: doc.id,
-          idCliente: pedidoData.idCliente,
-          realizado: pedidoData.realizado
-        } as Producto;
+        const pedidosList: Producto[] = pedidosSnapshot.docs.map((doc) => {
+          const pedidoData = doc.data();
+          return {
+            id: doc.id,
+            idCliente: pedidoData.idCliente,
+            idDueno: pedidoData.idDueno,
+            realizado: pedidoData.realizado,
+          } as Producto;
+        });
 
-        pedidosList.push(pedido);
+        // Filtrar pedidos en el cliente por el idDueno
+        const filteredPedidos = pedidosList.filter((pedido) => pedido.idDueno === uid);
+        setPedidos(filteredPedidos);
+
+        // Cargar los clientes relacionados con los pedidos filtrados
+        fetchClientes(filteredPedidos);
+      } catch (error) {
+        console.error('Error fetching pedidos:', error);
+      } finally {
+        setLoading(false);
       }
-
-      setPedidos(pedidosList);
-      fetchClientes(pedidosList);
     };
 
-    fetchPedidos().finally(() => setLoading(false)); 
-    
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) setUid(user.uid);
-      else setUid(null);
-    });
-    return () => unsubscribe();
-  }, []);
+    const fetchClientes = async (pedidosList: Producto[]) => {
+      const clientesMap: { [key: string]: string } = {};
 
-  const fetchClientes = async (pedidosList: Producto[]) => {
-    const clientesMap: { [key: string]: string } = {}; 
+      for (const pedido of pedidosList) {
+        const clienteRef = doc(db, 'Clientes', pedido.idCliente);
+        const clienteSnap = await getDoc(clienteRef);
 
-    for (const pedido of pedidosList) {
-      const clienteRef = doc(db, 'Clientes', pedido.idCliente); 
-      const clienteSnap = await getDoc(clienteRef);
-
-      if (clienteSnap.exists()) {
-        const clienteData = clienteSnap.data();
-        clientesMap[pedido.idCliente] = clienteData.nombreUsuario as string;
+        if (clienteSnap.exists()) {
+          const clienteData = clienteSnap.data();
+          clientesMap[pedido.idCliente] = clienteData.nombreUsuario as string;
+        }
       }
-    }
 
-    setClientes(clientesMap); 
-  };
+      setClientes(clientesMap);
+    };
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUid(user.uid);
+        fetchPedidos();
+      } else {
+        setUid(null);
+        setPedidos([]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [uid]);
 
   return (
     <>
