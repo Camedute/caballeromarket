@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firestore';
 import './Login.css';
@@ -84,9 +84,7 @@ const Loginup: React.FC = () => {
                         name="password"
                         aria-label="Contraseña"
                     />
-                    <button className="button-link" onClick={handleResetPassword}>
-                        ¿No te acuerdas de la contraseña? Restablecer aquí!
-                    </button>
+                    <Link to ="/reset-password">¿No te acuerdas de tu contraseña? Restablecela acá!</Link>
                     {error && <p className="error-message">{error}</p>}
                 </div>
 

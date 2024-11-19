@@ -87,19 +87,24 @@ html.login-background::after, body.login-background::after {
 }
 
 /* Estilo del enlace para restablecer la contraseña */
-.restablecer-enlace {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-    margin-top: 10px;
+.button-link {
+    background: none;
+    border: none;
+    color: #007bff; /* Azul estilo enlace */
+    text-decoration: underline;
+    cursor: pointer;
     font-size: 1rem;
-    text-align: center;
+    padding: 0;
+    margin: 10px 0;
+    font-family: 'Poppins', sans-serif;
+    transition: color 0.3s ease;
 }
 
-.restablecer-enlace:hover {
+.button-link:hover {
+    color: #0056b3; /* Azul más oscuro al pasar el ratón */
     text-decoration: none;
-    color: inherit;
 }
+
 
 /* Contenedor de botones */
 .button-container {

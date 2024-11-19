@@ -46,7 +46,7 @@ html.register-background::after, body.register-background::after {
 }
 
 /* Título del contenedor */
-.title-container {
+.titleCaballeroMarket {
     font-size: 3rem;
     font-weight: bold;
     color: #007bff; /* Azul */
@@ -55,7 +55,7 @@ html.register-background::after, body.register-background::after {
 }
 
 /* Subtítulo */
-.subtitle-container {
+.subtitleCaballeroMarket {
     font-size: 1.8rem;
     font-weight: 600;
     color: #333;

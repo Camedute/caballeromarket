@@ -53,7 +53,7 @@ const Register: React.FC = () => {
 
             navigate('/');
         } catch (err) {
-            console.error('Error en el registro:', err);
+            console.log('Error en el registro:', err);
             setError('Error en el registro. Intente nuevamente.');
         } finally {
             setLoading(false);
@@ -72,8 +72,8 @@ const Register: React.FC = () => {
             <button className="botonRegresar" onClick={handleBack}>
                 Regresar
             </button>
-            <h1 className="title-container">CaballeroMarket</h1>
-            <h2 className="subtitle-container">Registro</h2>
+            <h1 className="titleCaballeroMarket">CaballeroMarket</h1>
+            <h2 className="subtitleCaballeroMarket">Registro</h2>
 
             <div className="form-grid">
                 <input
@@ -84,14 +84,14 @@ const Register: React.FC = () => {
                     onChange={(e) => handleInputChange(e, setNombreUsuario)}
                 />
                 <input
-                    type="email"
+                    type="text"
                     className="form-control"
                     placeholder="Correo Electrónico"
                     value={email}
                     onChange={(e) => handleInputChange(e, setEmail)}
                 />
                 <input
-                    type="password"
+                    type="text"
                     className="form-control"
                     placeholder="Contraseña"
                     value={password}
