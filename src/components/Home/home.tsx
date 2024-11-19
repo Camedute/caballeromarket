@@ -14,10 +14,15 @@ interface Productos {
     precioProducto: string;
 }
 
+interface Ventas {
+    Ganancia: number;
+    Costo: number;
+}
+
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const [formDataProductos, setFormDataProducto] = useState<Productos[]>([]);
-    const [ventasDelMes, setVentasDelMes] = useState<number>(2500); // Ejemplo de ventas
+    const [gananciasHome, setGananciasHome] = useState<number>(0); // Ejemplo de ventas
     const [clientesRecientes, setClientesRecientes] = useState<number>(45); // Ejemplo de clientes recientes
     const [error, setError] = useState<string>("");
 
@@ -32,6 +37,7 @@ const Home: React.FC = () => {
         const { uid } = JSON.parse(user);
         if (uid) {
             extraerDataProductos(uid);
+            extraerDataVentas(uid);
         }
     }, [navigate]);
 
@@ -41,8 +47,10 @@ const Home: React.FC = () => {
             const productoSnap = await getDoc(InventarioRef);
 
             if (productoSnap.exists()) {
+                
                 const productosData = productoSnap.data();
                 if (productosData.productos && Array.isArray(productosData.productos)) {
+                    
                     const listaProductos = productosData.productos.map((producto: any) => ({
                         id: producto.id,
                         idDueno: producto.idDueno,
@@ -62,6 +70,32 @@ const Home: React.FC = () => {
             setError("Error al cargar los datos.");
         }
     };
+
+    const extraerDataVentas = async (uid: string) => {
+        try {
+            const ventasRef = doc(db, 'Ventas', uid);
+            const ventasSnap = await getDoc(ventasRef);
+            if (ventasSnap.exists()) {
+                console.log("ventassnap pasó");
+                const ventasData = ventasSnap.data();
+                if (ventasData.gananciaTotal) {
+                    console.log("condicion paso");
+                    setGananciasHome(ventasData.gananciaTotal); // Asume que es un número
+                } else {
+                    console.log("condicion no paso");
+                    setError("No se encontraron datos de ganancias.");
+                }
+            } else {
+                console.log("ventas snap no paso")
+                setError("El documento de ventas no existe.");
+            }
+        } catch (error) {
+            console.error("Error al extraer datos de ventas:", error);
+            setError("Error al cargar las ganancias.");
+        }
+    };
+    
+    
 
     return (
         <>
@@ -86,7 +120,9 @@ const Home: React.FC = () => {
                             <button className="action-button">Ver mis productos</button>
                         </Link>
                     </div>
+                    
 
+                    {/*Me falta filtrar acá*/} 
                     <div className="overview-item">
                         <h2>Pedidos Recientes</h2>
                         <p>{formDataProductos.length} productos en total</p>
@@ -96,13 +132,15 @@ const Home: React.FC = () => {
                     </div>
 
                     <div className="overview-item">
-                        <h2>Ventas del Mes</h2>
-                        <p>${ventasDelMes.toFixed(2)}</p>
-                        <Link to={"/Finances"}>
-                            <button className="action-button">Ver tus finanzas</button>
+                        <h2>Ganancias de tu local</h2>
+                        <p>${gananciasHome}</p>
+                        <Link to={"/carrito"}>
+                            <button className="action-button">Ver Pedidos</button>
                         </Link>
                     </div>
 
+
+                    {/* Para qué nos sirve?
                     <div className="overview-item">
                         <h2>Clientes Recientes</h2>
                         <p>{clientesRecientes} nuevos clientes</p>
@@ -110,6 +148,7 @@ const Home: React.FC = () => {
                             <button className="action-button">Ver Clientes</button>
                         </Link>
                     </div>
+                    */}
                 </section>
             </main>
             <Footer />
