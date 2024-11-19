@@ -2,9 +2,10 @@
 .stats-graph {
   position: relative;
   margin-top: 20px;
+  z-index: 1; /* Para que los gráficos y el contenido estén encima del fondo */
 }
 
-/* Fondo difuso con tono azul en los gráficos */
+/* Fondo difuso con tono azul en los gráficos y títulos */
 .stats-graph::before {
   content: "";
   position: absolute;
@@ -41,13 +42,14 @@
   display: block; /* Asegura que el gráfico sea un bloque */
 }
 
-/* Diseño de la página */
+/* Estilo para el contenedor general de finanzas */
 .finances-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
+/* Estilo para la barra lateral, para que no reciba el fondo difuso */
 .finances-dashboard {
   display: flex;
   flex: 1;
@@ -87,12 +89,10 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  position: relative; /* Permite aplicar el fondo difuso en la zona correcta */
 }
 
-.stats-overview {
-  max-width: 100%;
-}
-
+/* Estilo para las tablas y otros elementos, si es necesario */
 .excel-style-table {
   margin-top: 20px;
   overflow-x: auto;

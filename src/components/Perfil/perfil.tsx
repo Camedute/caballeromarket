@@ -32,7 +32,15 @@ const Perfil: React.FC = () => {
   });
   const [isDueno, setIsDueno] = useState<boolean>(false);
   const [uid, setUid] = useState<string>("");
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.classList.add('perfil-page');
+    return () => {
+      document.body.classList.remove('perfil-page');
+    };
+  }, []);
 
   useEffect(() => {
     const storedUserData = localStorage.getItem("user");
@@ -113,22 +121,16 @@ const Perfil: React.FC = () => {
     }
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUploadClick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       const storage = getStorage();
-      const storageRef = ref(storage, `perfiles/${uid}`);
+      const storageRef = ref(storage, `imagenesPerfil/${uid}`);
       await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(storageRef);
-      const userRef = isDueno ? doc(db, 'Duenos', uid) : doc(db, 'Clientes', uid);
-      await updateDoc(userRef, { imagenUrl: downloadURL });
-      setFormData((prevData) => ({
-        ...prevData,
-        imagenUrl: downloadURL,
-      }));
-      console.log("Imagen subida y URL actualizada:", downloadURL);
+      const url = await getDownloadURL(storageRef);
+      setFormData({ ...formData, imagenUrl: url });
     } catch (error) {
       console.error("Error al subir la imagen:", error);
     }
@@ -136,106 +138,100 @@ const Perfil: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate('/'); 
+    navigate('/');
   };
 
   return (
-    <>
+    <div className="perfil-page">
       <Header />
-      <div className="container">
-        <div className="perfil-container">
-          <div className="perfil-imagen">
-            <img src={formData.imagenUrl} alt="Perfil" />
-            {isEditing && (
-              <label htmlFor="imageUpload" className="btn">
-                Subir Imagen
-                <input
-                  id="imageUpload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
+      <div className="perfil-container">
+        <button
+          className={`cerrar-sesion ${isEditing ? 'hidden' : ''}`}
+          onClick={handleLogout}
+        >
+          Cerrar Sesión
+        </button>
+        <div className="perfil-imagen">
+          <img src={formData.imagenUrl} alt="Imagen de perfil" />
+        </div>
+        <div className="editar-foto">
+          {isEditing && (
+            <>
+              <label htmlFor="image-upload" className="upload-button">
+                Subir Foto
               </label>
-            )}
-          </div>
-
-          <div className="perfil-datos">
+              <input
+                type="file"
+                id="image-upload"
+                onChange={handleImageUploadClick}
+                style={{ display: 'none' }}  // Ocultamos el input
+              />
+            </>
+          )}
+        </div>
+        <div className="perfil-dato">
+          <label>Nombre de usuario</label>
+          <input
+            type="text"
+            name="nombreUsuario"
+            value={formData.nombreUsuario}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+          />
+        </div>
+        <div className="perfil-dato">
+          <label>Correo electrónico</label>
+          <input
+            type="email"
+            name="correoUsuario"
+            value={formData.correoUsuario}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+          />
+        </div>
+        {isDueno && (
+          <>
             <div className="perfil-dato">
-              <label>Nombre:</label>
-              {isEditing ? (
-                <input
-                  type="text"
-                  name="nombreUsuario"
-                  value={formData.nombreUsuario}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                <p>{formData.nombreUsuario}</p>
-              )}
+              <label>Nombre del local</label>
+              <input
+                type="text"
+                name="nombreLocal"
+                value={formData.nombreLocal}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+              />
             </div>
-
             <div className="perfil-dato">
-              <label>Email:</label>
-              {isEditing ? (
-                <input
-                  type="email"
-                  name="correoUsuario"
-                  value={formData.correoUsuario}
-                  onChange={handleInputChange}
-                />
-              ) : (
-                <p>{formData.correoUsuario}</p>
-              )}
+              <label>Dirección</label>
+              <input
+                type="text"
+                name="direccion"
+                value={formData.direccion}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+              />
             </div>
-
-            <div className="perfil-dato">
-              <label>Biografía:</label>
-              {isEditing ? (
-                <textarea
-                  name="biografia"
-                  value={formData.biografia || ""}
-                  onChange={handleTextAreaChange}
-                />
-              ) : (
-                <p>{formData.biografia || "Sin biografía disponible"}</p>
-              )}
-            </div>
-
-            {isDueno ? (
-              <div className="perfil-estadisticas">
-                <h3>Estadísticas del Negocio</h3>
-                <div className="estadistica-item">
-                  <span>Productos Vendidos:</span>
-                  <p>{formData.estadisticas?.productosVendidos || 0}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="perfil-estadisticas">
-                <h3>Historial de Compras</h3>
-                <div className="estadistica-item">
-                  <span>Cantidad de pedidos completados:</span>
-                  <p>{formData.estadisticas?.comprasRealizadas || 0}</p>
-                </div>
-              </div>
-            )}
-
-            {isEditing ? (
-              <button className="btn" onClick={handleSaveClick}>Guardar</button>
-            ) : (
-              <button className="btn" onClick={handleEditClick}>Editar</button>
-            )}
-
-            {!isEditing && (
-              <button className="cerrar-sesion" onClick={handleLogout}>
-                Cerrar Sesión
-              </button>
-            )}
-          </div>
+          </>
+        )}
+        <div className="perfil-dato">
+          <label>Biografía</label>
+          <textarea
+            name="biografia"
+            value={formData.biografia || ""}
+            onChange={handleTextAreaChange}
+            disabled={!isEditing}
+          />
+        </div>
+        <div className="perfil-botones">
+          {isEditing ? (
+            <button className="guardar-perfil" onClick={handleSaveClick}>Guardar</button>
+          ) : (
+            <button className="editar-perfil" onClick={handleEditClick}>Modificar</button>
+          )}
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
