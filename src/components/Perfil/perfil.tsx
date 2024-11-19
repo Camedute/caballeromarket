@@ -3,7 +3,7 @@ import './Perfil.css';
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
 import { useNavigate } from 'react-router-dom';
-import {db}from '../firebase/firestore';
+import { db } from '../firebase/firestore';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
@@ -116,39 +116,27 @@ const Perfil: React.FC = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
+
     try {
-      // Configurar Firebase Storage
       const storage = getStorage();
       const storageRef = ref(storage, `perfiles/${uid}`);
-  
-      // Subir la imagen a Firebase Storage
       await uploadBytes(storageRef, file);
-  
-      // Obtener la URL de descarga de la imagen
       const downloadURL = await getDownloadURL(storageRef);
-  
-      // Actualizar la URL de la imagen en Firestore
       const userRef = isDueno ? doc(db, 'Duenos', uid) : doc(db, 'Clientes', uid);
       await updateDoc(userRef, { imagenUrl: downloadURL });
-  
-      // Actualizar el estado local para reflejar el cambio
       setFormData((prevData) => ({
         ...prevData,
         imagenUrl: downloadURL,
       }));
-  
       console.log("Imagen subida y URL actualizada:", downloadURL);
     } catch (error) {
       console.error("Error al subir la imagen:", error);
     }
   };
-  
-
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    navigate('/');  // Redirige al inicio o login
+    navigate('/'); 
   };
 
   return (
@@ -156,21 +144,21 @@ const Perfil: React.FC = () => {
       <Header />
       <div className="container">
         <div className="perfil-container">
-        <div className="perfil-imagen">
-                <img src={formData.imagenUrl} alt="Perfil" />
-                {isEditing && (
-                  <label htmlFor="imageUpload" className="btn">
-                    Subir Imagen
-                    <input
-                      id="imageUpload"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                )}
-              </div>
+          <div className="perfil-imagen">
+            <img src={formData.imagenUrl} alt="Perfil" />
+            {isEditing && (
+              <label htmlFor="imageUpload" className="btn">
+                Subir Imagen
+                <input
+                  id="imageUpload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
+                />
+              </label>
+            )}
+          </div>
 
           <div className="perfil-datos">
             <div className="perfil-dato">
@@ -214,7 +202,6 @@ const Perfil: React.FC = () => {
               )}
             </div>
 
-            {/* Sección de estadísticas o datos adicionales */}
             {isDueno ? (
               <div className="perfil-estadisticas">
                 <h3>Estadísticas del Negocio</h3>
@@ -233,15 +220,17 @@ const Perfil: React.FC = () => {
               </div>
             )}
 
-            {/* Botón Editar / Guardar */}
             {isEditing ? (
               <button className="btn" onClick={handleSaveClick}>Guardar</button>
             ) : (
               <button className="btn" onClick={handleEditClick}>Editar</button>
             )}
 
-            {/* Botón para cerrar sesión */}
-            <button className="cerrar-sesion" onClick={handleLogout}>Cerrar Sesión</button>
+            {!isEditing && (
+              <button className="cerrar-sesion" onClick={handleLogout}>
+                Cerrar Sesión
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,13 @@
 /* Fondo para la página de registro */
-body.register-background::before {
+html.register-background, body.register-background {
+    position: relative;
+    height: 100%;
+    margin: 0;
+}
+
+html.register-background::before, body.register-background::before {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -13,9 +19,9 @@ body.register-background::before {
     z-index: -2;
 }
 
-body.register-background::after {
+html.register-background::after, body.register-background::after {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -26,94 +32,89 @@ body.register-background::after {
 
 /* Estilos del formulario de registro */
 .register-container {
-    width: 600px; /* Aumentar el ancho del formulario */
+    width: 600px;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.85);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    z-index: 1;
 }
 
 .register-container h2 {
-    font-size: 2rem; /* Tamaño de fuente ajustado */
+    font-size: 2rem;
     color: #333;
-    margin-bottom: 20px; /* Margen inferior */
+    margin-bottom: 20px;
 }
 
-/* Contenedor para las columnas */
 .form-grid {
-    display: grid; /* Usar grid para dos columnas */
-    grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
-    gap: 15px; /* Espacio entre columnas */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
-/* Controles de formulario */
 .form-control {
-    width: 100%; /* Ancho completo dentro de las columnas */
-    padding: 12px; 
+    width: 100%;
+    padding: 12px;
     font-size: 1rem;
     border-radius: 5px;
-    border: 2px solid #ccc; /* Grosor del borde aumentado */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-control::placeholder {
-   color: #aaa; /* Color de texto del placeholder */
+    color: #aaa;
 }
 
 .form-control:focus {
-   border-color: #007bff; /* Color del borde al enfocar */
-   outline: none; /* Sin contorno al enfocar */
-   box-shadow: 0 0 5px rgba(0,123,255,0.5); /* Sombra al enfocar */
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Botón de registro */
 .btn {
-   width: calc(100% - 20px); /* Ancho completo menos margen */
-   padding: 12px; 
-   font-size: 1.2rem;
-   border-radius: 5px;
-   border: none;
-   background-color: #007bff; /* Color azul */
-   color: #fff;
-   cursor: pointer;
-   transition: background-color 0.3s ease, transform 0.3s ease;
-   margin-top: 15px; /* Espaciado superior */
-}
-
-.btn:hover {
-   background-color: #0056b3; /* Color más oscuro al pasar el mouse */
-   transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
-}
-
-/* Mensaje de error */
-.error-message {
-   color: red;
-   font-size: 0.9rem; 
-   margin-top: 10px; 
-}
-
-
-.botonRegresar {
-    position: absolute; /* Posiciona el botón de manera absoluta */
-    left: 15px; /* Lo mueve a la izquierda */
-    top: 15px; /* Alineación superior */
-    padding: 6px 10px; /* Reduce el padding para hacerlo más pequeño */
-    font-size: 0.9rem; /* Tamaño de fuente reducido */
-    border-radius: 3px; /* Radio de borde reducido */
+    width: calc(100% - 20px);
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 5px;
     border: none;
-    background-color: #007bff; /* Color azul */
+    background-color: #007bff;
     color: #fff;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0; /* Elimina márgenes para evitar desplazamiento */
+    margin-top: 15px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.botonRegresar {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    border-radius: 3px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .botonRegresar:hover {
-    background-color: #0056b3; /* Color más oscuro al pasar el mouse */
-    transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+    background-color: #0056b3;
+    transform: scale(1.05);
 }

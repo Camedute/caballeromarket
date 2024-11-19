@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // Importa componentes
 import Home from "./components/Home/home";
 import Categorias from "./components/Categorias/categoria";
-import Locales from "./components/Local/local";
 import Perfil from "./components/Perfil/perfil";
 import Carrito from "./components/Carrito/cart";
 import Loginup from "./components/Login/login";
@@ -23,7 +22,6 @@ const App: React.FC = () => {
         <Route path="/" element={<Loginup />} />
         <Route path="home" element={<Home />} />
         <Route path="categorias" element={<Categorias />} />
-        <Route path="locales" element={<Locales />} />
         <Route path="perfil" element={<Perfil />} />
         <Route path="carrito" element={<Carrito />} />
         <Route path="/buscar/:query" element={<BuscarProducto />} />
