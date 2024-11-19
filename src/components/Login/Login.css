@@ -1,113 +1,137 @@
 /* Fondo para la página de login */
-body.login-background {
-    position: relative; /* Asegura que los pseudoelementos se posicionen correctamente */
+html.login-background, body.login-background {
+    position: relative;
+    height: 100%;
+    margin: 0;
 }
 
-body.login-background::before {
+html.login-background::before, body.login-background::before {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta corregida */
+    background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen de fondo */
     background-size: cover;
     background-position: center;
     filter: blur(8px);
-    opacity: 0.6;
-    z-index: -2; /* Asegura que el fondo esté por debajo de los demás elementos */
+    z-index: -2;
 }
 
-body.login-background::after {
+html.login-background::after, body.login-background::after {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(173, 216, 230, 0.5); /* Capa degradada azul/celeste */
-    z-index: -1; /* Asegura que el fondo de color no tape otros elementos */
+    background-color: rgba(0, 123, 255, 0.6); /* Fondo azul más fuerte */
+    z-index: -1;
 }
 
-/* Estilos del formulario de login */
-.Login {
-    width: 400px;
+/* Contenedor principal con fondo y centrado */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: transparent; /* Fondo transparente para mostrar la imagen */
+}
+
+/* Contenedor del formulario de inicio de sesión */
+.login-container {
+    width: 400px; /* Ajusta el tamaño del contenedor */
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco translúcido */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco translúcido */
     text-align: center;
-    z-index: 1; /* Asegura que el formulario esté por encima del fondo */
 }
 
-.Login h2 {
-    font-size: 2.5rem;
-    color: #333;
+/* Título del contenedor (similar al de register pero en azul) */
+.title-container h2 {
+    font-size: 1.8 rem; /* Tamaño más grande */
+    font-weight: bold;
+    color: #3c78c8; /* Azul */
     margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Fuente similar */
+    text-align: center; /* Centrado */
+    text-transform: uppercase; /* Título en mayúsculas */
+}
+
+/* Campos del formulario */
+.form-container {
+    margin-top: 20px;
 }
 
 /* Controles de formulario */
 .form-control {
-    width: 90%;
-    padding: 10px;
-    margin: 10px auto;
+    width: 100%;
+    padding: 12px;
     font-size: 1rem;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    transition: border-color 0.3s ease;
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control::placeholder {
+    color: #aaa;
 }
 
 .form-control:focus {
     border-color: #007bff;
     outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Botones */
-.button-57 {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid #18181a;
-    color: #18181a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    line-height: 18px;
-    padding: 20px 25px;
-    text-decoration: none;
-    cursor: pointer;
-    background: #fff;
-    user-select: none;
-    width: 80%;
-    margin: 10px auto;
-}
-
-.button-57 span:first-child {
-    position: relative;
-    transition: color 600ms cubic-bezier(0.48, 0, 0.12, 1);
-    z-index: 10;
-}
-
-.button-57 span:last-child {
-    color: white;
+/* Estilo del enlace para restablecer la contraseña */
+.restablecer-enlace {
     display: block;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: opacity 300ms ease, transform 300ms ease;
+    color: inherit;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 1rem;
+    text-align: center;
 }
 
-.button-57:hover span:last-child {
-    opacity: 1;
-    transform: translate(-50%, -150%);
+.restablecer-enlace:hover {
+    text-decoration: none;
+    color: inherit;
 }
 
-.button-57:hover span:first-child {
-    opacity: 0;
+/* Contenedor de botones */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Estilo de botones */
+.button-57 {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 15px;
+}
+
+.button-57:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Mensaje de error */
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
 }

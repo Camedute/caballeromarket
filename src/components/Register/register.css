@@ -26,7 +26,7 @@ html.register-background::after, body.register-background::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 123, 255, 0.5);
+    background-color: rgba(0, 123, 255, 0.6); /* Fondo más azul */
     z-index: -1;
 }
 
@@ -36,7 +36,7 @@ html.register-background::after, body.register-background::after {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.75); /* Más translucidez */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -45,18 +45,32 @@ html.register-background::after, body.register-background::after {
     z-index: 1;
 }
 
-.register-container h2 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
+/* Título del contenedor */
+.title-container {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #007bff; /* Azul */
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
 }
 
+/* Subtítulo */
+.subtitle-container {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo de la cuadrícula del formulario */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
 }
 
+/* Estilo de los cuadros de texto (inputs) */
 .form-control {
     width: 100%;
     padding: 12px;
@@ -70,12 +84,14 @@ html.register-background::after, body.register-background::after {
     color: #aaa;
 }
 
+/* Estilo cuando el input tiene el foco */
 .form-control:focus {
-    border-color: #007bff;
+    border-color: #007bff; /* Azul */
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+/* Botón de registro */
 .btn {
     width: calc(100% - 20px);
     padding: 12px;
@@ -94,12 +110,14 @@ html.register-background::after, body.register-background::after {
     transform: scale(1.05);
 }
 
+/* Mensajes de error */
 .error-message {
     color: red;
     font-size: 0.9rem;
     margin-top: 10px;
 }
 
+/* Botón de regresar */
 .botonRegresar {
     position: absolute;
     left: 15px;

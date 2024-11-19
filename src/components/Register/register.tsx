@@ -5,7 +5,6 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { db, auth } from '../firebase/firestore';
 import './register.css';
 
-
 const Register: React.FC = () => {
     const [nombreUsuario, setNombreUsuario] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -73,7 +72,8 @@ const Register: React.FC = () => {
             <button className="botonRegresar" onClick={handleBack}>
                 Regresar
             </button>
-            <h2>Registro CaballeroMarket</h2>
+            <h1 className="title-container">CaballeroMarket</h1>
+            <h2 className="subtitle-container">Registro</h2>
 
             <div className="form-grid">
                 <input

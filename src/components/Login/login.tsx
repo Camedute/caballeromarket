@@ -11,8 +11,10 @@ const Loginup: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false); 
     const navigate = useNavigate();
 
-    // Manejo del cambio de los campos de entrada
-    const handleInputChange = <T extends HTMLInputElement>(e: React.ChangeEvent<T>, setter: React.Dispatch<React.SetStateAction<string>>) => {
+    const handleInputChange = <T extends HTMLInputElement>(
+        e: React.ChangeEvent<T>,
+        setter: React.Dispatch<React.SetStateAction<string>>
+    ) => {
         setter(e.target.value);
     };
 
@@ -28,9 +30,7 @@ const Loginup: React.FC = () => {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            localStorage.setItem('user', JSON.stringify({
-                uid: user.uid,
-            }));
+            localStorage.setItem('user', JSON.stringify({ uid: user.uid }));
             navigate('/home');
         } catch (err) {
             console.error('Error en el login:', err);
@@ -56,39 +56,51 @@ const Loginup: React.FC = () => {
     }, []);
 
     return (
-        <div className="Login">
-            <h2>CaballeroMarket</h2>
-            <input
-                type="email"
-                className="form-control"
-                placeholder="Correo Electrónico✉️"
-                value={email}
-                onChange={(e) => handleInputChange(e, setEmail)}
-                name="email"
-                aria-label="Correo Electrónico"
-            />
-            <input
-                type="password"
-                className="form-control"
-                placeholder="Contraseña🙊"
-                value={password}
-                onChange={(e) => handleInputChange(e, setPassword)}
-                name="password"
-                aria-label="Contraseña"
-            />
-            <button className="button-link" onClick={handleResetPassword}>
-                ¿No te acuerdas de la contraseña? Restablecer aquí!
-            </button>
-            {error && <p className="error-message">{error}</p>}
-            <div>
-                <button className="button-57" role="button" onClick={handleLogin}>
-                    <span className="text">🚪</span>
-                    <span>Ingresar</span>
-                </button>
-                <button className="button-57" role="button" onClick={handleRegister}>
-                    <span className="text">✍️</span>
-                    <span>Registrarse</span>
-                </button>
+        <div className="main-container">
+            {/* Contenedor del formulario de inicio de sesión */}
+            <div className="login-container">
+                {/* Contenedor del título */}
+                <div className="title-container">
+                    <h2>CaballeroMarket</h2>
+                </div>
+
+                {/* Contenedor del formulario */}
+                <div className="form-container">
+                    <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Correo Electrónico✉️"
+                        value={email}
+                        onChange={(e) => handleInputChange(e, setEmail)}
+                        name="email"
+                        aria-label="Correo Electrónico"
+                    />
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Contraseña🙊"
+                        value={password}
+                        onChange={(e) => handleInputChange(e, setPassword)}
+                        name="password"
+                        aria-label="Contraseña"
+                    />
+                    <button className="button-link" onClick={handleResetPassword}>
+                        ¿No te acuerdas de la contraseña? Restablecer aquí!
+                    </button>
+                    {error && <p className="error-message">{error}</p>}
+                </div>
+
+                {/* Contenedor de los botones */}
+                <div className="button-container">
+                    <button className="button-57" role="button" onClick={handleLogin}>
+                        <span className="text">🚪</span>
+                        <span>Ingresar</span>
+                    </button>
+                    <button className="button-57" role="button" onClick={handleRegister}>
+                        <span className="text">✍️</span>
+                        <span>Registrarse</span>
+                    </button>
+                </div>
             </div>
         </div>
     );
