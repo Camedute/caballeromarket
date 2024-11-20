@@ -203,46 +203,91 @@ const Inventario: React.FC = () => {
     return (
         <>
             <Header />
-            <div className="inventario-container">
+            <div className="dashboard-container">
                 <h2>Inventario de Productos</h2>
                 
                 {loading ? (
                     <p>Cargando productos...</p>
                 ) : (
-                    <div className="productos">
+                    <div className="productos-list">
                         {productos.map((producto) => (
-                            <div key={producto.id} className="producto-card">
-                                <p>{producto.nombreProducto}</p>
-                                <p>Precio: ${producto.precioProducto}</p>
-                                <p>Cantidad: {producto.cantidadProducto}</p>
-                                <p>Categoría: {producto.Categoria}</p>
-                                <p>Costo: ${producto.costo}</p>
-                                {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
-                                <button onClick={() => abrirModalEditar(producto)}>Editar</button>
-                                <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                            <div key={producto.id} className="producto-box">
+                                <img src={producto.imagen || ''} alt={producto.nombreProducto} className="producto-imagen"/>
+                                <div className="producto-info">
+                                    <p className="producto-nombre">{producto.nombreProducto}</p>
+                                    <p className="producto-precio">Precio: ${producto.precioProducto}</p>
+                                    <p className="producto-cantidad">Cantidad: {producto.cantidadProducto}</p>
+                                    <p className="producto-categoria">Categoría: {producto.Categoria}</p>
+                                    <p className="producto-costo">Costo: ${producto.costo}</p>
+                                </div>
+                                <button className="action-button" onClick={() => abrirModalEditar(producto)}>Editar</button>
+                                <button className="action-button" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
                             </div>
                         ))}
                     </div>
                 )}
                 
-                <button className="btn agregar" onClick={abrirModalAgregar}>Agregar Producto</button>
+                <button className="action-button" onClick={abrirModalAgregar}>Agregar Producto</button>
 
                 {(modoAgregar || modoEdicion) && productoActual && (
                     <div className="modal">
                         <div className="modal-content">
                             <h3>{modoAgregar ? 'Agregar Producto' : 'Editar Producto'}</h3>
-                            <input type="text" name="nombreProducto" placeholder="Nombre" value={productoActual.nombreProducto} onChange={actualizarProducto} />
-                            <input type="number" name="precioProducto" placeholder="Precio" value={productoActual.precioProducto} onChange={actualizarProducto} />
-                            <input type="number" name="cantidadProducto" placeholder="Cantidad" value={productoActual.cantidadProducto} onChange={actualizarProducto} />
-                            <input type="text" name="Categoria" placeholder="Categoría" value={productoActual.Categoria} onChange={actualizarProducto} />
-                            <input type="date" name="fechaElaboracion" value={productoActual.fechaElaboracion instanceof Date ? productoActual.fechaElaboracion.toISOString().split('T')[0] : ''} onChange={actualizarProducto} />
-                            <input type="date" name="fechaCaducidad" value={productoActual.fechaCaducidad instanceof Date ? productoActual.fechaCaducidad.toISOString().split('T')[0] : ''} onChange={actualizarProducto} />
-                            <input type="number" name="costo" placeholder="Costo" value={productoActual.costo} onChange={actualizarProducto} />
-                            <input type="file" onChange={handleImageChange} />
+                            <input 
+                                type="text" 
+                                name="nombreProducto" 
+                                placeholder="Nombre del Producto" 
+                                value={productoActual.nombreProducto} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="number" 
+                                name="precioProducto" 
+                                placeholder="Precio" 
+                                value={productoActual.precioProducto} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="number" 
+                                name="cantidadProducto" 
+                                placeholder="Cantidad" 
+                                value={productoActual.cantidadProducto} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="text" 
+                                name="Categoria" 
+                                placeholder="Categoría" 
+                                value={productoActual.Categoria} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="date" 
+                                name="fechaElaboracion" 
+                                value={productoActual.fechaElaboracion.toISOString().split('T')[0]} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="date" 
+                                name="fechaCaducidad" 
+                                value={productoActual.fechaCaducidad.toISOString().split('T')[0]} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="number" 
+                                name="costo" 
+                                placeholder="Costo" 
+                                value={productoActual.costo} 
+                                onChange={actualizarProducto} 
+                            />
+                            <input 
+                                type="file" 
+                                onChange={handleImageChange} 
+                            />
                             <div>
-                                <button onClick={cerrarModal}>Cerrar</button>
+                                <button onClick={cerrarModal}>Cancelar</button>
                                 <button onClick={modoAgregar ? agregarProducto : editarProducto}>
-                                    {modoAgregar ? 'Agregar Producto' : 'Editar Producto'}
+                                    {modoAgregar ? 'Agregar' : 'Actualizar'}
                                 </button>
                             </div>
                         </div>

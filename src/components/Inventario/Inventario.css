@@ -1,191 +1,99 @@
-/* Contenedor principal con imagen de fondo y capa degradada */
-.inventario-container {
-  position: relative;
-  font-family: 'Poppins', sans-serif;
-  padding: 30px;
-  margin: 0;
-  z-index: 1;
-  min-height: 100vh;
-  background-color: rgba(214, 231, 241, 0.5); /* Fondo azul/celeste con mayor opacidad */
-}
-
-/* La imagen de fondo difuminada */
-.inventario-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Fija la imagen al fondo */
-  filter: blur(8px);
-  opacity: 0.6;
-  z-index: -2;
-}
-
-/* Capa con degradado azul/celeste */
-.inventario-container::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(173, 216, 230, 0.5), rgba(0, 123, 255, 0.5));
-  z-index: -1;
-}
-
-/* El contenedor de los productos del inventario */
-.productos {
-  display: grid; /* Usamos grid en lugar de flex para un diseño más controlado */
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Asegura que las tarjetas se distribuyan bien */
-  gap: 30px;
-  justify-content: center;
-  margin-bottom: 20px;
-  padding: 30px;
-  background-color: rgba(255, 255, 255, 0.6); /* Fondo translúcido */
-  border-radius: 15px; /* Bordes redondeados */
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-}
-
-/* Tarjetas de los productos */
-.producto-card {
-  background-color: #ffffff; /* Fondo blanco para las tarjetas */
-  border: 3px solid #3498db; /* Borde más marcado */
-  border-radius: 16px;  /* Bordes redondeados */
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  font-size: 16px; /* Fuente mayor */
-  display: flex; /* Alinea el contenido verticalmente */
-  flex-direction: column; /* Apila los elementos de la tarjeta verticalmente */
-  justify-content: space-between; /* Asegura que los elementos tengan espacio entre ellos */
-}
-
-.producto-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Efecto de elevación */
-}
-
-.producto-card p {
-  font-size: 18px;
-  font-weight: bold;
-  color: #34495e;
-  margin-bottom: 15px;
-  text-align: left; /* Alineamos el texto hacia la izquierda para una mejor lectura */
-}
-
-/* Ajustes para la imagen del producto */
-.producto-card img {
-  max-width: 100%;  /* Asegura que la imagen no desborde la tarjeta */
-  height: auto;
-  border-radius: 10px;  /* Bordes suaves para las imágenes */
-}
-
-/* Estilo de los botones de producto */
-.producto-card button {
-  background-color: #3498db;
-  color: white;
-  font-size: 16px;
-  padding: 12px 20px; /* Botones más grandes */
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;  /* Hacer que el botón ocupe todo el ancho de la tarjeta */
-  transition: all 0.3s ease;
-}
-
-.producto-card button:hover {
-  background-color: #2980b9;
-  transform: scale(1.05);
-}
-
-/* Botón de agregar producto (ajustado para ser más pequeño) */
-.btn.agregar {
-  font-size: 16px; /* Tamaño de fuente mayor */
-  padding: 8px 20px; /* Botón más pequeño */
-  background-color: #3498db;
-  color: white;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: block; /* Aseguramos que el botón sea un bloque */
-  margin: 30px auto 0; /* Colocamos el botón centrado debajo */
-}
-
-.btn.agregar:hover {
-  background-color: #2980b9;
-  transform: scale(1.05);
-}
-
-/* Modal */
+/* Modal de agregar y editar productos */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3;
+  z-index: 9999;
 }
 
 .modal-content {
-  background-color: #ffffff;
+  background-color: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 400px;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="file"] {
+input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+input[type="file"] {
+  padding: 5px;
 }
 
 button {
   padding: 10px 20px;
-  background-color: #3498db;
+  margin: 10px 0;
+  background-color: #357ABD;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 10px;
 }
 
 button:hover {
-  background-color: #2980b9;
+  background-color: #2a5f87;
 }
 
-/* Estilo para los formularios dentro del modal */
-.modal-content input {
+.producto-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.producto-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.producto-box img {
   width: 100%;
-  margin: 8px 0;  /* Menor espacio entre los campos */
-  padding: 6px;  /* Menor tamaño de los inputs */
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
-.btn.agregar {
-  background-color: #007bff;
+.producto-info {
+  margin-top: 10px;
+}
+
+.producto-info p {
+  margin: 5px 0;
+}
+
+.producto-nombre {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.action-button {
+  background-color: #68C3A3;
   color: white;
-  padding: 8px 15px;  /* Ajustar el tamaño del botón */
+  padding: 12px 25px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1.2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.btn.agregar:hover {
-  background-color: #0056b3;
+.action-button:hover {
+  background-color: #5AB092;
+  transform: scale(1.05);
 }
