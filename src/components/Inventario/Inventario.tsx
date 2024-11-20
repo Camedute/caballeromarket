@@ -120,25 +120,31 @@ const Inventario: React.FC = () => {
     const editarProducto = async () => {
         if (productoActual && uid) {
             try {
+                // Si hay una nueva imagen, sube la nueva imagen y actualiza la propiedad imagen
                 if (imagenProducto) {
                     const urlImagen = await uploadImage(imagenProducto);
-                    productoActual.imagen = urlImagen;
+                    productoActual.imagen = urlImagen; // Actualiza la imagen del producto
                 }
 
                 const usuarioRef = doc(db, 'Inventario', uid);
 
+                // Actualiza el producto en la lista de productos
                 const productosActualizados = productos.map((producto) =>
                     producto.id === productoActual.id ? productoActual : producto
                 );
 
+                // Actualiza los productos en Firestore
                 await setDoc(usuarioRef, { productos: productosActualizados }, { merge: true });
 
+                // Actualiza el estado de productos localmente
                 setProductos(productosActualizados);
 
-                cerrarModal();
+                cerrarModal();  // Cierra el modal después de la edición
             } catch (error) {
                 console.error('Error al editar producto:', error);
             }
+        } else {
+            console.error('Producto actual no definido');
         }
     };
 
@@ -147,10 +153,13 @@ const Inventario: React.FC = () => {
             try {
                 const usuarioRef = doc(db, 'Inventario', uid);
 
+                // Filtra el producto eliminado
                 const productosActualizados = productos.filter((producto) => producto.id !== id);
 
+                // Actualiza Firestore con los productos restantes
                 await setDoc(usuarioRef, { productos: productosActualizados }, { merge: true });
 
+                // Actualiza el estado local
                 setProductos(productosActualizados);
             } catch (error) {
                 console.error('Error al eliminar producto:', error);
@@ -245,15 +254,15 @@ const Inventario: React.FC = () => {
                                     <input 
                                         type="number" 
                                         name="precioProducto" 
-                                        placeholder="Precio" 
-                                        value={productoActual.precioProducto} 
+                                        placeholder="Precio del Producto" 
+                                        value={productoActual.precioProducto || ''} 
                                         onChange={actualizarProducto} 
                                     />
                                     <input 
                                         type="number" 
                                         name="cantidadProducto" 
-                                        placeholder="Cantidad" 
-                                        value={productoActual.cantidadProducto} 
+                                        placeholder="Cantidad en Inventario" 
+                                        value={productoActual.cantidadProducto || ''} 
                                         onChange={actualizarProducto} 
                                     />
                                     <input 
@@ -268,33 +277,36 @@ const Inventario: React.FC = () => {
                                     <input 
                                         type="date" 
                                         name="fechaElaboracion" 
+                                        placeholder="Fecha de Elaboración" 
                                         value={productoActual.fechaElaboracion.toISOString().split('T')[0]} 
                                         onChange={actualizarProducto} 
                                     />
                                     <input 
                                         type="date" 
                                         name="fechaCaducidad" 
+                                        placeholder="Fecha de Caducidad" 
                                         value={productoActual.fechaCaducidad.toISOString().split('T')[0]} 
                                         onChange={actualizarProducto} 
                                     />
                                     <input 
-                                        type="number" 
-                                        name="costo" 
-                                        placeholder="Costo" 
-                                        value={productoActual.costo} 
-                                        onChange={actualizarProducto} 
+                                        type="file" 
+                                        name="imagenProducto" 
+                                        onChange={handleImageChange} 
                                     />
                                     <input 
-                                        type="file" 
-                                        name="imagen" 
-                                        onChange={handleImageChange} 
+                                        type="number" 
+                                        name="costo" 
+                                        placeholder="Costo del Producto" 
+                                        value={productoActual.costo || ''} 
+                                        onChange={actualizarProducto} 
                                     />
                                 </div>
                             </div>
-
-                            <div className="modal-buttons">
-                                <button className="action-button" onClick={cerrarModal}>Cancelar</button>
-                                <button className="action-button" onClick={modoAgregar ? agregarProducto : editarProducto}>{modoAgregar ? 'Agregar' : 'Guardar'}</button>
+                            <div className="modal-actions">
+                                <button className="action-button" onClick={modoAgregar ? agregarProducto : editarProducto}>
+                                    {modoAgregar ? 'Agregar' : 'Guardar Cambios'}
+                                </button>
+                                <button className="action-button cancelar" onClick={cerrarModal}>Cancelar</button>
                             </div>
                         </div>
                     </div>
