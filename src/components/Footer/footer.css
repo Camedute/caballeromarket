@@ -1,38 +1,51 @@
 /* Footer General */
 .footer {
-    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    background: linear-gradient(135deg, #001f3f, #0077b6);
     color: white;
     padding: 3rem 2rem;
-    font-family: 'Arial', sans-serif;
-    position: relative;
-    bottom: 0;
-    left: 0;
+    font-family: 'Poppins', sans-serif;
     width: 100%;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .footer_content {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: space-between; /* Espaciado uniforme entre las secciones */
+    align-items: center; /* Asegura que todos los elementos estén alineados verticalmente */
+    flex-wrap: wrap; /* Permite que se ajuste en pantallas pequeñas */
     gap: 2rem;
-    align-items: flex-start; /* Alinea a la parte superior de las secciones */
 }
 
 .footer_section {
-    flex: 1;
-    min-width: 250px;
-    margin-bottom: 1.5rem;
+    flex: 1; /* Todas las secciones tienen el mismo ancho */
+    text-align: center; /* Por defecto, centramos el contenido */
+    min-width: 200px;
+}
+
+/* Ajustes específicos */
+.footer_section.about {
+    text-align: left; /* Caballero Market queda alineado a la izquierda */
+}
+
+.footer_section.social {
+    text-align: center; /* Síguenos queda centrado */
+}
+
+.footer_section.links {
+    text-align: right; /* Enlaces rápidos queda alineado a la derecha */
 }
 
 .footer_section h3 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     margin-bottom: 1rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .footer_section p, .footer_section ul, .footer_bottom p {
     font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
 }
 
 .footer_section ul {
@@ -41,30 +54,37 @@
 }
 
 .footer_section ul li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
 }
 
 .footer_section ul li a {
-    color: white;
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .footer_section ul li a:hover {
     color: #cce7ff;
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
-/* Ajuste específico para "Síguenos" */
-.footer_section.social {
-    align-self: flex-start; /* Alinea la sección a la parte superior */
-    text-align: right; /* Alinea el contenido de "Síguenos" a la derecha */
+/* Redes sociales */
+.footer_section.social ul {
+    display: flex;
+    justify-content: center; /* Centra los iconos en la sección */
+    gap: 1rem;
 }
 
-/* Ajuste específico para "Enlaces Rápidos" */
-.footer_section.links {
-    text-align: center; /* Centra el contenido de los enlaces rápidos */
+.footer_section.social ul li a {
+    font-size: 1.5rem; /* Tamaño de los iconos */
+    color: white;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer_section.social ul li a:hover {
+    color: #cce7ff;
+    transform: scale(1.2); /* Efecto de hover */
 }
 
 /* Footer Bottom */
@@ -74,17 +94,18 @@
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding-top: 1rem;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Responsivo */
 @media (max-width: 768px) {
     .footer_content {
-        flex-direction: column;
+        flex-direction: column; /* Las secciones se apilan en pantallas pequeñas */
         text-align: center;
     }
 
     .footer_section {
-        margin-bottom: 1.5rem;
+        text-align: center; /* Todas las secciones quedan centradas en pantallas pequeñas */
+        margin-bottom: 2rem;
     }
 }
