@@ -56,19 +56,19 @@ const Loginup: React.FC = () => {
     }, []);
 
     return (
-        <div className="main-container">
+        <div className="main-containerLogin">
             {/* Contenedor del formulario de inicio de sesión */}
             <div className="login-container">
                 {/* Contenedor del título */}
-                <div className="title-container">
+                <div className="title-containerLogin">
                     <h2>CaballeroMarket</h2>
                 </div>
-
+    
                 {/* Contenedor del formulario */}
-                <div className="form-container">
+                <div className="form-containerLogin">
                     <input
                         type="email"
-                        className="form-control"
+                        className="form-controlLogin"
                         placeholder="Correo Electrónico✉️"
                         value={email}
                         onChange={(e) => handleInputChange(e, setEmail)}
@@ -77,24 +77,24 @@ const Loginup: React.FC = () => {
                     />
                     <input
                         type="password"
-                        className="form-control"
+                        className="form-controlLogin"
                         placeholder="Contraseña🙊"
                         value={password}
                         onChange={(e) => handleInputChange(e, setPassword)}
                         name="password"
                         aria-label="Contraseña"
                     />
-                    <Link to ="/reset-password">¿No te acuerdas de tu contraseña? Restablecela acá!</Link>
-                    {error && <p className="error-message">{error}</p>}
+                    <Link to="/reset-password">¿No te acuerdas de tu contraseña? Restablecela acá!</Link>
+                    {error && <p className="error-messageLogin">{error}</p>}
                 </div>
-
+    
                 {/* Contenedor de los botones */}
-                <div className="button-container">
-                    <button className="button-57" role="button" onClick={handleLogin}>
+                <div className="button-containerLogin">
+                    <button className="button-57Login" role="button" onClick={handleLogin}>
                         <span className="text">🚪</span>
                         <span>Ingresar</span>
                     </button>
-                    <button className="button-57" role="button" onClick={handleRegister}>
+                    <button className="button-57Login" role="button" onClick={handleRegister}>
                         <span className="text">✍️</span>
                         <span>Registrarse</span>
                     </button>
@@ -102,6 +102,7 @@ const Loginup: React.FC = () => {
             </div>
         </div>
     );
+    
 };
 
 export default Loginup;

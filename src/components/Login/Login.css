@@ -31,7 +31,7 @@ html.login-background::after, body.login-background::after {
 }
 
 /* Contenedor principal con fondo y centrado */
-.main-container {
+.main-containerLogin {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,49 +50,51 @@ html.login-background::after, body.login-background::after {
     text-align: center;
 }
 
-/* Título del contenedor (similar al de register pero en azul) */
-.title-container h2 {
-    font-size: 1.8rem; /* Tamaño más grande */
+/* Título del contenedor */
+.title-containerLogin h2 {
+    font-size: 1.8rem;
     font-weight: bold;
-    color: #3c78c8; /* Azul */
+    color: #3c78c8;
     margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif; /* Fuente similar */
-    text-align: center; /* Centrado */
-    text-transform: uppercase; /* Título en mayúsculas */
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
 }
 
 /* Campos del formulario */
-.form-container {
-    margin-top: 20px;
+.form-containerLogin {
     display: flex;
-    flex-direction: column; /* Asegura que los campos estén en columna */
-    align-items: stretch; /* Asegura que los elementos ocupen todo el ancho */
-    gap: 15px; /* Espacio entre los campos */
+    flex-direction: column; /* Apilar los elementos */
+    align-items: center; /* Centrar horizontalmente */
+    gap: 15px; /* Espaciado entre los elementos */
+    margin-top: 20px;
 }
 
-/* Controles de formulario */
-.form-control {
-    width: 100%;
+
+/* Cada campo de entrada */
+.form-controlLogin {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 350px; /* Máximo ancho para inputs */
     padding: 12px;
     font-size: 1rem;
     border-radius: 5px;
     border: 2px solid #ccc;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 
-.form-control::placeholder {
+.form-controlLogin::placeholder {
     color: #aaa;
 }
 
-.form-control:focus {
+.form-controlLogin:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Estilo del enlace para restablecer la contraseña */
+/* Enlace para restablecer la contraseña */
 .login-container a {
-    display: block; /* Asegura que el enlace esté debajo de los inputs */
+    display: block;
     margin-top: 5px;
     color: #007bff;
     text-decoration: underline;
@@ -106,34 +108,35 @@ html.login-background::after, body.login-background::after {
 }
 
 /* Contenedor de botones */
-.button-container {
+.button-containerLogin {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Botones en columna */
     gap: 15px;
     margin-top: 20px;
 }
 
 /* Estilo de botones */
-.button-57 {
-    width: 100%;
+.button-57Login {
+    width: 100%; /* Botones ocupan el ancho completo */
+    max-width: 350px; /* Máximo ancho */
     padding: 12px;
     font-size: 1.2rem;
     border-radius: 5px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
+    border: 2px solid #007bff;
+    background-color: #fff;
+    color: #007bff;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 15px;
 }
 
-.button-57:hover {
-    background-color: #0056b3;
+.button-57Login:hover {
+    background-color: #007bff;
+    color: #fff;
     transform: scale(1.05);
 }
 
 /* Mensaje de error */
-.error-message {
+.error-messageLogin {
     color: red;
     font-size: 0.9rem;
     margin-top: 10px;
