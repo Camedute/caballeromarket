@@ -1,99 +1,129 @@
 import React, { useEffect, useState } from "react";
 import Header from "../Header/header";
 import Footer from "../Footer/footer";
-import './Home.css';
+import "./Home.css";
 import { Link, useNavigate } from "react-router-dom";
-import {db} from '../firebase/firestore';
-import { doc, getDoc } from 'firebase/firestore';
+import { db } from "../firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 interface Productos {
-    id: string;
-    idDueno: string;
-    nombreProducto: string;
-    cantidadProducto: string;
-    precioProducto: string;
+  id: string;
+  idDueno: string;
+  nombreProducto: string;
+  cantidadProducto: string;
+  precioProducto: string;
 }
 
 interface Ventas {
-    Ganancia: number;
-    Costo: number;
+  Ganancia: number;
+  Costo: number;
+}
+
+interface Pedido {
+  id: string;
+  idDueno: string;
+  idCliente: string;
+  listaPedidos: any; // Detalle de los productos
+  metodoPago: string;
+  realizado: boolean;
 }
 
 const Home: React.FC = () => {
-    const navigate = useNavigate();
-    const [formDataProductos, setFormDataProducto] = useState<Productos[]>([]);
-    const [gananciasHome, setGananciasHome] = useState<number>(0); // Ejemplo de ventas
-    const [clientesRecientes, setClientesRecientes] = useState<number>(45); // Ejemplo de clientes recientes
-    const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
+  const [formDataProductos, setFormDataProducto] = useState<Productos[]>([]);
+  const [gananciasHome, setGananciasHome] = useState<number>(0); // Ventas
+  const [pedidos, setPedidos] = useState<Pedido[]>([]); // Pedidos filtrados por dueño
+  const [clientesRecientes, setClientesRecientes] = useState<number>(45); // Ejemplo de clientes recientes
+  const [error, setError] = useState<string>("");
 
-    useEffect(() => {
-        const user = localStorage.getItem('user');
-        if (!user) {
-            console.warn("Usuario no autenticado. Redirigiendo al login.");
-            navigate('/');
-            return;
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      console.warn("Usuario no autenticado. Redirigiendo al login.");
+      navigate("/");
+      return;
+    }
+
+    const { uid } = JSON.parse(user);
+    if (uid) {
+      extraerDataProductos(uid);
+      extraerDataVentas(uid);
+      extraerDataPedidos(uid);
+    }
+  }, [navigate]);
+
+  const extraerDataProductos = async (uid: string) => {
+    try {
+      const InventarioRef = doc(db, "Inventario", uid);
+      const productoSnap = await getDoc(InventarioRef);
+
+      if (productoSnap.exists()) {
+        const productosData = productoSnap.data();
+        if (productosData.productos && Array.isArray(productosData.productos)) {
+          const listaProductos = productosData.productos.map((producto: any) => ({
+            id: producto.id,
+            idDueno: producto.idDueno,
+            nombreProducto: producto.nombreProducto,
+            cantidadProducto: producto.cantidadProducto,
+            precioProducto: producto.precioProducto,
+          }));
+          setFormDataProducto(listaProductos);
+        } else {
+          setError("No hay productos disponibles.");
         }
+      } else {
+        setError("El documento no existe.");
+      }
+    } catch (error) {
+      console.error("Error al extraer datos de productos:", error);
+      setError("Error al cargar los datos.");
+    }
+  };
 
-        const { uid } = JSON.parse(user);
-        if (uid) {
-            extraerDataProductos(uid);
-            extraerDataVentas(uid);
+  const extraerDataVentas = async (uid: string) => {
+    try {
+      const ventasRef = doc(db, "Ventas", uid);
+      const ventasSnap = await getDoc(ventasRef);
+      if (ventasSnap.exists()) {
+        const ventasData = ventasSnap.data();
+        if (ventasData.gananciaTotal) {
+          setGananciasHome(ventasData.gananciaTotal); // Asume que es un número
+        } else {
+          setError("No se encontraron datos de ganancias.");
         }
-    }, [navigate]);
+      } else {
+        setError("El documento de ventas no existe.");
+      }
+    } catch (error) {
+      console.error("Error al extraer datos de ventas:", error);
+      setError("Error al cargar las ganancias.");
+    }
+  };
 
-    const extraerDataProductos = async (uid: string) => {
-        try {
-            const InventarioRef = doc(db, 'Inventario', uid);
-            const productoSnap = await getDoc(InventarioRef);
+  const extraerDataPedidos = async (uid: string) => {
+    try {
+      const pedidosCollection = collection(db, "Pedidos");
+      const pedidosSnapshot = await getDocs(pedidosCollection);
 
-            if (productoSnap.exists()) {
-                
-                const productosData = productoSnap.data();
-                if (productosData.productos && Array.isArray(productosData.productos)) {
-                    
-                    const listaProductos = productosData.productos.map((producto: any) => ({
-                        id: producto.id,
-                        idDueno: producto.idDueno,
-                        nombreProducto: producto.nombreProducto,
-                        cantidadProducto: producto.cantidadProducto,
-                        precioProducto: producto.precioProducto,
-                    }));
-                    setFormDataProducto(listaProductos);
-                } else {
-                    setError("No hay productos disponibles.");
-                }
-            } else {
-                setError("El documento no existe.");
-            }
-        } catch (error) {
-            console.error("Error al extraer datos de productos:", error);
-            setError("Error al cargar los datos.");
-        }
-    };
+      const pedidosFiltrados = pedidosSnapshot.docs.map((doc) => {
+          const pedidoData = doc.data();
+          return {
+            id: doc.id,
+            idDueno: pedidoData.idDueno || "",
+            idCliente: pedidoData.idCliente || "",
+            listaPedidos: pedidoData.listaPedidos || [],
+            metodoPago: pedidoData.metodoPago || "N/A",
+            realizado: pedidoData.realizado || false,
+          } as Pedido;
+        })
+        .filter((pedido) => pedido.idDueno === uid);
 
-    const extraerDataVentas = async (uid: string) => {
-        try {
-            const ventasRef = doc(db, 'Ventas', uid);
-            const ventasSnap = await getDoc(ventasRef);
-            if (ventasSnap.exists()) {
-                console.log("ventassnap pasó");
-                const ventasData = ventasSnap.data();
-                if (ventasData.gananciaTotal) {
-                    console.log("condicion paso");
-                    setGananciasHome(ventasData.gananciaTotal); // Asume que es un número
-                } else {
-                    console.log("condicion no paso");
-                    setError("No se encontraron datos de ganancias.");
-                }
-            } else {
-                console.log("ventas snap no paso")
-                setError("El documento de ventas no existe.");
-            }
-        } catch (error) {
-            console.error("Error al extraer datos de ventas:", error);
-            setError("Error al cargar las ganancias.");
-        }
-    };
+      setPedidos(pedidosFiltrados);
+    } catch (error) {
+      console.error("Error al extraer datos de pedidos:", error);
+      setError("Error al cargar los pedidos.");
+    }
+  };
     
     
 
@@ -125,7 +155,7 @@ const Home: React.FC = () => {
                     {/*Me falta filtrar acá*/} 
                     <div className="overview-item">
                         <h2>Pedidos Recientes</h2>
-                        <p>{formDataProductos.length} productos en total</p>
+                        <p>{pedidos.length} productos en total</p>
                         <Link to={"/carrito"}>
                             <button className="action-button">Ver Pedidos</button>
                         </Link>

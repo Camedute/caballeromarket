@@ -205,7 +205,6 @@ const Inventario: React.FC = () => {
             <Header />
             <div className="inventario-container">
                 <h2>Inventario de Productos</h2>
-                <p>Costo total acumulado de Ventas: ${costoTotal}</p>
                 
                 {loading ? (
                     <p>Cargando productos...</p>
@@ -219,8 +218,8 @@ const Inventario: React.FC = () => {
                                 <p>Categoría: {producto.Categoria}</p>
                                 <p>Costo: ${producto.costo}</p>
                                 {producto.imagen && <img src={producto.imagen} alt={producto.nombreProducto} width="100" />}
-                                <button onClick={() => abrirModalEditar(producto)}>Editar épicamente</button>
-                                <button onClick={() => eliminarProducto(producto.id)}>Eliminar épicamente</button>
+                                <button onClick={() => abrirModalEditar(producto)}>Editar</button>
+                                <button onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
                             </div>
                         ))}
                     </div>

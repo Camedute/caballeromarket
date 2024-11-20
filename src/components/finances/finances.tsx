@@ -15,12 +15,18 @@ interface general {
   costo: number;
 }
 
+interface categorias {
+  categoria: string;
+  cantidad: number;
+}
+
 const Finances: React.FC = () => {
   const [uid, setUid] = useState<string>("");
   const [formDataGeneral, setFormDataGeneral] = useState<general>({
     ganancia: 0,
     costo: 0,
   });
+  const [formDataCategorias, setFormDataCateogias] = useState<categorias[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("General");
 
   useEffect(() => {
@@ -50,6 +56,19 @@ const Finances: React.FC = () => {
         });
       }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDataCategorias = async (uid: string) => {
+    try{
+      const categoriasRef = doc(db, 'Contador');
+      const categoriasSnap = await getDoc(categoriasRef);
+      if (categoriasSnap.exists()) {
+        const data = categoriasSnap.data();
+
+      }
+    } catch(error){
       console.log(error);
     }
   };
