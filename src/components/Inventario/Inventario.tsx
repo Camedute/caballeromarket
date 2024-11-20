@@ -21,7 +21,7 @@ interface Producto {
 }
 
 const Inventario: React.FC = () => {
-    const [productos, setProductos] = useState<Producto[]>([]);
+    const [productos, setProductos] = useState<Producto[]>([]); 
     const [loading, setLoading] = useState(true);
     const [productoActual, setProductoActual] = useState<Producto | null>(null);
     const [modoEdicion, setModoEdicion] = useState(false);
@@ -221,7 +221,7 @@ const Inventario: React.FC = () => {
                                     <p className="producto-costo">Costo: ${producto.costo}</p>
                                 </div>
                                 <button className="action-button" onClick={() => abrirModalEditar(producto)}>Editar</button>
-                                <button className="action-button" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
+                                <button className="action-button eliminar" onClick={() => eliminarProducto(producto.id)}>Eliminar</button>
                             </div>
                         ))}
                     </div>
@@ -233,62 +233,68 @@ const Inventario: React.FC = () => {
                     <div className="modal">
                         <div className="modal-content">
                             <h3>{modoAgregar ? 'Agregar Producto' : 'Editar Producto'}</h3>
-                            <input 
-                                type="text" 
-                                name="nombreProducto" 
-                                placeholder="Nombre del Producto" 
-                                value={productoActual.nombreProducto} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="number" 
-                                name="precioProducto" 
-                                placeholder="Precio" 
-                                value={productoActual.precioProducto} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="number" 
-                                name="cantidadProducto" 
-                                placeholder="Cantidad" 
-                                value={productoActual.cantidadProducto} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="text" 
-                                name="Categoria" 
-                                placeholder="Categoría" 
-                                value={productoActual.Categoria} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="date" 
-                                name="fechaElaboracion" 
-                                value={productoActual.fechaElaboracion.toISOString().split('T')[0]} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="date" 
-                                name="fechaCaducidad" 
-                                value={productoActual.fechaCaducidad.toISOString().split('T')[0]} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="number" 
-                                name="costo" 
-                                placeholder="Costo" 
-                                value={productoActual.costo} 
-                                onChange={actualizarProducto} 
-                            />
-                            <input 
-                                type="file" 
-                                onChange={handleImageChange} 
-                            />
-                            <div>
-                                <button onClick={cerrarModal}>Cancelar</button>
-                                <button onClick={modoAgregar ? agregarProducto : editarProducto}>
-                                    {modoAgregar ? 'Agregar' : 'Actualizar'}
-                                </button>
+                            <div className="form-container">
+                                <div className="form-column">
+                                    <input 
+                                        type="text" 
+                                        name="nombreProducto" 
+                                        placeholder="Nombre del Producto" 
+                                        value={productoActual.nombreProducto} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="number" 
+                                        name="precioProducto" 
+                                        placeholder="Precio" 
+                                        value={productoActual.precioProducto} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="number" 
+                                        name="cantidadProducto" 
+                                        placeholder="Cantidad" 
+                                        value={productoActual.cantidadProducto} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="text" 
+                                        name="Categoria" 
+                                        placeholder="Categoría" 
+                                        value={productoActual.Categoria} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                </div>
+                                <div className="form-column">
+                                    <input 
+                                        type="date" 
+                                        name="fechaElaboracion" 
+                                        value={productoActual.fechaElaboracion.toISOString().split('T')[0]} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="date" 
+                                        name="fechaCaducidad" 
+                                        value={productoActual.fechaCaducidad.toISOString().split('T')[0]} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="number" 
+                                        name="costo" 
+                                        placeholder="Costo" 
+                                        value={productoActual.costo} 
+                                        onChange={actualizarProducto} 
+                                    />
+                                    <input 
+                                        type="file" 
+                                        name="imagen" 
+                                        onChange={handleImageChange} 
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="modal-buttons">
+                                <button className="action-button" onClick={cerrarModal}>Cancelar</button>
+                                <button className="action-button" onClick={modoAgregar ? agregarProducto : editarProducto}>{modoAgregar ? 'Agregar' : 'Guardar'}</button>
                             </div>
                         </div>
                     </div>
