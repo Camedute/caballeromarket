@@ -79,9 +79,15 @@ const Inventario: React.FC = () => {
                 return;
             }
             try {
+                // Subir la imagen del producto
                 const urlImagen = await uploadImage(imagenProducto);
+                
+                // Referencias a Firestore
                 const usuarioRef = doc(db, 'Inventario', uid);
                 const ventasRef = doc(db, 'Ventas', uid);
+                const gastosEstaticosRef = doc(db, 'GastosEstaticos', uid); // Cambié a "GastosEstaticos"
+    
+                // Crear el nuevo producto
                 const nuevoProducto = {
                     id: productoActual.id || Date.now().toString(),
                     nombreProducto: productoActual.nombreProducto,
@@ -94,28 +100,48 @@ const Inventario: React.FC = () => {
                     imagen: urlImagen,
                     costo: productoActual.costo,
                 };
-
+    
+                // Obtener los productos existentes en la colección Inventario
                 const docSnapshot = await getDoc(usuarioRef);
                 const productosExistentes = docSnapshot.exists() ? docSnapshot.data()?.productos || [] : [];
-                
+    
+                // Guardar el nuevo producto en la colección Inventario
                 await setDoc(usuarioRef, { productos: [...productosExistentes, nuevoProducto] }, { merge: true });
-
+    
+                // Actualizar el costo total en la colección Ventas
                 const ventasSnapshot = await getDoc(ventasRef);
                 const costoActual = ventasSnapshot.exists() ? ventasSnapshot.data()?.costoTotal || 0 : 0;
-
                 const nuevoCostoTotal = costoActual + productoActual.costo;
-
                 await setDoc(ventasRef, { costoTotal: nuevoCostoTotal }, { merge: true });
-
+    
+                // Crear el objeto con los datos de gastos (nombre, cantidad, costo, costo total)
+                const nuevoGasto = {
+                    id: productoActual.id || Date.now().toString(),
+                    nombreProducto: nuevoProducto.nombreProducto,
+                    cantidad: nuevoProducto.cantidadProducto,
+                    costoUnitario: nuevoProducto.costo,
+                    costoTotal: nuevoProducto.costo * nuevoProducto.cantidadProducto,
+                };
+    
+                // Guardar los datos en la colección GastosEstaticos
+                const gastosEstaticosSnapshot = await getDoc(gastosEstaticosRef);
+                const gastosEstaticosExistentes = gastosEstaticosSnapshot.exists() ? gastosEstaticosSnapshot.data()?.gastos || [] : [];
+    
+                await setDoc(gastosEstaticosRef, { gastos: [...gastosEstaticosExistentes, nuevoGasto] }, { merge: true });
+    
+                // Actualizar el estado y UI
                 setCostoTotal(nuevoCostoTotal);
                 setProductos([...productos, nuevoProducto]);
-
+    
+                // Cerrar el modal
                 cerrarModal();
             } catch (error) {
                 console.error('Error al agregar producto:', error);
             }
         }
     };
+    
+    
 
     const editarProducto = async () => {
         if (productoActual && uid) {
