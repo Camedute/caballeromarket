@@ -205,8 +205,8 @@ const Finances: React.FC = () => {
     }));
     return archivos; // [{ id, nombre, url }]
   };
-  
 
+  
 
   React.useEffect(() => {
     const cargarArchivos = async () => {
@@ -247,25 +247,31 @@ const Finances: React.FC = () => {
     }
   };
 
-  const subirArchivo = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const archivoRef = ref(storage, `${uid}/${file.name}`);
-      await uploadBytes(archivoRef, file);
-      const url = await getDownloadURL(archivoRef);
+  const subirArchivo = async () => {
+    const inputFile = document.createElement("input");
+    inputFile.type = "file";
+    inputFile.accept = ".pdf,.jpg,.png";
+    inputFile.click();
 
-      const nuevoArchivo = {
-        nombre: file.name,
-        url,
-      };
+    inputFile.onchange = async (e: any) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const archivoRef = ref(storage, `${uid}/${file.name}`);
+        await uploadBytes(archivoRef, file);
+        const url = await getDownloadURL(archivoRef);
 
-      const archivoDoc = doc(collection(db, `documentos/${uid}/archivos`));
-      await setDoc(archivoDoc, nuevoArchivo);
+        const nuevoArchivo = {
+          nombre: file.name,
+          url,
+        };
 
-      setArchivos((prev) => [...prev, { id: archivoDoc.id, ...nuevoArchivo }]);
-    }
+        const archivoDoc = doc(collection(db, `documentos/${uid}/archivos`));
+        await setDoc(archivoDoc, nuevoArchivo);
+
+        setArchivos((prev) => [...prev, { id: archivoDoc.id, ...nuevoArchivo }]);
+      }
+    };
   };
-
 
   const renderCategoryData = () => {
     if (selectedCategory === "General") {
@@ -316,67 +322,16 @@ const Finances: React.FC = () => {
                 ))}
               </tbody>
             </table>
-            <input
-              type="file"
-              onChange={subirArchivo}
-              className="btn btn-success"
-              accept=".pdf,.jpg,.png"
-            />
+            <button className="btn btn-success" onClick={subirArchivo}>
+              Subir Archivo
+            </button>
           </div>
         </div>
       );
-    }
-     else if (selectedCategory === "Gastos") {
-      return (
-        <div className="file-manager">
-      <div className="file-list">
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Nombre Producto</th>
-              <th>Costo Unitario</th>
-              <th>Cantidad</th>
-              <th>Costo Total</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productosFinanza.map((producto) => (
-              <tr key={producto.id}>
-                <td>{producto.nombreProducto}</td>
-                <td>${producto.costoUnitario}</td>
-                <td>{producto.cantidad} unidades</td>
-                <td>${producto.costoTotal}</td>
-                <td>
-                  <button 
-                    className="btn btn-danger">
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-      );
-    }
-    else if (selectedCategory === "Pedidos"){
-      return (
-        <div className="file-manager">
-          <div className="file-list">
-            {pedidos.map((pedido, index) => (
-              <div key={index} className="file-item">
-                <span>Pedido {index + 1}</span>
-                <button>Ver detalles</button>
-                <p>Cliente: {clientes[pedido.idCliente]}</p>
-              </div>
-
-            ))}
-          </div>
-          <button className="upload-button">Subir Pedido</button>
-        </div>
-      )
+    } else if (selectedCategory === "Gastos") {
+      // Lógica para "Gastos"
+    } else if (selectedCategory === "Pedidos") {
+      // Lógica para "Pedidos"
     }
   };
 
