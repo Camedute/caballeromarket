@@ -69,7 +69,6 @@ html.login-background::after, body.login-background::after {
     margin-top: 20px;
 }
 
-
 /* Cada campo de entrada */
 .form-controlLogin {
     width: 100%; /* Ocupa todo el ancho disponible */
@@ -111,16 +110,18 @@ html.login-background::after, body.login-background::after {
 .button-containerLogin {
     display: flex;
     flex-direction: column; /* Botones en columna */
-    gap: 15px;
+    gap: 10px; /* Reducir el espacio entre los botones */
     margin-top: 20px;
+    justify-content: center; /* Centrar los botones verticalmente */
+    align-items: center; /* Alinear los botones horizontalmente */
 }
 
 /* Estilo de botones */
 .button-57Login {
-    width: 100%; /* Botones ocupan el ancho completo */
-    max-width: 350px; /* Máximo ancho */
-    padding: 12px;
-    font-size: 1.2rem;
+    width: 80%; /* Reducir el ancho de los botones para que sean más angostos */
+    max-width: 300px; /* Máximo ancho más pequeño */
+    padding: 8px; /* Reducir el padding */
+    font-size: 1rem; /* Reducir el tamaño de la fuente */
     border-radius: 5px;
     border: 2px solid #007bff;
     background-color: #fff;
