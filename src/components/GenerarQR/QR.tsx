@@ -16,9 +16,9 @@ interface pedidoData {
 }
 
 interface ProductoPedido {
+  cantidadProducto: number;
   id: string;
   nombreProducto: string;
-  cantidad: number;
 }
 
 
@@ -50,7 +50,7 @@ function QR() {
           ([idProducto, datosProducto]) => {
             const producto = datosProducto as ProductoPedido; // Cast explícito
             const nombreProducto = producto.nombreProducto || "Producto desconocido";
-            const cantidad = producto.cantidad || 0;
+            const cantidad = producto.cantidadProducto || 0;
             return `${nombreProducto}: ${cantidad} unidades`;
           }
         );
