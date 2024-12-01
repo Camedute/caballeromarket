@@ -281,7 +281,7 @@ const Finances: React.FC = () => {
       return (
         <div className="file-manager">
           <div className="file-list">
-            <table className="table table-bordered">
+            <table className="table table-bordered boletas-facturas-container">
               <thead>
                 <tr>
                   <th>Nombre de Archivo</th>
@@ -333,7 +333,7 @@ const Finances: React.FC = () => {
      return (
        <div className="file-manager">
      <div className="file-list">
-       <table className="table table-bordered">
+       <table className="table table-bordered gastos-container">
          <thead>
            <tr>
              <th>Nombre Producto</th>

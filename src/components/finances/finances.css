@@ -16,8 +16,8 @@
   background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen de fondo */
   background-size: cover;
   background-position: center;
-  filter: blur(10px); /* Desenfoque de la imagen */
-  opacity: 0.5; /* Tono más suave */
+  filter: blur(15px); /* Aumento del desenfoque */
+  opacity: 0.4; /* Menor opacidad para un fondo más sutil */
   z-index: -1; /* Asegura que la imagen esté detrás del gráfico */
 }
 
@@ -29,7 +29,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 123, 255, 0.5), rgba(173, 216, 230, 0.5)); /* Tono azul celeste */
+  background: linear-gradient(to bottom, rgba(0, 123, 255, 0.4), rgba(173, 216, 230, 0.4)); /* Tono azul celeste */
   z-index: -1; /* Mantener la capa de color debajo del gráfico */
 }
 
@@ -42,17 +42,54 @@
   display: block; /* Asegura que el gráfico sea un bloque */
 }
 
-/* Estilo para el contenedor general de finanzas */
+/* Estilo para el contenedor general */
 .finances-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  position: relative;
+  background-image: url('../../Imagenes/Negocio.jpg'); /* Aquí va la imagen de fondo que ya tienes */
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay; /* Para aplicar un color sobre la imagen */
+  background-color: rgba(0, 123, 255, 0.4); /* Azul/celeste más suave */
+}
+
+/* Fondo difuso para el contenedor */
+.finances-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../Imagenes/Negocio.jpg'); /* Imagen de fondo */
+  background-size: cover;
+  background-position: center;
+  filter: blur(15px); /* Aumento del desenfoque */
+  opacity: 0.4; /* Menor opacidad para un fondo más sutil */
+  z-index: -1;
+}
+
+/* Capa de color azul sobre el fondo difuso */
+.finances-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 123, 255, 0.3), rgba(173, 216, 230, 0.3)); /* Gradiente de azul a celeste */
+  filter: blur(15px); /* Aumento del desenfoque */
+  z-index: -1;
 }
 
 /* Estilo para la barra lateral, para que no reciba el fondo difuso */
 .finances-dashboard {
   display: flex;
   flex: 1;
+  position: relative; /* Asegura que los hijos respeten el flujo */
+  z-index: 1; /* Para que el contenido esté sobre el fondo */
 }
 
 .sidebar {
@@ -109,17 +146,49 @@
   border: 1px solid #ddd;
 }
 
+/* Estilo para los botones dentro de las celdas */
 button {
-  padding: 5px 10px;
+  padding: 8px 15px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Fondo azul más oscuro en hover */
+  transform: translateY(-3px); /* Levanta el botón al pasar el ratón */
+}
+
+button:focus {
+  outline: none; /* Elimina el borde de enfoque */
+}
+
+/* Estilo para botones de acción específicos (eliminar, editar, etc.) */
+.btn-danger {
+  background-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.btn-success {
+  background-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
 }
 
 .file-manager {
@@ -135,7 +204,6 @@ button:hover {
   flex-direction: column;
   align-items: flex-start;
 }
-
 .file-item {
   margin-bottom: 10px;
   display: flex;
@@ -153,4 +221,138 @@ button:hover {
   color: white;
   border: none;
   border-radius: 5px;
+}
+
+/* Estilo para el contenedor de Boletas/Facturas */
+.boletas-facturas-container {
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados más suaves */
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar el cuadro */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Efectos de transición */
+}
+
+.boletas-facturas-container:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el ratón */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra más fuerte al pasar el ratón */
+}
+
+.boletas-facturas-header {
+  font-size: 1.5em; /* Título más grande */
+  font-weight: 600; /* Negrita */
+  color: #007bff; /* Tono de azul para los títulos */
+  margin-bottom: 15px;
+  text-align: center; /* Centrar el texto */
+}
+
+.boletas-facturas-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.boletas-facturas-table th, .boletas-facturas-table td {
+  padding: 12px; /* Mayor espacio en celdas */
+  text-align: center;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9; /* Fondo claro para las celdas */
+}
+
+.boletas-facturas-table th {
+  background-color: #36a2eb; /* Azul fuerte para los encabezados */
+  color: white; /* Texto blanco en los encabezados */
+  font-size: 1.1em; /* Aumentar el tamaño de la fuente */
+}
+
+.boletas-facturas-table td {
+  background-color: #fafafa; /* Fondo ligeramente más claro */
+}
+
+.boletas-facturas-table tr:hover {
+  background-color: #e0f7fa; /* Fondo claro al pasar el ratón sobre las filas */
+}
+
+/* Estilo para los botones dentro de Boletas/Facturas */
+.boletas-facturas-btn {
+  padding: 10px 20px;
+  background-color: #28a745; /* Verde para el botón */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.boletas-facturas-btn:hover {
+  background-color: #218838; /* Verde más oscuro al pasar el ratón */
+}
+
+.gastos-container {
+  background-color: #ffffff; /* Fondo blanco */
+  border-radius: 12px; /* Bordes redondeados */
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gastos-container:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el ratón */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra más fuerte al pasar el ratón */
+}
+
+/* Estilo general para las tablas */
+.table {
+  width: 100%;
+  border-collapse: collapse; /* Asegura que no haya espacio entre celdas */
+  border-radius: 10px; /* Bordes redondeados en la tabla */
+  overflow: hidden; /* Asegura que no se vean bordes adicionales al redondear */
+  background-color: #ffffff; /* Fondo blanco */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar la tabla */
+}
+
+/* Encabezados de la tabla */
+.table th {
+  background-color: #007bff; /* Fondo azul para los encabezados */
+  color: #ffffff; /* Texto blanco */
+  text-align: left;
+  padding: 12px 15px;
+  font-size: 16px;
+  font-weight: 600; /* Negrita */
+  border-bottom: 3px solid #0056b3; /* Borde inferior */
+  text-transform: uppercase; /* Título en mayúsculas */
+}
+
+/* Celdas de la tabla */
+.table td {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 14px;
+  color: #333; /* Texto oscuro para contraste */
+  border-bottom: 1px solid #f2f2f2; /* Borde suave entre filas */
+}
+
+/* Alternancia de colores en las filas */
+.table tr:nth-child(even) {
+  background-color: #f8f9fa; /* Fondo gris muy claro para las filas pares */
+}
+
+.table tr:nth-child(odd) {
+  background-color: #ffffff; /* Fondo blanco para las filas impares */
+}
+
+/* Efecto hover en las filas */
+.table tr:hover {
+  background-color: #f1f1f1; /* Fondo gris suave al pasar el ratón */
+  cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+}
+
+/* Agregar un borde redondeado a la tabla al pasar el ratón */
+.table:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más grande */
 }
