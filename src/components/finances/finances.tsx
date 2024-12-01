@@ -328,12 +328,59 @@ const Finances: React.FC = () => {
           </div>
         </div>
       );
-    } else if (selectedCategory === "Gastos") {
-      // Lógica para "Gastos"
-    } else if (selectedCategory === "Pedidos") {
-      // Lógica para "Pedidos"
-    }
-  };
+    } 
+    else if (selectedCategory === "Gastos") {
+     return (
+       <div className="file-manager">
+     <div className="file-list">
+       <table className="table table-bordered">
+         <thead>
+           <tr>
+             <th>Nombre Producto</th>
+             <th>Costo Unitario</th>
+             <th>Cantidad</th>
+             <th>Costo Total</th>
+             <th>Eliminar</th>
+           </tr>
+         </thead>
+         <tbody>
+           {productosFinanza.map((producto) => (
+             <tr key={producto.id}>
+               <td>{producto.nombreProducto}</td>
+               <td>${producto.costoUnitario}</td>
+               <td>{producto.cantidad} unidades</td>
+               <td>${producto.costoTotal}</td>
+               <td>
+                 <button 
+                   className="btn btn-danger">
+                   Eliminar
+                 </button>
+               </td>
+             </tr>
+           ))}
+         </tbody>
+       </table>
+     </div>
+   </div>
+     );
+   }
+   else if (selectedCategory === "Pedidos"){
+     return (
+       <div className="file-manager">
+         <div className="file-list">
+           {pedidos.map((pedido, index) => (
+             <div key={index} className="file-item">
+               <span>Pedido {index + 1}</span>
+               <button>Ver detalles</button>
+               <p>Cliente: {clientes[pedido.idCliente]}</p>
+             </div>
+           ))}
+         </div>
+         <button className="upload-button">Subir Pedido</button>
+       </div>
+     )
+   }
+ };
 
   return (
     <div className="finances-container">
