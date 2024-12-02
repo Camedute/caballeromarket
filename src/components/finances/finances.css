@@ -146,10 +146,10 @@
   border: 1px solid #ddd;
 }
 
-/* Estilo para los botones dentro de las celdas */
+/* Botones generales en azul */
 button {
   padding: 8px 15px;
-  background-color: #007bff;
+  background-color: #007bff; /* Azul predeterminado */
   color: white;
   border: none;
   border-radius: 5px;
@@ -158,38 +158,23 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3; /* Fondo azul más oscuro en hover */
-  transform: translateY(-3px); /* Levanta el botón al pasar el ratón */
+  background-color: #0056b3; /* Azul más oscuro en hover */
+  transform: translateY(-3px);
+}
+
+/* Botón eliminar permanece rojo */
+button.btn-danger {
+  background-color: #dc3545; /* Rojo para eliminar */
+}
+
+button.btn-danger:hover {
+  background-color: #c82333;
 }
 
 button:focus {
   outline: none; /* Elimina el borde de enfoque */
 }
 
-/* Estilo para botones de acción específicos (eliminar, editar, etc.) */
-.btn-danger {
-  background-color: #dc3545;
-}
-
-.btn-danger:hover {
-  background-color: #c82333;
-}
-
-.btn-warning {
-  background-color: #ffc107;
-}
-
-.btn-warning:hover {
-  background-color: #e0a800;
-}
-
-.btn-success {
-  background-color: #28a745;
-}
-
-.btn-success:hover {
-  background-color: #218838;
-}
 
 /* Estilo general para las tablas */
 .table {
