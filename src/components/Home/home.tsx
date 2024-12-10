@@ -164,8 +164,8 @@ const Home: React.FC = () => {
                     <div className="overview-item">
                         <h2>Ganancias de tu local</h2>
                         <p>${gananciasHome}</p>
-                        <Link to={"/carrito"}>
-                            <button className="action-button">Ver Pedidos</button>
+                        <Link to={"/finances"}>
+                            <button className="action-button">Ver tus finanzas</button>
                         </Link>
                     </div>
 

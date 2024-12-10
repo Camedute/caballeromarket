@@ -48,7 +48,7 @@
   flex-direction: column;
   height: 100vh;
   position: relative;
-  background-image: url('../../Imagenes/Negocio.jpg'); /* Ruta de la imagen */
+  background-color: white;
   background-size: cover;
   background-position: center;
   background-attachment: fixed; /* Fija la imagen al fondo */
@@ -63,7 +63,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../../Imagenes/Negocio.jpg');
+  background-color: white;
   background-size: cover;
   background-position: center;
   filter: blur(8px); /* Aumento del difuminado */
@@ -225,4 +225,73 @@ button:focus {
 /* Agregar un borde redondeado a la tabla al pasar el ratón */
 .table:hover {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Sombra más grande */
+}
+
+
+/* Estilos para el modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background-color: #ffffff; /* Fondo blanco */
+  padding: 20px;
+  border-radius: 10px; /* Bordes redondeados */
+  width: 100%;
+  max-width: 600px; /* Ancho máximo reducido */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.close-button-finance {
+  color: white; /* Color del botón */
+  border: none;
+  font-size: 15px; /* Tamaño de la fuente */
+  cursor: pointer;
+  position: absolute; /* Posicionamiento absoluto */
+  top: 13%; /* Espaciado desde la parte superior */
+  left: 5%; /* Espaciado desde la izquierda */
+}
+
+.close-button:hover {
+  color: #ff0000; /* Color más intenso al pasar el mouse */
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: center; /* Centrar el título */
+}
+
+.pedido-body {
+  margin-top: 15px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+.view-details-button {
+   background-color: #1da1f2; /* Color de Twitter */
+   color: white; 
+   border: none; 
+   padding: 8px; 
+   border-radius:5px; 
+   cursor: pointer; 
+   transition: background-color .3s; /* Transición suave al cambiar de color */
+}
+
+.view-details-button:hover {
+   background-color: #1991db; /* Color más oscuro al pasar el mouse */
 }
